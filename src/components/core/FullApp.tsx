@@ -300,6 +300,34 @@ export const FullApp: React.FC = () => {
             }
           />
 
+          {/* Program Management Routes */}
+          <Route
+            path="/programs/create"
+            element={
+              <ProtectedRoute requiredUserType="company_admin">
+                <CreateProgram />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/programs/:id"
+            element={
+              <ProtectedRoute>
+                <ProgramDetailsPage />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Updated Company Dashboard with Programs */}
+          <Route
+            path="/company/dashboard/programs"
+            element={
+              <ProtectedRoute requiredUserType="company_admin">
+                <CompanyDashboardWithPrograms />
+              </ProtectedRoute>
+            }
+          />
+
           {/* Team Member Invitations */}
           <Route path="/invitations" element={<PendingInvitations />} />
 
