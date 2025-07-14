@@ -487,8 +487,13 @@ export default function MatchingSettings() {
                   </p>
                 </CardHeader>
                 <CardContent>
-                  <div className="h-64">
-                    <ResponsiveContainer width="100%" height="100%">
+                  <div className="h-64" style={{ minHeight: "256px" }}>
+                    <ResponsiveContainer
+                      width="100%"
+                      height="100%"
+                      debounce={100}
+                      style={{ minHeight: "256px" }}
+                    >
                       <PieChart>
                         <Pie
                           data={chartData}

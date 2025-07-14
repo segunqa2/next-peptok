@@ -16,7 +16,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Database,
   HardDrive,
-  Sync,
+  RefreshCw as Sync,
   TestTube,
   CheckCircle,
   AlertTriangle,

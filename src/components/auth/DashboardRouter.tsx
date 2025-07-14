@@ -18,7 +18,7 @@ const DashboardRouter = () => {
           navigate("/platform-admin", { replace: true });
           break;
         case "company_admin":
-          navigate("/dashboard", { replace: true });
+          navigate("/company/dashboard/programs", { replace: true });
           break;
         case "coach":
           navigate("/coach/dashboard", { replace: true });
@@ -30,7 +30,7 @@ const DashboardRouter = () => {
           navigate("/team-member-dashboard", { replace: true });
           break;
         default:
-          navigate("/dashboard", { replace: true });
+          navigate("/company/dashboard/programs", { replace: true });
           break;
       }
     } else {
