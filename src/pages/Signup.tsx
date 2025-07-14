@@ -128,7 +128,7 @@ const Signup = () => {
     if (formData.userType === "coach") {
       navigate("/coach/onboarding");
     } else {
-      navigate("/onboarding");
+      navigate("/login");
     }
   };
 
@@ -139,7 +139,7 @@ const Signup = () => {
     if (formData.userType === "coach") {
       navigate("/coach/onboarding");
     } else {
-      navigate("/onboarding");
+      navigate("/login");
     }
   };
 
