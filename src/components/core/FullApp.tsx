@@ -20,6 +20,17 @@ const CompanyDashboard = React.lazy(() => import("@/pages/CompanyDashboard"));
 const CompanyDashboardEnhanced = React.lazy(
   () => import("@/pages/CompanyDashboardEnhanced"),
 );
+const CompanyDashboardWithPrograms = React.lazy(
+  () => import("@/pages/CompanyDashboardWithPrograms"),
+);
+
+// Program-related pages
+const CreateProgram = React.lazy(
+  () => import("@/pages/programs/CreateProgram"),
+);
+const ProgramDetailsPage = React.lazy(
+  () => import("@/pages/programs/ProgramDetailsPage"),
+);
 const CoachProfile = React.lazy(() => import("@/pages/CoachProfile"));
 const ForgotPassword = React.lazy(() => import("@/pages/ForgotPassword"));
 const BusinessOnboarding = React.lazy(
