@@ -437,8 +437,14 @@ const Signup = () => {
                       <SelectContent className="bg-white/95 backdrop-blur-md">
                         {formData.userType === "company_admin" ? (
                           <>
-                            <SelectItem value="software-engineer">
-                              Software Engineer
+                            <SelectItem value="ceo">
+                              CEO
+                            </SelectItem>
+                            <SelectItem value="coo">
+                              COO
+                            </SelectItem>
+                            <SelectItem value="cto">
+                              CTO
                             </SelectItem>
                             <SelectItem value="product-manager">
                               Product Manager
