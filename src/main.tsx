@@ -14,6 +14,44 @@ console.log(`🌍 Environment: ${Environment.getEnvironmentName()}`);
 console.log(`🔗 API Base URL: ${Environment.getApiBaseUrl()}`);
 console.log(`🔌 Should try backend: ${Environment.shouldTryBackend()}`);
 
+// Suppress ResizeObserver loop errors (common with chart libraries like Recharts)
+const resizeObserverErrorHandler = (e: ErrorEvent) => {
+  if (
+    e.message &&
+    e.message.includes(
+      "ResizeObserver loop completed with undelivered notifications",
+    )
+  ) {
+    e.preventDefault();
+    e.stopPropagation();
+    // Optionally log a cleaner message instead
+    console.debug(
+      "ResizeObserver loop detected (suppressed - this is harmless)",
+    );
+    return false;
+  }
+  return true;
+};
+
+// Add error listener for ResizeObserver errors
+window.addEventListener("error", resizeObserverErrorHandler);
+
+// Also suppress uncaught promise rejections for ResizeObserver
+window.addEventListener("unhandledrejection", (e) => {
+  if (
+    e.reason &&
+    typeof e.reason === "string" &&
+    e.reason.includes(
+      "ResizeObserver loop completed with undelivered notifications",
+    )
+  ) {
+    e.preventDefault();
+    console.debug(
+      "ResizeObserver loop detected in promise (suppressed - this is harmless)",
+    );
+  }
+});
+
 // Error boundary for production
 class ErrorBoundary extends React.Component<
   { children: React.ReactNode },
