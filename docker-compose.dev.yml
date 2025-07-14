@@ -1,0 +1,40 @@
+services:
+  # Development backend with hot reload
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    environment:
+      - NODE_ENV=development
+      - PORT=3001
+    volumes:
+      - ./backend/src:/app/src
+      - ./backend/.env:/app/.env
+      - backend-node-modules:/app/node_modules
+    ports:
+      - "3001:3000"
+    command: npm run start:dev
+
+  # Development frontend with hot reload
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    environment:
+      - VITE_API_URL=http://localhost:3001/api
+    volumes:
+      - ./src:/app/src:ro
+      - ./public:/app/public:ro
+      - ./index.html:/app/index.html:ro
+      - ./package.json:/app/package.json:ro
+      - ./vite.config.ts:/app/vite.config.ts:ro
+      - ./tailwind.config.ts:/app/tailwind.config.ts:ro
+      - ./tsconfig.json:/app/tsconfig.json:ro
+      - frontend-node-modules:/app/node_modules
+    ports:
+      - "3000:3000"
+    command: npm run dev -- --host 0.0.0.0
+
+volumes:
+  backend-node-modules:
+  frontend-node-modules:

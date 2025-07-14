@@ -1,0 +1,74 @@
+# Dependencies
+node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Production build
+dist
+build
+
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# IDE files
+.vscode
+.idea
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# Logs
+*.log
+logs
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage
+
+# Git
+.git
+.gitignore
+
+# Docker
+Dockerfile*
+docker-compose*
+
+# Documentation
+README.md
+docs/
+
+# Test files
+*.test.*
+*.spec.*
+__tests__
+
+# Temporary files
+*.tmp
+*.temp
+
+# Windows-specific files
+*.bat
+*.cmd
+*.exe
+*.msi
+*.dll
+*.sys
+System Volume Information/
+pagefile.sys
+hiberfil.sys

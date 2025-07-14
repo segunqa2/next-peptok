@@ -1,0 +1,55 @@
+version: "3.8"
+
+services:
+  # Frontend Production Build
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    environment:
+      - VITE_API_URL=http://localhost:3001/api
+      - VITE_MOCK_EMAIL=false
+    depends_on:
+      - backend
+    networks:
+      - peptok-network
+
+  # Backend Production
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=production
+      - PORT=3001
+      - DATABASE_URL=postgresql://peptok_user:peptok_password@database:5432/peptok_prod
+      - JWT_SECRET=${JWT_SECRET}
+      - CORS_ORIGIN=http://localhost
+    depends_on:
+      - database
+    networks:
+      - peptok-network
+
+  # PostgreSQL Production Database
+  database:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_DB=peptok_prod
+      - POSTGRES_USER=peptok_user
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_prod_data:/var/lib/postgresql/data
+      - ./backend/src/database/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
+    networks:
+      - peptok-network
+
+networks:
+  peptok-network:
+    driver: bridge
+
+volumes:
+  postgres_prod_data:

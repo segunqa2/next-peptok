@@ -1,0 +1,44 @@
+# Backend Development Dockerfile
+FROM node:18-alpine
+
+# Install essential packages and configure npm for better performance
+RUN apk add --no-cache git python3 make g++ dos2unix && \
+    npm config set fetch-retry-mintimeout 20000 && \
+    npm config set fetch-retry-maxtimeout 120000 && \
+    npm config set fetch-retries 5 && \
+    npm config set registry https://registry.npmjs.org/
+
+# Set working directory
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+
+# Install dependencies with optimizations for reliability and timeout handling
+RUN npm ci --only=production --no-audit --no-fund --maxsockets 1 --timeout=300000 || \
+    npm install --no-audit --no-fund --maxsockets 1 --timeout=300000 || \
+    (sleep 10 && npm install --no-audit --no-fund --maxsockets 1 --timeout=300000)
+
+# Copy source code
+COPY . .
+
+# Fix line endings for Windows compatibility
+RUN find . -type f \( -name "*.js" -o -name "*.ts" -o -name "*.json" \) -exec dos2unix {} \; 2>/dev/null || true
+
+# Create non-root user for security
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S backend -u 1001 -G nodejs && \
+    chown -R backend:nodejs /app
+
+# Switch to non-root user
+USER backend
+
+# Expose port
+EXPOSE 3001
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
+    CMD wget --no-verbose --tries=1 --spider http://localhost:3001/health || exit 1
+
+# Start TypeScript development server with tsx
+CMD ["npm", "run", "dev"]

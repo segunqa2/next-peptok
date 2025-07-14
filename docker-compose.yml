@@ -1,0 +1,136 @@
+services:
+  # Frontend Development Server
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/app:cached
+      - frontend_node_modules:/app/node_modules
+    environment:
+      - VITE_API_URL=http://localhost:3001/api
+      - VITE_MOCK_EMAIL=true
+      - VITE_DEBUG_MODE=true
+    depends_on:
+      - backend
+    networks:
+      - peptok-network
+
+    # NestJS Backend API Server
+  backend:
+    build:
+      context: ./backend-nestjs
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3001:3000"
+    volumes:
+      - ./backend-nestjs:/app:cached
+      - backend_nestjs_node_modules:/app/node_modules
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+      - JWT_SECRET=your-dev-jwt-secret-key
+      - FRONTEND_URL=http://localhost:8080
+      - CORS_ORIGIN=http://localhost:8080
+      - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - DATABASE_HOST=database
+      - DATABASE_PORT=5432
+      - DATABASE_NAME=peptok_dev
+      - DATABASE_USER=peptok_user
+      - DATABASE_PASSWORD=peptok_password
+    depends_on:
+      - kafka
+      - redis
+      - database
+    networks:
+      - peptok-network
+
+  # Python Matching Service
+  matching-service:
+    build:
+      context: ./matching-service
+      dockerfile: Dockerfile.dev
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./matching-service:/app:cached
+    environment:
+      - FLASK_ENV=development
+      - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+      - REDIS_HOST=redis
+      - BACKEND_API_URL=http://backend:3001/api
+      - SECRET_KEY=dev-secret-key-change-in-production
+    depends_on:
+      - kafka
+      - redis
+      - backend
+    networks:
+      - peptok-network
+
+  # Apache Kafka
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.4.0
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    networks:
+      - peptok-network
+
+  kafka:
+    image: confluentinc/cp-kafka:7.4.0
+    ports:
+      - "9092:9092"
+      - "9094:9094"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:9094
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: true
+    depends_on:
+      - zookeeper
+    networks:
+      - peptok-network
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+    networks:
+      - peptok-network
+
+  # PostgreSQL Database (Optional)
+  database:
+    image: postgres:15-alpine
+    ports:
+      - "5433:5432"
+    environment:
+      - POSTGRES_DB=peptok_dev
+      - POSTGRES_USER=peptok_user
+      - POSTGRES_PASSWORD=peptok_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./backend/src/database/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
+    networks:
+      - peptok-network
+
+networks:
+  peptok-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  redis_data:
+  frontend_node_modules:
+  backend_nestjs_node_modules:
