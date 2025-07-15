@@ -29,6 +29,7 @@ class AuthService {
         this.currentUser = JSON.parse(storedUser);
         this.authToken = storedToken;
         setAuthToken(storedToken);
+        setCurrentUser(this.currentUser); // Set user for apiEnhanced authorization
         console.log(`✅ User loaded from storage: ${this.currentUser?.email}`);
       }
     } catch (error) {
