@@ -2,39 +2,40 @@
 
 <#
 .SYNOPSIS
-    Start the Peptok coaching platform in development mode
+    Start Peptok in development mode with hot reload
 
 .DESCRIPTION
-    This script cleans up existing containers and starts the Docker containers 
-    for the Peptok platform in development mode with hot reload.
+    Simplified script to start the Peptok platform in development mode.
+    Frontend: http://localhost:3000 (with hot reload)
+    Backend: http://localhost:3001 (with hot reload)
 
 .PARAMETER Clean
     Force clean rebuild of all containers
 
 .PARAMETER Logs
-    Show logs after starting containers
+    Show logs after starting
 
 .EXAMPLE
     .\dev-start.ps1
-    Start in development mode
+    Start normally
 
 .EXAMPLE
-    .\dev-start.ps1 -Clean -Logs
-    Force clean rebuild and show logs
+    .\dev-start.ps1 -Clean
+    Clean rebuild and start
+
+.EXAMPLE
+    .\dev-start.ps1 -Logs
+    Start and show logs
 #>
 
 param(
-    [Parameter()]
     [switch]$Clean,
-    
-    [Parameter()]
     [switch]$Logs
 )
 
-# Set error handling
 $ErrorActionPreference = "Stop"
 
-# Colors for output
+# Colors
 $Green = "`e[32m"
 $Yellow = "`e[33m"
 $Red = "`e[31m"
@@ -42,201 +43,130 @@ $Blue = "`e[34m"
 $Cyan = "`e[36m"
 $Reset = "`e[0m"
 
-function Write-ColorOutput {
-    param($Color, $Message)
+function Write-Color($Color, $Message) {
     Write-Host "${Color}${Message}${Reset}"
 }
 
-function Test-DockerInstallation {
-    try {
-        docker --version | Out-Null
-        docker compose version | Out-Null
-        return $true
-    }
-    catch {
-        return $false
-    }
-}
-
-function Test-DockerRunning {
-    try {
-        docker ps | Out-Null
-        return $true
-    }
-    catch {
-        return $false
-    }
-}
-
-function Stop-ProcessOnPort {
-    param($Port)
-    
+function Stop-Port($Port) {
     try {
         if (Get-Command Get-NetTCPConnection -ErrorAction SilentlyContinue) {
             $connections = Get-NetTCPConnection -LocalPort $Port -State Listen -ErrorAction SilentlyContinue
             foreach ($connection in $connections) {
-                $processId = $connection.OwningProcess
-                if ($processId -and $processId -ne 0) {
-                    Write-ColorOutput $Yellow "  Stopping process $processId using port $Port..."
-                    try {
-                        Stop-Process -Id $processId -Force -ErrorAction Stop
-                        Write-ColorOutput $Green "  Process stopped successfully"
-                    } catch {
-                        Write-ColorOutput $Red "  Failed to stop process $processId"
-                    }
+                if ($connection.OwningProcess -and $connection.OwningProcess -ne 0) {
+                    Write-Color $Yellow "Stopping process using port ${Port}..."
+                    Stop-Process -Id $connection.OwningProcess -Force -ErrorAction SilentlyContinue
                 }
             }
         }
     } catch {
-        Write-ColorOutput $Yellow "  Could not check port $Port"
+        # Silently continue if we can't check ports
     }
 }
 
-# Main script
 try {
-    Write-ColorOutput $Blue "Starting Peptok Coaching Platform (Development Mode)..."
-    
-    # Check Docker installation
-    if (-not (Test-DockerInstallation)) {
-        Write-ColorOutput $Red "Docker or Docker Compose is not installed or not in PATH"
-        Write-ColorOutput $Yellow "Please install Docker Desktop and try again"
-        exit 1
-    }
-    
-    # Check if Docker is running
-    if (-not (Test-DockerRunning)) {
-        Write-ColorOutput $Red "Docker is not running"
-        Write-ColorOutput $Yellow "Please start Docker Desktop and try again"
-        exit 1
-    }
-    
-    Write-ColorOutput $Green "Docker is ready"
-    
-    # Clean up existing containers
-    Write-ColorOutput $Yellow "Cleaning up existing containers..."
+    Write-Color $Blue "🚀 Starting Peptok Development Environment"
+    Write-Host ""
+
+    # Check Docker
     try {
-        docker compose down 2>$null
-        docker compose -f docker-compose.dev.yml down 2>$null
+        docker --version | Out-Null
+        docker compose version | Out-Null
+        docker ps | Out-Null
     } catch {
-        Write-ColorOutput $Yellow "  No containers to stop"
+        Write-Color $Red "❌ Docker is not running or not installed"
+        Write-Color $Yellow "Please start Docker Desktop and try again"
+        exit 1
     }
-    
+
+    Write-Color $Green "✅ Docker is ready"
+
+    # Stop existing containers
+    Write-Color $Yellow "🛑 Stopping existing containers..."
+    docker compose -f docker-compose.dev.yml down 2>$null | Out-Null
+
     # Free up ports
-    Write-ColorOutput $Yellow "Freeing up ports..."
-    Stop-ProcessOnPort 8080
-    Stop-ProcessOnPort 3001
-    Stop-ProcessOnPort 5433
-    Stop-ProcessOnPort 6379
-    
-    # Generate package-lock.json files if they don't exist
-    Write-ColorOutput $Yellow "Ensuring package-lock.json files exist..."
-    
-    if (-not (Test-Path "package-lock.json")) {
-        Write-ColorOutput $Yellow "  Generating frontend package-lock.json..."
-                try {
-            npm install --package-lock-only
-        } catch {
-            Write-ColorOutput $Yellow "    npm not available - continuing without package-lock"
-        }
-    }
-    
-    if (-not (Test-Path "backend-nestjs/package-lock.json")) {
-        Write-ColorOutput $Yellow "  Generating backend package-lock.json..."
-        Push-Location backend-nestjs
-                try {
-            npm install --package-lock-only
-        } catch {
-            Write-ColorOutput $Yellow "    npm not available - continuing without package-lock"
-        }
-        Pop-Location
-    }
-    
-    Write-ColorOutput $Green "Package-lock files ready"
-    
+    Write-Color $Yellow "🔓 Freeing up ports..."
+    Stop-Port 3000
+    Stop-Port 3001
+    Stop-Port 5432
+    Stop-Port 6379
+
     # Build containers
     if ($Clean) {
-        Write-ColorOutput $Yellow "Building containers (clean)..."
-        docker compose -f docker-compose.yml -f docker-compose.dev.yml build --no-cache
+        Write-Color $Yellow "🔨 Building containers (clean)..."
+        docker compose -f docker-compose.dev.yml build --no-cache
     } else {
-        Write-ColorOutput $Yellow "Building containers..."
-        docker compose -f docker-compose.yml -f docker-compose.dev.yml build
+        Write-Color $Yellow "🔨 Building containers..."
+        docker compose -f docker-compose.dev.yml build
     }
-    
+
     if ($LASTEXITCODE -ne 0) {
-        Write-ColorOutput $Red "Failed to build containers"
+        Write-Color $Red "❌ Failed to build containers"
         exit 1
     }
-    
-    Write-ColorOutput $Green "Containers built successfully"
-    
+
     # Start containers
-    Write-ColorOutput $Yellow "Starting development services..."
-    docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d
-    
+    Write-Color $Yellow "▶️  Starting services..."
+    docker compose -f docker-compose.dev.yml up -d
+
     if ($LASTEXITCODE -ne 0) {
-        Write-ColorOutput $Red "Failed to start containers"
+        Write-Color $Red "❌ Failed to start containers"
         exit 1
     }
-    
-    # Wait for services to be healthy
-    Write-ColorOutput $Yellow "Waiting for services to be healthy..."
-    
-    $maxAttempts = 60
-    $attempt = 0
-    
-    while ($attempt -lt $maxAttempts) {
-        $postgresHealth = docker inspect --format='{{.State.Health.Status}}' peptok-postgres 2>$null
-        $redisHealth = docker inspect --format='{{.State.Health.Status}}' peptok-redis 2>$null
-        $backendHealth = docker inspect --format='{{.State.Health.Status}}' peptok-backend 2>$null
-        $frontendHealth = docker inspect --format='{{.State.Health.Status}}' peptok-frontend 2>$null
-        
-        $allHealthy = ($postgresHealth -eq "healthy") -and 
-                     ($redisHealth -eq "healthy") -and 
-                     ($backendHealth -eq "healthy") -and 
-                     ($frontendHealth -eq "healthy")
-        
-        if ($allHealthy) {
-            break
-        }
-        
-        Start-Sleep -Seconds 2
-        $attempt++
-        Write-Host "." -NoNewline
-    }
-    
+
+    # Wait for services
+    Write-Color $Yellow "⏳ Waiting for services to start..."
+    Start-Sleep -Seconds 10
+
+    # Check services
+    $frontendOk = $false
+    $backendOk = $false
+
+    try {
+        $response = Invoke-WebRequest -Uri "http://localhost:3000" -TimeoutSec 5 -UseBasicParsing -ErrorAction SilentlyContinue
+        if ($response.StatusCode -eq 200) { $frontendOk = $true }
+    } catch { }
+
+    try {
+        $response = Invoke-WebRequest -Uri "http://localhost:3001/health" -TimeoutSec 5 -UseBasicParsing -ErrorAction SilentlyContinue
+        if ($response.StatusCode -eq 200) { $backendOk = $true }
+    } catch { }
+
     Write-Host ""
-    
-    if ($attempt -eq $maxAttempts) {
-        Write-ColorOutput $Yellow "Services may not be fully healthy yet."
-        Write-ColorOutput $Yellow "   This is normal for development mode. Check logs if issues persist."
+    Write-Color $Green "🎉 Peptok Development Environment Started!"
+    Write-Host ""
+    Write-Color $Cyan "🌐 Frontend (React + Hot Reload): http://localhost:3000"
+    Write-Color $Cyan "🔧 Backend (NestJS + Hot Reload): http://localhost:3001"
+    Write-Color $Cyan "💾 Database (PostgreSQL): localhost:5432"
+    Write-Color $Cyan "🗄️  Cache (Redis): localhost:6379"
+    Write-Host ""
+
+    if ($frontendOk) {
+        Write-Color $Green "✅ Frontend: Ready"
     } else {
-        Write-ColorOutput $Green "All services are healthy!"
+        Write-Color $Yellow "⏳ Frontend: Starting up..."
     }
-    
-    # Show service URLs
-    Write-ColorOutput $Green "Peptok Platform is running in development mode!"
+
+    if ($backendOk) {
+        Write-Color $Green "✅ Backend: Ready"
+    } else {
+        Write-Color $Yellow "⏳ Backend: Starting up..."
+    }
+
     Write-Host ""
-    Write-ColorOutput $Cyan "Frontend (Hot Reload): http://localhost:8080"
-    Write-ColorOutput $Cyan "Backend API (Hot Reload): http://localhost:3001"
-    Write-ColorOutput $Cyan "API Health: http://localhost:3001/health"
-    Write-ColorOutput $Cyan "Database: localhost:5433"
-    Write-ColorOutput $Cyan "Redis: localhost:6379"
-    
-    Write-Host ""
-    Write-ColorOutput $Yellow "Available commands:"
-    Write-ColorOutput $Yellow "  - View logs: docker compose -f docker-compose.yml -f docker-compose.dev.yml logs -f"
-    Write-ColorOutput $Yellow "  - Stop services: docker compose -f docker-compose.yml -f docker-compose.dev.yml down"
-    Write-ColorOutput $Yellow "  - Restart service: docker compose -f docker-compose.yml -f docker-compose.dev.yml restart [service]"
-    
-    # Show logs if requested
+    Write-Color $Yellow "📋 Quick Commands:"
+    Write-Color $Yellow "  View logs: .\dev-logs.ps1"
+    Write-Color $Yellow "  Stop all: .\dev-stop.ps1"
+    Write-Color $Yellow "  Restart: .\dev-restart.ps1"
+
     if ($Logs) {
         Write-Host ""
-        Write-ColorOutput $Yellow "Showing container logs (Ctrl+C to exit)..."
-        docker compose -f docker-compose.yml -f docker-compose.dev.yml logs -f
+        Write-Color $Yellow "📝 Showing logs (Ctrl+C to exit)..."
+        docker compose -f docker-compose.dev.yml logs -f
     }
-}
-catch {
-    Write-ColorOutput $Red "An error occurred: $($_.Exception.Message)"
-    Write-ColorOutput $Yellow "Try running with -Clean flag to force rebuild"
+
+} catch {
+    Write-Color $Red "❌ Error: $($_.Exception.Message)"
+    Write-Color $Yellow "Try running with -Clean flag"
     exit 1
 }
