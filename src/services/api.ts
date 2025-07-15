@@ -29,45 +29,16 @@ console.log(`  - Environment: ${Environment.getEnvironmentName()}`);
 console.log(`  - API Base URL: ${API_BASE_URL}`);
 console.log(`  - Should try backend: ${Environment.shouldTryBackend()}`);
 
-// Backend availability check
-let backendAvailable: boolean | null = null;
-let lastBackendCheck = 0;
-const BACKEND_CHECK_INTERVAL = 30000; // 30 seconds
-
-async function checkBackendAvailability(): Promise<boolean> {
-  const now = Date.now();
-
-  // Use cached result if recent
-  if (
-    backendAvailable !== null &&
-    now - lastBackendCheck < BACKEND_CHECK_INTERVAL
-  ) {
-    return backendAvailable;
-  }
-
+// Simple backend health check for debugging
+async function isBackendHealthy(): Promise<boolean> {
   try {
     const response = await fetch(`${API_BASE_URL}/platform/health`, {
       method: "GET",
-      timeout: 5000,
     });
-    backendAvailable = response.ok;
-    lastBackendCheck = now;
-
-    if (backendAvailable) {
-      console.log("✅ Backend is available");
-    } else {
-      console.warn("⚠️ Backend responded but not healthy");
-    }
+    return response.ok;
   } catch (error) {
-    backendAvailable = false;
-    lastBackendCheck = now;
-    console.warn(
-      "❌ Backend is not available:",
-      error instanceof Error ? error.message : "Unknown error",
-    );
+    return false;
   }
-
-  return backendAvailable;
 }
 
 // Token management
