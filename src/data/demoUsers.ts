@@ -100,7 +100,7 @@ export const demoCoachingRequest: CoachingRequest = {
     {
       id: "team_001",
       name: "Sarah Johnson",
-      email: "employee1@techcorp.com",
+      email: "admin@techcorp.com",
       role: "admin",
       status: "accepted",
       invitedAt: "2024-03-15T10:00:00Z",
