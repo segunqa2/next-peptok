@@ -38,21 +38,21 @@ function Write-ColorOutput {
 }
 
 try {
-    Write-ColorOutput $Blue "🛑 Stopping Peptok Development Environment..."
+    Write-ColorOutput $Blue "Stopping Peptok Development Environment..."
     
     # Stop and remove containers
-    Write-ColorOutput $Yellow "🔄 Stopping development containers..."
+    Write-ColorOutput $Yellow "Stopping development containers..."
     docker compose -f docker-compose.yml -f docker-compose.dev.yml down
     
     if ($LASTEXITCODE -ne 0) {
-        Write-ColorOutput $Yellow "⚠️  Some containers may have already been stopped"
+        Write-ColorOutput $Yellow "Some containers may have already been stopped"
     } else {
-        Write-ColorOutput $Green "✅ Development containers stopped successfully"
+        Write-ColorOutput $Green "Development containers stopped successfully"
     }
     
     # Remove volumes if requested
     if ($Volumes) {
-        Write-ColorOutput $Yellow "🗑️  Removing development volumes..."
+        Write-ColorOutput $Yellow "Removing development volumes..."
         docker compose -f docker-compose.yml -f docker-compose.dev.yml down -v
         
         # Also remove named volumes
@@ -65,14 +65,14 @@ try {
             Write-ColorOutput $Yellow "  Some volumes may not exist or are in use"
         }
         
-        Write-ColorOutput $Green "✅ Development volumes removed"
+        Write-ColorOutput $Green "Development volumes removed"
     }
     
-    Write-ColorOutput $Green "🎉 Development environment stopped successfully!"
+    Write-ColorOutput $Green "Development environment stopped successfully!"
     Write-Host ""
-    Write-ColorOutput $Yellow "💡 To start again, run: .\dev-start.ps1"
+    Write-ColorOutput $Yellow "To start again, run: .\dev-start.ps1"
 }
 catch {
-    Write-ColorOutput $Red "�� An error occurred: $($_.Exception.Message)"
+    Write-ColorOutput $Red "An error occurred: $($_.Exception.Message)"
     exit 1
 }
