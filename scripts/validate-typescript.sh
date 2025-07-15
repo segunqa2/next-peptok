@@ -5,6 +5,16 @@
 
 echo "🔍 Validating TypeScript-only frontend..."
 
+# Check if npm is available
+if ! command -v npm &> /dev/null; then
+    echo "❌ ERROR: npm is not available"
+    echo "💡 Use scripts/validate-typescript-docker.sh for Docker-only validation"
+    echo "   or install Node.js to use this script"
+    exit 1
+fi
+
+echo "✓ npm is available"
+
 # Check for any JavaScript files
 JS_FILES=$(find src -name "*.js" -o -name "*.jsx" 2>/dev/null)
 
