@@ -171,8 +171,7 @@ class MatchingService {
         console.warn("Mock coaches disabled - use backend API instead");
     return []; // All mock data removed - use backend API instead
 
-    // Disabled mock data below:
-    /* return [
+        // Disabled mock data below (removed for clarity)
       {
         id: "coach_1",
         name: "Olivia Hayes",
