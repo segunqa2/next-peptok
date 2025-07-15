@@ -29,6 +29,47 @@ console.log(`  - Environment: ${Environment.getEnvironmentName()}`);
 console.log(`  - API Base URL: ${API_BASE_URL}`);
 console.log(`  - Should try backend: ${Environment.shouldTryBackend()}`);
 
+// Backend availability check
+let backendAvailable: boolean | null = null;
+let lastBackendCheck = 0;
+const BACKEND_CHECK_INTERVAL = 30000; // 30 seconds
+
+async function checkBackendAvailability(): Promise<boolean> {
+  const now = Date.now();
+
+  // Use cached result if recent
+  if (
+    backendAvailable !== null &&
+    now - lastBackendCheck < BACKEND_CHECK_INTERVAL
+  ) {
+    return backendAvailable;
+  }
+
+  try {
+    const response = await fetch(`${API_BASE_URL}/platform/health`, {
+      method: "GET",
+      timeout: 5000,
+    });
+    backendAvailable = response.ok;
+    lastBackendCheck = now;
+
+    if (backendAvailable) {
+      console.log("✅ Backend is available");
+    } else {
+      console.warn("⚠️ Backend responded but not healthy");
+    }
+  } catch (error) {
+    backendAvailable = false;
+    lastBackendCheck = now;
+    console.warn(
+      "❌ Backend is not available:",
+      error instanceof Error ? error.message : "Unknown error",
+    );
+  }
+
+  return backendAvailable;
+}
+
 // Token management
 let authToken: string | null = null;
 
