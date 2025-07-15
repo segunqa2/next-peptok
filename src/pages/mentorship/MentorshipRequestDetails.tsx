@@ -76,9 +76,6 @@ export default function MentorshipRequestDetails() {
     try {
       setLoadingMatches(true);
 
-      // Debug: Check if getMatchingResult is available
-      console.log("🔍 getMatchingResult function:", typeof getMatchingResult);
-
       // First try to get existing matching results
       const existingResults = await getMatchingResult(requestId);
 
