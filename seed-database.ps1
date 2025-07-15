@@ -58,6 +58,17 @@ function Test-DockerRunning {
 try {
     Write-ColorOutput $Blue "🌱 Database Seeding Utility"
     Write-ColorOutput $Yellow "Backend: $Backend"
+
+    # Check if npm is available
+    try {
+        npm --version | Out-Null
+        Write-ColorOutput $Green "✓ npm is available"
+    } catch {
+        Write-ColorOutput $Red "❌ npm is not available"
+        Write-ColorOutput $Yellow "💡 Use seed-database-docker.ps1 for Docker-only seeding"
+        Write-ColorOutput $Yellow "   or install Node.js to use this script"
+        exit 1
+    }
     
     # Check if Docker is running
     if (-not (Test-DockerRunning)) {
