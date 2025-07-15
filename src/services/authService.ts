@@ -61,6 +61,7 @@ class AuthService {
       this.currentUser = null;
       this.authToken = null;
       setAuthToken(null);
+      setCurrentUser(null); // Clear user for apiEnhanced authorization
       console.log("🧹 Authentication data cleared");
     } catch (error) {
       console.error("Failed to clear auth:", error);
