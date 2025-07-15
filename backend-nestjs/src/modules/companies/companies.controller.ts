@@ -160,6 +160,26 @@ export class CompaniesController {
   /**
    * Get session statistics for a company
    */
+  @ApiOperation({
+    summary: "Get company session statistics",
+    description: "Returns session statistics for a specific company",
+  })
+  @ApiResponse({
+    status: 200,
+    description: "Session statistics retrieved successfully",
+    schema: {
+      type: "object",
+      properties: {
+        total: { type: "number" },
+        scheduled: { type: "number" },
+        confirmed: { type: "number" },
+        inProgress: { type: "number" },
+        completed: { type: "number" },
+        cancelled: { type: "number" },
+        totalHours: { type: "number" },
+      },
+    },
+  })
   @Get(":id/session-stats")
   async getSessionStats(@Param("id") id: string, @Request() req: any) {
     const user = req.user;
