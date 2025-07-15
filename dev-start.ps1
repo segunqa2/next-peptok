@@ -133,13 +133,21 @@ try {
     
     if (-not (Test-Path "package-lock.json")) {
         Write-ColorOutput $Yellow "  Generating frontend package-lock.json..."
-        npm install --package-lock-only
+                try {
+            npm install --package-lock-only
+        } catch {
+            Write-ColorOutput $Yellow "    npm not available - continuing without package-lock"
+        }
     }
     
     if (-not (Test-Path "backend-nestjs/package-lock.json")) {
         Write-ColorOutput $Yellow "  Generating backend package-lock.json..."
         Push-Location backend-nestjs
-        npm install --package-lock-only
+                try {
+            npm install --package-lock-only
+        } catch {
+            Write-ColorOutput $Yellow "    npm not available - continuing without package-lock"
+        }
         Pop-Location
     }
     
