@@ -35,6 +35,7 @@ import {
 import { CoachingRequest } from "@/types";
 import { toast } from "sonner";
 import { SimpleTeamMemberCard } from "@/components/coaching/SimpleTeamMemberCard";
+import { SessionScheduleCard } from "@/components/sessions/SessionScheduleCard";
 import { useAuth } from "@/contexts/AuthContext";
 import LocalStorageService from "@/services/localStorageService";
 
