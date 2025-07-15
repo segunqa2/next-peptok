@@ -32,6 +32,44 @@ export class AuthController {
     return this.authService.register(createUserDto);
   }
 
+  @ApiOperation({
+    summary: "Authenticate user with email and password",
+    description:
+      "Login endpoint that accepts email and password credentials and returns JWT token",
+  })
+  @ApiBody({
+    schema: {
+      type: "object",
+      properties: {
+        email: { type: "string", example: "user@company.com" },
+        password: { type: "string", example: "password123" },
+      },
+      required: ["email", "password"],
+    },
+  })
+  @ApiResponse({
+    status: 200,
+    description: "Successfully authenticated",
+    schema: {
+      type: "object",
+      properties: {
+        access_token: { type: "string" },
+        user: {
+          type: "object",
+          properties: {
+            id: { type: "string" },
+            email: { type: "string" },
+            name: { type: "string" },
+            userType: { type: "string" },
+          },
+        },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 401,
+    description: "Invalid credentials",
+  })
   @UseGuards(LocalAuthGuard)
   @Post("login")
   @HttpCode(HttpStatus.OK)
