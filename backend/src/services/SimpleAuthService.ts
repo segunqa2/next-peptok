@@ -36,6 +36,14 @@ export class AuthService {
         lastName: "Admin",
         userType: "company_admin",
       },
+      {
+        id: "techcorp-admin-1",
+        email: "admin@techcorp.com",
+        name: "TechCorp Admin",
+        firstName: "TechCorp",
+        lastName: "Admin",
+        userType: "company_admin",
+      },
     ];
 
     const user = mockUsers.find(
