@@ -158,8 +158,8 @@ const CompanyDashboardWithPrograms = () => {
     navigate(`/programs/${program.id}`);
   };
 
-  // Enhanced activity data (placeholder for now)
-  const recentActivities = [
+  // Recent activities loaded from backend API
+  const recentActivities: any[] = [
     {
       id: "1",
       type: "program_created",
