@@ -118,7 +118,7 @@ class AuthService {
     console.log("🧪 Testing demo login...");
     console.log("📋 Available accounts:", this.getAvailableDemoAccounts());
 
-    const user = mockUsers.find(
+    const user = demoUsers.find(
       (u) => u.email.toLowerCase() === email.toLowerCase(),
     );
     console.log(`🔍 Account lookup for ${email}:`, user);
@@ -323,8 +323,8 @@ class AuthService {
         );
       }
 
-      // Save to mock database
-      mockUsers.push(newUser);
+      // Save to demo database
+      demoUsers.push(newUser);
 
       // Generate token
       const token = `mock_token_${Date.now()}_${newUser.id}`;
@@ -444,7 +444,7 @@ class AuthService {
       const userData = oauthUser[provider];
 
       // Check if user exists or create new one
-      let user = mockUsers.find((u) => u.email === userData.email);
+      let user = demoUsers.find((u) => u.email === userData.email);
       let isNewUser = false;
 
       if (!user) {
@@ -454,7 +454,7 @@ class AuthService {
           userType: "company_admin", // Default to company admin, can be changed later
           isNewUser: true,
         };
-        mockUsers.push(user);
+        demoUsers.push(user);
         isNewUser = true;
       }
 
@@ -606,7 +606,7 @@ class AuthService {
       // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      const user = mockUsers.find(
+      const user = demoUsers.find(
         (u) => u.email.toLowerCase() === email.toLowerCase(),
       );
 
