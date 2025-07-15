@@ -24,7 +24,12 @@ import {
 import { Environment } from "../utils/environment";
 import { analytics } from "./analytics";
 import { backendStorage } from "./backendStorage";
-// Removed demo database imports - using backend API only
+import {
+  demoUsers,
+  demoMentorshipRequests,
+  demoCompanies,
+  getDemoStatistics,
+} from "../data/demoDatabase";
 import { crossBrowserSync, SYNC_CONFIGS } from "./crossBrowserSync";
 // Removed: cacheInvalidation service (deleted)
 import { securityService } from "./securityService";
@@ -170,7 +175,12 @@ class EnhancedApiService {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
 
-      const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+      // Construct full URL for NestJS backend
+      const url = endpoint.startsWith("/")
+        ? `${API_BASE_URL}${endpoint}`
+        : `${API_BASE_URL}/${endpoint}`;
+
+      const response = await fetch(url, {
         signal: controller.signal,
         headers: {
           "Content-Type": "application/json",

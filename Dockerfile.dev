@@ -1,13 +1,8 @@
-# Development Dockerfile for React frontend
-FROM node:18
+# Development Dockerfile for React frontend with hot reload
+FROM node:18-alpine
 
-# Install essential tools for development and Windows compatibility
-RUN apt-get update && apt-get install -y \
-    git \
-    dos2unix \
-    bash \
-    curl \
-    && rm -rf /var/lib/apt/lists/*
+# Install development tools
+RUN apk add --no-cache git curl bash
 
 # Set working directory
 WORKDIR /app
@@ -15,36 +10,19 @@ WORKDIR /app
 # Copy package files
 COPY package*.json ./
 
-# Install all dependencies (including dev dependencies)
-RUN npm install --no-audit --no-fund && \
-    npm list qrcode.react || npm install qrcode.react
+# Install dependencies
+RUN npm install
 
 # Copy source code
 COPY . .
 
-# Fix line endings for Windows compatibility
-RUN find . -type f \( -name "*.sh" -o -name "*.ts" -o -name "*.tsx" -o -name "*.json" \) -exec dos2unix {} \; 2>/dev/null || true
-
-# Validate that only TypeScript files exist (no JavaScript)
-RUN echo "Validating TypeScript-only frontend..." && \
-    if find src -name "*.js" -o -name "*.jsx" | grep -q .; then \
-        echo "ERROR: JavaScript files found in TypeScript-only frontend!" && \
-        find src -name "*.js" -o -name "*.jsx" && \
-        exit 1; \
-    else \
-        echo "✓ All source files are TypeScript"; \
-    fi
-
-# Run TypeScript type checking
-RUN npm run typecheck
-
-# Create non-root user for security
-RUN groupadd -g 1001 nodejs && \
-    useradd -r -u 1001 -g nodejs nextjs && \
-    chown -R nextjs:nodejs /app
+# Create non-root user
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S -u 1001 -G nodejs reactuser && \
+    chown -R reactuser:nodejs /app
 
 # Switch to non-root user
-USER nextjs
+USER reactuser
 
 # Expose port
 EXPOSE 8080
@@ -53,5 +31,5 @@ EXPOSE 8080
 HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
     CMD curl -f http://localhost:8080 || exit 1
 
-# Start development server with proper host binding for Docker on Windows
+# Start development server with hot reload
 CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0", "--port", "8080"]

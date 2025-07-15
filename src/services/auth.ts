@@ -1,6 +1,6 @@
 import { toast } from "sonner";
 import { User } from "../types";
-// Removed demo users import - will use backend API
+import { demoUsers } from "../data/demoDatabase";
 import { backendStorage } from "./backendStorage";
 import LocalStorageService from "./localStorageService";
 
@@ -33,7 +33,9 @@ export interface AuthResponse {
 
 // API Configuration for backend authentication
 const API_BASE_URL =
-  import.meta.env.VITE_API_URL || "http://localhost:3001/api/v1";
+  import.meta.env.VITE_API_URL ||
+  import.meta.env.VITE_API_BASE_URL ||
+  "http://localhost:3001";
 
 class AuthService {
   private currentUser: User | null = null;
@@ -116,7 +118,7 @@ class AuthService {
     console.log("🧪 Testing demo login...");
     console.log("📋 Available accounts:", this.getAvailableDemoAccounts());
 
-    const user = mockUsers.find(
+    const user = demoUsers.find(
       (u) => u.email.toLowerCase() === email.toLowerCase(),
     );
     console.log(`🔍 Account lookup for ${email}:`, user);
@@ -147,9 +149,56 @@ class AuthService {
   async loginWithEmail(email: string, password: string): Promise<AuthResponse> {
     try {
       console.log(`🔐 Login attempt for email: ${email}`);
+
+      // Try backend authentication first
+      try {
+        const response = await fetch(`${API_BASE_URL}/auth/login`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email, password }),
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          const user: User = {
+            ...data.user,
+            isAuthenticated: true,
+            token: data.access_token,
+          };
+
+          console.log(
+            `✅ Backend login successful for "${email}", user type: ${user.userType}`,
+          );
+
+          // Save authentication
+          await this.saveUserToStorage(user, data.access_token);
+
+          return {
+            success: true,
+            user,
+            token: data.access_token,
+          };
+        } else {
+          const errorData = await response
+            .json()
+            .catch(() => ({ message: "Login failed" }));
+          console.log(
+            `❌ Backend login failed for "${email}": ${errorData.message}`,
+          );
+
+          // Fall back to demo mode
+          console.log("🔄 Falling back to demo mode...");
+        }
+      } catch (error) {
+        console.warn("Backend not available, using demo mode:", error);
+      }
+
+      // Fallback to demo mode for development/demo purposes
       console.log(
-        `���� All available users:`,
-        mockUsers.map((u) => ({
+        `🧪 Demo mode login for:`,
+        demoUsers.map((u) => ({
           email: u.email,
           id: u.id,
           userType: u.userType,
@@ -157,51 +206,30 @@ class AuthService {
       );
 
       // Simulate API call delay
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
       // Normalize email for comparison
       const normalizedEmail = email.toLowerCase().trim();
       console.log(`🔄 Normalized email: "${normalizedEmail}"`);
 
       // Find user with exact email match
-      const user = mockUsers.find(
+      const user = demoUsers.find(
         (u) => u.email.toLowerCase().trim() === normalizedEmail,
       );
 
-      console.log(
-        `🔍 User lookup result for "${normalizedEmail}":`,
-        user
-          ? {
-              found: true,
-              id: user.id,
-              email: user.email,
-              userType: user.userType,
-              name: user.name,
-            }
-          : "Not found",
-      );
-
       if (!user) {
-        console.error(`�� No user found for email: "${normalizedEmail}"`);
-        console.log(
-          "📋 Available demo emails:",
-          mockUsers.map((u) => `"${u.email}"`),
-        );
+        console.error(`❌ No user found for email: "${normalizedEmail}"`);
         return {
           success: false,
-          error: `No account found with email "${email}". Available demo accounts: ${mockUsers.map((u) => u.email).join(", ")}`,
+          error: `No account found with email "${email}". Available demo accounts: ${demoUsers.map((u) => u.email).join(", ")}`,
         };
       }
 
       // For demo accounts, accept any password with length >= 1
-      // For real accounts, require password length >= 6
       const isDemoAccount = user.email.includes("demo@");
       const minPasswordLength = isDemoAccount ? 1 : 6;
 
       if (password.length < minPasswordLength) {
-        console.error(
-          `❌ Password too short for ${email}: ${password.length} characters (min: ${minPasswordLength})`,
-        );
         return {
           success: false,
           error: `Password must be at least ${minPasswordLength} characters long.`,
@@ -209,13 +237,13 @@ class AuthService {
       }
 
       // Generate mock token
-      const token = `mock_token_${Date.now()}_${user.id}`;
+      const token = `demo_token_${Date.now()}_${user.id}`;
       console.log(
-        `✅ Login successful for "${email}", user type: ${user.userType}`,
+        `✅ Demo login successful for "${email}", user type: ${user.userType}`,
       );
 
       // Save authentication
-      this.saveUserToStorage(user, token);
+      await this.saveUserToStorage(user, token);
 
       return {
         success: true,
@@ -253,7 +281,7 @@ class AuthService {
       await new Promise((resolve) => setTimeout(resolve, 1500));
 
       // Check if user already exists
-      const existingUser = mockUsers.find(
+      const existingUser = demoUsers.find(
         (u) => u.email.toLowerCase() === userData.email.toLowerCase(),
       );
 
@@ -295,8 +323,8 @@ class AuthService {
         );
       }
 
-      // Save to mock database
-      mockUsers.push(newUser);
+      // Save to demo database
+      demoUsers.push(newUser);
 
       // Generate token
       const token = `mock_token_${Date.now()}_${newUser.id}`;
@@ -416,7 +444,7 @@ class AuthService {
       const userData = oauthUser[provider];
 
       // Check if user exists or create new one
-      let user = mockUsers.find((u) => u.email === userData.email);
+      let user = demoUsers.find((u) => u.email === userData.email);
       let isNewUser = false;
 
       if (!user) {
@@ -426,7 +454,7 @@ class AuthService {
           userType: "company_admin", // Default to company admin, can be changed later
           isNewUser: true,
         };
-        mockUsers.push(user);
+        demoUsers.push(user);
         isNewUser = true;
       }
 
@@ -578,7 +606,7 @@ class AuthService {
       // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      const user = mockUsers.find(
+      const user = demoUsers.find(
         (u) => u.email.toLowerCase() === email.toLowerCase(),
       );
 

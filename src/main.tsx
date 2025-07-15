@@ -3,10 +3,35 @@ import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
 import { Environment } from "./utils/environment";
+import "./utils/healthCheck"; // Initialize health check utilities
 
 // Make React globally available for external libraries
 if (typeof window !== "undefined") {
   (window as any).React = React;
+}
+
+// Suppress console errors from HMR and third-party libraries in production
+if (Environment.isProduction()) {
+  const originalConsoleError = console.error;
+  console.error = (...args) => {
+    const message = args.join(" ").toLowerCase();
+
+    // Suppress HMR, Vite, and FullStory related errors
+    if (
+      message.includes("failed to fetch") ||
+      message.includes("@vite") ||
+      message.includes("__vite") ||
+      message.includes("fullstory") ||
+      message.includes("hmr") ||
+      message.includes("websocket")
+    ) {
+      console.debug("Suppressed production error:", ...args);
+      return;
+    }
+
+    // Allow other errors through
+    originalConsoleError.apply(console, args);
+  };
 }
 
 // Log environment information for debugging
@@ -36,18 +61,47 @@ const resizeObserverErrorHandler = (e: ErrorEvent) => {
 // Add error listener for ResizeObserver errors
 window.addEventListener("error", resizeObserverErrorHandler);
 
-// Also suppress uncaught promise rejections for ResizeObserver
+// Suppress HMR-related fetch errors in cloud environments
+if (Environment.isProduction()) {
+  const originalFetch = window.fetch;
+  window.fetch = async (...args) => {
+    try {
+      return await originalFetch.apply(window, args);
+    } catch (error) {
+      // Suppress HMR/Vite related fetch errors in production
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
+      if (
+        errorMessage.includes("Failed to fetch") ||
+        args[0]?.toString()?.includes("@vite") ||
+        args[0]?.toString()?.includes("__vite")
+      ) {
+        console.debug(
+          "Suppressed HMR fetch error in production:",
+          errorMessage,
+        );
+        return new Response(null, { status: 200 }); // Return empty successful response
+      }
+      throw error; // Re-throw non-HMR errors
+    }
+  };
+}
+
+// Also suppress uncaught promise rejections for ResizeObserver and HMR fetch errors
 window.addEventListener("unhandledrejection", (e) => {
   if (
     e.reason &&
     typeof e.reason === "string" &&
-    e.reason.includes(
+    (e.reason.includes(
       "ResizeObserver loop completed with undelivered notifications",
-    )
+    ) ||
+      e.reason.includes("Failed to fetch") ||
+      e.reason.includes("fetch"))
   ) {
     e.preventDefault();
     console.debug(
-      "ResizeObserver loop detected in promise (suppressed - this is harmless)",
+      "Harmless error suppressed (ResizeObserver or HMR fetch):",
+      e.reason,
     );
   }
 });

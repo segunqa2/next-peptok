@@ -3,36 +3,61 @@ import react from "@vitejs/plugin-react";
 import path from "path";
 
 // https://vitejs.dev/config/
-export default defineConfig(({ mode }) => ({
-  server: {
-    host: "::",
-    port: 8080,
-  },
-  plugins: [react()],
-  resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "./src"),
-      react: path.resolve(__dirname, "./node_modules/react"),
-      "react-dom": path.resolve(__dirname, "./node_modules/react-dom"),
-    },
-  },
-  esbuild: {
-    // Only allow TypeScript and TSX files
-    include: /\.(ts|tsx)$/,
-    // Exclude JavaScript files to enforce TypeScript-only
-    exclude: /\.(js|jsx)$/,
-  },
-  optimizeDeps: {
-    include: ["react", "react-dom", "react/jsx-runtime"],
-  },
-  build: {
-    // Strict TypeScript checking during build
-    rollupOptions: {
-      input: {
-        main: "./index.html",
+export default defineConfig(({ mode }) => {
+  // Detect cloud environment
+  const isCloudEnvironment =
+    process.env.NODE_ENV === "production" ||
+    process.env.FLY_APP_NAME ||
+    process.env.VERCEL ||
+    process.env.NETLIFY;
+
+  // Cloud-specific configuration
+  const serverConfig = isCloudEnvironment
+    ? {
+        // Production/cloud settings - disable HMR to prevent fetch errors
+        host: "0.0.0.0",
+        port: 8080,
+        hmr: false, // Disable HMR in cloud environments
+        watch: {
+          ignored: ["**/node_modules/**"],
+        },
+      }
+    : {
+        // Local development settings
+        host: "0.0.0.0",
+        port: 8080,
+        watch: {
+          usePolling: true,
+        },
+        hmr: {
+          port: 8080,
+          host: "localhost",
+        },
+      };
+
+  return {
+    server: serverConfig,
+    plugins: [react()],
+    resolve: {
+      alias: {
+        "@": path.resolve(__dirname, "./src"),
       },
     },
-    // Enforce smaller chunks for better performance
-    chunkSizeWarningLimit: 1000,
-  },
-}));
+    esbuild: {
+      // Only allow TypeScript and TSX files
+      include: /\.(ts|tsx)$/,
+      exclude: /\.(js|jsx)$/,
+    },
+    optimizeDeps: {
+      include: ["react", "react-dom", "react/jsx-runtime"],
+    },
+    build: {
+      rollupOptions: {
+        input: {
+          main: "./index.html",
+        },
+      },
+      chunkSizeWarningLimit: 1000,
+    },
+  };
+});
