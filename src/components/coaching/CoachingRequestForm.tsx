@@ -65,22 +65,22 @@ const COACHING_TEMPLATES: Record<string, any> = {
         title: "Master Agile Leadership Principles",
         description:
           "Learn and apply core agile leadership methodologies and frameworks",
-        category: "leadership" as const,
-        priority: "high" as const,
+        category: "leadership" ,
+        priority: "high" ,
       },
       {
         title: "Enhance Team Adaptability",
         description:
           "Develop skills to help teams adapt quickly to changing requirements",
-        category: "leadership" as const,
-        priority: "high" as const,
+        category: "leadership" ,
+        priority: "high" ,
       },
       {
         title: "Build Innovation Culture",
         description:
           "Foster an environment that encourages experimentation and continuous improvement",
-        category: "business" as const,
-        priority: "medium" as const,
+        category: "business" ,
+        priority: "medium" ,
       },
     ],
     skills: [
@@ -103,22 +103,22 @@ const COACHING_TEMPLATES: Record<string, any> = {
         title: "Strategic Vision Development",
         description:
           "Create and communicate compelling strategic visions for organizational growth",
-        category: "business" as const,
-        priority: "high" as const,
+        category: "business" ,
+        priority: "high" ,
       },
       {
         title: "Executive Presence & Communication",
         description:
           "Enhance executive presence and high-impact communication skills",
-        category: "leadership" as const,
-        priority: "high" as const,
+        category: "leadership" ,
+        priority: "high" ,
       },
       {
         title: "Board & Stakeholder Relations",
         description:
           "Master effective board presentations and stakeholder management",
-        category: "business" as const,
-        priority: "medium" as const,
+        category: "business" ,
+        priority: "medium" ,
       },
     ],
     skills: [
@@ -141,22 +141,22 @@ const COACHING_TEMPLATES: Record<string, any> = {
         title: "Master Effective Communication",
         description:
           "Develop advanced verbal and non-verbal communication techniques",
-        category: "personal" as const,
-        priority: "high" as const,
+        category: "personal" ,
+        priority: "high" ,
       },
       {
         title: "Build Emotional Intelligence",
         description:
           "Enhance self-awareness, empathy, and relationship management skills",
-        category: "personal" as const,
-        priority: "high" as const,
+        category: "personal" ,
+        priority: "high" ,
       },
       {
         title: "Facilitate Team Collaboration",
         description:
           "Learn to facilitate effective team meetings and collaborative decision-making",
-        category: "leadership" as const,
-        priority: "medium" as const,
+        category: "leadership" ,
+        priority: "medium" ,
       },
     ],
     skills: [
@@ -179,22 +179,22 @@ const COACHING_TEMPLATES: Record<string, any> = {
         title: "Digital Strategy Implementation",
         description:
           "Develop skills to create and execute effective digital transformation strategies",
-        category: "technical" as const,
-        priority: "high" as const,
+        category: "technical" ,
+        priority: "high" ,
       },
       {
         title: "Change Management in Tech",
         description:
           "Master change management techniques specific to technology implementations",
-        category: "leadership" as const,
-        priority: "high" as const,
+        category: "leadership" ,
+        priority: "high" ,
       },
       {
         title: "Digital Culture Development",
         description:
           "Build organizational cultures that embrace digital innovation and continuous learning",
-        category: "business" as const,
-        priority: "medium" as const,
+        category: "business" ,
+        priority: "medium" ,
       },
     ],
     skills: [
@@ -217,22 +217,22 @@ const COACHING_TEMPLATES: Record<string, any> = {
         title: "Develop Entrepreneurial Thinking",
         description:
           "Cultivate mindset and skills for identifying and pursuing opportunities",
-        category: "business" as const,
-        priority: "high" as const,
+        category: "business" ,
+        priority: "high" ,
       },
       {
         title: "Innovation & Product Development",
         description:
           "Learn methodologies for innovation, product development, and market validation",
-        category: "technical" as const,
-        priority: "high" as const,
+        category: "technical" ,
+        priority: "high" ,
       },
       {
         title: "Startup Leadership Skills",
         description:
           "Master the unique leadership challenges of fast-growth and startup environments",
-        category: "leadership" as const,
-        priority: "medium" as const,
+        category: "leadership" ,
+        priority: "medium" ,
       },
     ],
     skills: [
@@ -255,22 +255,22 @@ const COACHING_TEMPLATES: Record<string, any> = {
         title: "Sales",
         description:
           "Identify customer needs, craft tailored solutions, and guide prospects through a decision-making process to close deals",
-        category: "business" as const,
-        priority: "high" as const,
+        category: "business" ,
+        priority: "high" ,
       },
       {
         title: "Marketing",
         description:
           "Understand customer behavior, create compelling messages, and deliver them through the right channels to attract, engage, and retain target audiences",
-        category: "business" as const,
-        priority: "medium" as const,
+        category: "business" ,
+        priority: "medium" ,
       },
       {
         title: "Negotiation",
         description:
           "Balance persuasion, active listening, and problem-solving to align value with client priorities, and secure win-win agreements that advance deals",
-        category: "leadership" as const,
-        priority: "high" as const,
+        category: "leadership" ,
+        priority: "high" ,
       },
     ],
     skills: [
