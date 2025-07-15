@@ -1,19 +1,27 @@
 #!/bin/bash
 
-# TypeScript validation script for frontend
+# TypeScript validation script for frontend (Docker-compatible)
 # Ensures the entire frontend is written in TypeScript only
 
-echo "🔍 Validating TypeScript-only frontend..."
+echo "🔍 Validating TypeScript-only frontend (Docker Mode)..."
 
-# Check if npm is available
-if ! command -v npm &> /dev/null; then
-    echo "❌ ERROR: npm is not available"
-    echo "💡 Use scripts/validate-typescript-docker.sh for Docker-only validation"
-    echo "   or install Node.js to use this script"
+# Check if Docker is running
+if ! docker ps > /dev/null 2>&1; then
+    echo "❌ ERROR: Docker is not running"
+    echo "Please start Docker Desktop and run: ./dev-start.ps1"
     exit 1
 fi
 
-echo "✓ npm is available"
+# Check if frontend container is running
+FRONTEND_CONTAINER=$(docker ps --filter "name=peptok-frontend" --format "{{.Names}}")
+
+if [ -z "$FRONTEND_CONTAINER" ]; then
+    echo "❌ ERROR: Frontend container is not running"
+    echo "Please start the development environment first: ./dev-start.ps1"
+    exit 1
+fi
+
+echo "✓ Docker containers are running"
 
 # Check for any JavaScript files
 JS_FILES=$(find src -name "*.js" -o -name "*.jsx" 2>/dev/null)
@@ -35,9 +43,9 @@ fi
 
 echo "✅ SUCCESS: Found $TS_FILES TypeScript files, no JavaScript files detected"
 
-# Run TypeScript type checking
-echo "🔧 Running TypeScript type checking..."
-npm run typecheck
+# Run TypeScript type checking using Docker
+echo "🔧 Running TypeScript type checking in Docker container..."
+docker exec $FRONTEND_CONTAINER npm run typecheck
 
 if [ $? -eq 0 ]; then
     echo "✅ SUCCESS: TypeScript type checking passed"
@@ -46,9 +54,9 @@ else
     exit 1
 fi
 
-# Test build
-echo "🏗️ Testing TypeScript build..."
-npm run build > /dev/null 2>&1
+# Test build using Docker
+echo "🏗️ Testing TypeScript build in Docker container..."
+docker exec $FRONTEND_CONTAINER npm run build > /dev/null 2>&1
 
 if [ $? -eq 0 ]; then
     echo "✅ SUCCESS: TypeScript build completed successfully"
