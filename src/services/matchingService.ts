@@ -172,8 +172,7 @@ class MatchingService {
         return []; // All mock data removed - use backend API instead
   }
 
-  private async getAvailableCoaches(): Promise<
-        id: "coach_1",
+    private async getAvailableCoaches(): Promise<
         name: "Olivia Hayes",
         title: "Senior Marketing Strategist & Sales Consultant",
         skills: [
