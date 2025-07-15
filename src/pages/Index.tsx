@@ -316,8 +316,7 @@ const Index = () => {
 
                   {/* Enhanced Stats - Real Demo Data */}
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-6 pt-8">
-                                        {platformStats ? (
-                      backendAvailable ?
+                                                            {platformStats ?
                       [
                         {
                           value: `${platformStats.totalCoaches}`,
