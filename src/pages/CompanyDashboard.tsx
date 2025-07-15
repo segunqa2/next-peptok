@@ -147,23 +147,33 @@ const CompanyDashboard = () => {
           }
         }
 
-        // Fetch company's programs/requests with proper authorization
+        // Fetch company's programs/requests with proper authorization (only for non-demo users)
         if (user?.companyId) {
-          const requests = await api.matching.getCompanyRequests(
-            user.companyId,
-          );
-          setMentorshipRequests(requests || []);
+          try {
+            const requests = await api.matching.getCompanyRequests(
+              user.companyId,
+            );
+            setMentorshipRequests(requests || []);
 
-          // Fetch upcoming sessions
-          const sessions = await sessionManagementService.getUpcomingSessions({
-            limit: 5,
-          });
-          setUpcomingSessions(sessions);
+            // Fetch upcoming sessions
+            const sessions = await sessionManagementService.getUpcomingSessions(
+              {
+                limit: 5,
+              },
+            );
+            setUpcomingSessions(sessions);
 
-          // Fetch recent activities
-          const activities =
-            await sessionManagementService.getRecentActivities(10);
-          setRecentActivities(activities);
+            // Fetch recent activities
+            const activities =
+              await sessionManagementService.getRecentActivities(10);
+            setRecentActivities(activities);
+          } catch (apiError) {
+            console.warn("API calls failed for non-demo user:", apiError);
+            // Use empty data as fallback
+            setMentorshipRequests([]);
+            setUpcomingSessions([]);
+            setRecentActivities([]);
+          }
         }
       } catch (error) {
         console.error("Failed to fetch dashboard data:", error);
