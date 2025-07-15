@@ -6,6 +6,9 @@ import { AppService } from "./app.service";
 import { AuthModule } from "./modules/auth/auth.module";
 import { UsersModule } from "./modules/users/users.module";
 import { CoachesModule } from "./modules/coaches/coaches.module";
+import { CompaniesModule } from "./modules/companies/companies.module";
+import { SessionsModule } from "./modules/sessions/sessions.module";
+import { MatchingModule } from "./modules/matching/matching.module";
 import { createTypeOrmConfig } from "./config/typeorm.config";
 
 @Module({
@@ -27,6 +30,9 @@ import { createTypeOrmConfig } from "./config/typeorm.config";
     AuthModule,
     UsersModule,
     CoachesModule,
+    CompaniesModule,
+    SessionsModule,
+    MatchingModule,
   ],
   controllers: [AppController],
   providers: [AppService],

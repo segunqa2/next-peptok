@@ -53,6 +53,10 @@ import {
 import { useAuth } from "@/contexts/AuthContext";
 import { api } from "@/services/apiEnhanced";
 import { apiEnhanced } from "@/services/apiEnhanced";
+import {
+  companyDashboardApi,
+  type CompanyDashboardMetrics,
+} from "@/services/companyDashboardApi";
 import { MentorshipRequest } from "@/types";
 import { toast } from "sonner";
 import { DashboardDiagnostic } from "@/components/common/DashboardDiagnostic";
@@ -64,12 +68,43 @@ const CompanyDashboard = () => {
   const [mentorshipRequests, setMentorshipRequests] = useState<
     MentorshipRequest[]
   >([]);
+  const [dashboardMetrics, setDashboardMetrics] =
+    useState<CompanyDashboardMetrics>({
+      activeSessions: 0,
+      activeCoaching: 0,
+      goalsProgress: 0,
+      totalHours: 0,
+      totalPrograms: 0,
+      completedPrograms: 0,
+      pendingPrograms: 0,
+      totalParticipants: 0,
+      averageRating: 0,
+      monthlySpend: 0,
+      completedSessions: 0,
+      scheduledSessions: 0,
+      engagementRate: 0,
+      successRate: 0,
+      retentionRate: 0,
+    });
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
         setIsLoading(true);
+
+        // Fetch dashboard metrics if user has a company
+        if (user?.companyId) {
+          try {
+            const metrics = await companyDashboardApi.getDashboardMetrics(
+              user.companyId,
+            );
+            setDashboardMetrics(metrics);
+            console.log("Loaded dashboard metrics:", metrics);
+          } catch (error) {
+            console.error("Error loading dashboard metrics:", error);
+          }
+        }
 
         // Fetch company's mentorship requests with proper authorization
         // apiEnhanced automatically filters by user's company for company_admin users
@@ -272,15 +307,15 @@ const CompanyDashboard = () => {
   ];
 
   const companyMetrics = {
-    totalEmployees: 142,
-    activeConnections: 109,
+    totalEmployees: dashboardMetrics.totalParticipants || 0,
+    activeConnections: dashboardMetrics.activeSessions || 0,
     totalRequests: mentorshipRequests.length,
     activeRequests: mentorshipRequests.filter((r) => r.status === "active")
       .length,
-    completedSessions: 480,
-    averageProgress: 83,
-    engagementRate: 91,
-    successRate: 94,
+    completedSessions: dashboardMetrics.completedSessions || 0,
+    averageProgress: dashboardMetrics.goalsProgress || 0,
+    engagementRate: dashboardMetrics.engagementRate || 0,
+    successRate: dashboardMetrics.successRate || 0,
   };
 
   const getActivityIcon = (type: string, status: string) => {

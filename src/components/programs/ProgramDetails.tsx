@@ -193,6 +193,7 @@ export const ProgramDetails: React.FC<ProgramDetailsProps> = ({
     return (
       user?.userType === "company_admin" &&
       program?.companyId === user.companyId &&
+      program?.requesterId === user.id && // Only the company admin who created the program
       (program?.status === "draft" ||
         program?.status === "pending_coach_acceptance")
     );
@@ -740,6 +741,21 @@ export const ProgramDetails: React.FC<ProgramDetailsProps> = ({
               </div>
             </CardContent>
           </Card>
+
+          {/* Session Generation */}
+          {canEditProgram() && (
+            <SessionGenerator
+              programId={program.id}
+              programTitle={program.title}
+              startDate={program.timeline.startDate}
+              endDate={program.timeline.endDate}
+              defaultFrequency={program.timeline.sessionFrequency}
+              onSessionsGenerated={(sessions) => {
+                console.log("Sessions generated:", sessions);
+                // Optionally refresh program data or show success message
+              }}
+            />
+          )}
         </TabsContent>
 
         {/* Goals Tab */}

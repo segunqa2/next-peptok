@@ -27,6 +27,10 @@ import Header from "@/components/layout/Header";
 import { useAuth } from "@/contexts/AuthContext";
 import { apiEnhanced } from "@/services/apiEnhanced";
 import { analytics } from "@/services/analytics";
+import {
+  companyDashboardApi,
+  type CompanyDashboardMetrics,
+} from "@/services/companyDashboardApi";
 import AnalyticsDashboard from "@/components/analytics/AnalyticsDashboard";
 import { MentorshipRequest } from "@/types";
 import { toast } from "sonner";
@@ -124,6 +128,11 @@ export default function CompanyDashboardEnhanced() {
     try {
       // Load fresh data
 
+      // Load dashboard metrics from API
+      const dashboardMetrics = await companyDashboardApi.getDashboardMetrics(
+        user.companyId,
+      );
+
       // Load company-specific requests with proper error handling
       const companyRequests = await apiEnhanced.getCompanyRequests(
         user.companyId,
@@ -135,35 +144,39 @@ export default function CompanyDashboardEnhanced() {
 
       setRequests(companyRequests);
 
-      // Calculate metrics from requests with proper fallbacks
-      const activePrograms = companyRequests.filter(
-        (r) => r.status === "in_progress",
-      ).length;
-      const completedPrograms = companyRequests.filter(
-        (r) => r.status === "completed",
-      ).length;
-      const totalParticipants = companyRequests.reduce(
-        (sum, r) => sum + (r.participants || 1),
-        0,
-      );
-
+      // Use metrics from API with fallback calculations
       const calculatedMetrics: CompanyMetrics = {
-        totalEmployees: Math.max(totalParticipants, 1), // Ensure at least 1
-        activePrograms,
-        completedSessions: completedPrograms,
-        averageRating: completedPrograms > 0 ? 4.7 : 0, // Only show rating if there are completed programs
+        totalEmployees:
+          dashboardMetrics.totalParticipants ||
+          Math.max(
+            companyRequests.reduce((sum, r) => sum + (r.participants || 1), 0),
+            1,
+          ),
+        activePrograms:
+          dashboardMetrics.activeCoaching ||
+          companyRequests.filter((r) => r.status === "in_progress").length,
+        completedSessions:
+          dashboardMetrics.completedSessions ||
+          companyRequests.filter((r) => r.status === "completed").length,
+        averageRating:
+          dashboardMetrics.averageRating ||
+          (dashboardMetrics.completedSessions > 0 ? 4.7 : 0),
         engagementRate:
-          companyRequests.length > 0
-            ? (activePrograms / companyRequests.length) * 100
-            : 0,
+          dashboardMetrics.engagementRate ||
+          (companyRequests.length > 0
+            ? (dashboardMetrics.activeCoaching / companyRequests.length) * 100
+            : 0),
         monthlySpend:
-          companyRequests.length > 0
+          dashboardMetrics.monthlySpend ||
+          (companyRequests.length > 0
             ? companyRequests.reduce(
                 (sum, r) => sum + (r.budget?.max || 0),
                 0,
               ) / 12
-            : 0,
-        roiPercentage: completedPrograms > 0 ? 145 : 0, // Only show ROI if there are completed programs
+            : 0),
+        roiPercentage:
+          dashboardMetrics.retentionRate ||
+          (dashboardMetrics.completedSessions > 0 ? 145 : 0), // Use retention rate as ROI proxy
       };
 
       setMetrics(calculatedMetrics);

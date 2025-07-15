@@ -1,3 +1,14 @@
+/**
+ * ⚠️  DEPRECATED: This file contains hardcoded mock data that should not be used in production.
+ *
+ * Please use real backend API calls instead:
+ * - companyDashboardApi.getDashboardMetrics() for dashboard data
+ * - Backend API endpoints for sessions, programs, etc.
+ * - Remove localStorage dependencies
+ *
+ * This file will be removed in a future cleanup.
+ */
+
 import {
   Coach,
   Enterprise,
@@ -6,6 +17,11 @@ import {
   DashboardStats,
   Skill,
 } from "@/types";
+
+// Warn when this file is imported
+console.warn(
+  "⚠️  WARNING: Using deprecated mock data. Please use real API calls instead.",
+);
 
 export const mockSkills: Skill[] = [
   {
