@@ -45,6 +45,8 @@ export class PlatformController {
   }
 
   @Get("admin/statistics")
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth("JWT-auth")
   @ApiOperation({
     summary: "Get detailed platform statistics",
     description:
