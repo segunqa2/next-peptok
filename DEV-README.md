@@ -10,7 +10,7 @@
 
 2. **Access the Application**
 
-   - Frontend: http://localhost:3000 (React with hot reload)
+   - Frontend: http://localhost:8080 (React with hot reload)
    - Backend: http://localhost:3001 (NestJS with hot reload)
 
 3. **Stop Everything**
