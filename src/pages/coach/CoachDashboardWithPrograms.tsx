@@ -184,30 +184,7 @@ const CoachDashboardWithPrograms = () => {
   ];
 
   const recentActivity: any[] = [
-    {
-      id: "1",
-      type: "program_accepted",
-      message: "Accepted new coaching program: Leadership Development",
-      company: "TechCorp Inc.",
-      timestamp: "2 hours ago",
-      status: "success",
-    },
-    {
-      id: "2",
-      type: "session_completed",
-      message: "Completed session: Team Communication Workshop",
-      company: "StartupXYZ",
-      timestamp: "1 day ago",
-      status: "success",
-    },
-    {
-      id: "3",
-      type: "feedback_received",
-      message: "Received 5-star rating from Sarah Johnson",
-      company: "TechCorp Inc.",
-      timestamp: "2 days ago",
-      status: "success",
-    },
+    // All activities moved to backend database
   ];
 
   if (!user || user.userType !== "coach") {
