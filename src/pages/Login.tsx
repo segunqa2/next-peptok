@@ -386,8 +386,7 @@ const Login = () => {
           </Card>
 
           
-            <CardContent>
-              <Tabs defaultValue="platform" className="w-full">
+            
                 <TabsList className="grid w-full grid-cols-4 bg-white/60">
                   <TabsTrigger value="platform" className="text-xs">
                     <Crown className="w-4 h-4 mr-1" />
