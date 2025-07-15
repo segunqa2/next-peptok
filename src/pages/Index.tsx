@@ -268,8 +268,8 @@ const Index = () => {
                   <div className="space-y-6">
                     <div className="inline-flex items-center rounded-full border px-3 py-1 text-xs font-medium bg-blue-50/80 text-blue-700 border-blue-200/50 backdrop-blur-sm">
                       <Zap className="mr-1 h-3 w-3" />
-                      Trusted by {demoStats?.platformStats?.totalCompanies || 8}
-                      + companies worldwide
+                      Trusted by {platformStats?.totalCompanies || 0}+ companies
+                      worldwide
                     </div>
                     <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-tight">
                       Connect with
