@@ -170,7 +170,12 @@ class EnhancedApiService {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
 
-      const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+      // Construct full URL for NestJS backend
+      const url = endpoint.startsWith("/")
+        ? `${API_BASE_URL}${endpoint}`
+        : `${API_BASE_URL}/${endpoint}`;
+
+      const response = await fetch(url, {
         signal: controller.signal,
         headers: {
           "Content-Type": "application/json",
