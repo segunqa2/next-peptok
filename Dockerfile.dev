@@ -39,8 +39,8 @@ RUN echo "Validating TypeScript-only frontend..." && \
 RUN npm run typecheck
 
 # Create non-root user for security
-RUN addgroup -g 1001 -S nodejs && \
-    adduser -S nextjs -u 1001 && \
+RUN groupadd -g 1001 nodejs && \
+    useradd -r -u 1001 -g nodejs nextjs && \
     chown -R nextjs:nodejs /app
 
 # Switch to non-root user
