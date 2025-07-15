@@ -928,7 +928,9 @@ class EnhancedApiService {
     }
   }
 
-      // Method duplicates removed - see original methods above
+        // ===== COMPANY-SPECIFIC METHODS =====
+
+  async getCompanyRequests(companyId?: string): Promise<MentorshipRequest[]> {
       throw new Error("Coaches can only access their own profile");
     }
 
