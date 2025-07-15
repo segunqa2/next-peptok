@@ -281,7 +281,7 @@ class AuthService {
       await new Promise((resolve) => setTimeout(resolve, 1500));
 
       // Check if user already exists
-      const existingUser = mockUsers.find(
+      const existingUser = demoUsers.find(
         (u) => u.email.toLowerCase() === userData.email.toLowerCase(),
       );
 
