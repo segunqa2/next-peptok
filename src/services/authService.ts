@@ -262,7 +262,22 @@ class AuthService {
 
   async logout(): Promise<void> {
     try {
-      // Call backend logout endpoint
+      // Check if this is a demo user
+      const isDemoUser = this.authToken?.startsWith("demo_token_");
+
+      if (isDemoUser) {
+        console.log("🎭 Demo user logout - skipping API call");
+        this.clearAuth();
+        toast.success("Successfully signed out");
+
+        // Redirect to home page
+        setTimeout(() => {
+          window.location.href = "/";
+        }, 500);
+        return;
+      }
+
+      // Call backend logout endpoint for real users
       await api.auth.logout();
 
       this.clearAuth();
