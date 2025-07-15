@@ -163,16 +163,80 @@ async function apiRequest<T>(
   }
 }
 
+// Demo users for fallback when backend is unavailable
+const DEMO_USERS = [
+  {
+    id: "admin-1",
+    email: "admin@techcorp.com",
+    firstName: "Admin",
+    lastName: "User",
+    name: "Admin User",
+    userType: "platform_admin" as const,
+    picture: "/placeholder.svg",
+    provider: "demo",
+    status: "active" as const,
+    isAuthenticated: true,
+    joinedAt: new Date().toISOString(),
+    lastActive: new Date().toISOString(),
+  },
+  {
+    id: "company-admin-1",
+    email: "admin@company.com",
+    firstName: "Company",
+    lastName: "Admin",
+    name: "Company Admin",
+    userType: "company_admin" as const,
+    companyId: "company-1",
+    picture: "/placeholder.svg",
+    provider: "demo",
+    status: "active" as const,
+    isAuthenticated: true,
+    joinedAt: new Date().toISOString(),
+    lastActive: new Date().toISOString(),
+  },
+  {
+    id: "coach-1",
+    email: "coach@example.com",
+    firstName: "Demo",
+    lastName: "Coach",
+    name: "Demo Coach",
+    userType: "coach" as const,
+    picture: "/placeholder.svg",
+    provider: "demo",
+    status: "active" as const,
+    isAuthenticated: true,
+    joinedAt: new Date().toISOString(),
+    lastActive: new Date().toISOString(),
+  },
+];
+
 // Authentication API
 export const authAPI = {
   async login(
     email: string,
     password: string,
   ): Promise<{ access_token: string; user: User }> {
-    return apiRequest("/auth/login", {
-      method: "POST",
-      body: JSON.stringify({ email, password }),
-    });
+    try {
+      return await apiRequest("/auth/login", {
+        method: "POST",
+        body: JSON.stringify({ email, password }),
+      });
+    } catch (error) {
+      console.warn("Backend login failed, checking demo users...", error);
+
+      // Fallback to demo authentication
+      const demoUser = DEMO_USERS.find((u) => u.email === email);
+      if (demoUser && password === "demo123") {
+        console.log(`✅ Demo login successful for ${email}`);
+        return {
+          access_token: `demo_token_${demoUser.id}`,
+          user: demoUser as User,
+        };
+      }
+
+      // If no demo user found, throw the original error
+      throw error;
+    }
   },
 
   async register(
