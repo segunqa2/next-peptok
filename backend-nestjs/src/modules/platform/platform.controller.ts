@@ -16,8 +16,6 @@ import { RolesGuard } from "../auth/guards/roles.guard";
 import { PlatformService } from "./platform.service";
 
 @ApiTags("platform")
-@ApiBearerAuth("JWT-auth")
-@UseGuards(JwtAuthGuard)
 @Controller("platform")
 export class PlatformController {
   constructor(private readonly platformService: PlatformService) {}
