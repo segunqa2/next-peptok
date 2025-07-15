@@ -1,10 +1,10 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
-import { User } from "../users/entities/user.entity";
+import { User, UserStatus } from "../users/entities/user.entity";
 import { Coach } from "../coaches/entities/coach.entity";
 import { Company } from "../companies/entities/company.entity";
-import { Session } from "../sessions/entities/session.entity";
+import { Session, SessionStatus } from "../sessions/entities/session.entity";
 import { Review } from "../reviews/entities/review.entity";
 
 @Injectable()
