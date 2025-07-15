@@ -324,7 +324,7 @@ const Index = () => {
                           icon: UserCheck,
                         },
                         {
-                          value: `${demoStats.platformStats.totalSessions}`,
+                          value: `${platformStats.totalSessions}`,
                           label: "Sessions Completed",
                           icon: Target,
                         },
