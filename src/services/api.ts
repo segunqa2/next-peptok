@@ -322,6 +322,57 @@ export const platformAPI = {
   },
 };
 
+// Program Management API (using matching endpoints)
+export const programAPI = {
+  async getPrograms(filters?: Record<string, any>): Promise<any[]> {
+    return matchingAPI.getMatchingRequests(filters);
+  },
+
+  async getProgram(id: string): Promise<any> {
+    return matchingAPI.getMatchingRequest(id);
+  },
+
+  async createProgram(data: any): Promise<any> {
+    return matchingAPI.createMatchingRequest(data);
+  },
+
+  async updateProgram(id: string, data: any): Promise<any> {
+    return matchingAPI.updateMatchingRequest(id, data);
+  },
+
+  async deleteProgram(id: string): Promise<void> {
+    return matchingAPI.deleteMatchingRequest(id);
+  },
+
+  async getCompanyPrograms(companyId: string): Promise<any[]> {
+    return matchingAPI.getCompanyRequests(companyId);
+  },
+
+  async updateProgramStatus(id: string, status: string): Promise<any> {
+    return matchingAPI.updateRequestStatus(id, status);
+  },
+
+  async getPendingPrograms(): Promise<any[]> {
+    return matchingAPI.getPendingRequests();
+  },
+
+  async getProcessingPrograms(): Promise<any[]> {
+    return matchingAPI.getProcessingRequests();
+  },
+
+  // Program-specific session management
+  async generateSessionsForProgram(
+    programId: string,
+    config: any,
+  ): Promise<any[]> {
+    return sessionAPI.generateSessionsForProgram(programId, config);
+  },
+
+  async getProgramSessions(programId: string): Promise<any[]> {
+    return sessionAPI.getSessionsForProgram(programId);
+  },
+};
+
 // Unified API export
 export const api = {
   auth: authAPI,
@@ -330,6 +381,7 @@ export const api = {
   coaches: coachAPI,
   sessions: sessionAPI,
   matching: matchingAPI,
+  programs: programAPI,
   platform: platformAPI,
   setAuthToken,
 };
