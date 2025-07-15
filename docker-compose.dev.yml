@@ -71,14 +71,14 @@ services:
       start_period: 30s
       retries: 3
 
-    # React Frontend with Hot Reload
+      # React Frontend with Hot Reload
   frontend:
     build:
       context: .
       dockerfile: Dockerfile.dev
     container_name: peptok-frontend
     restart: unless-stopped
-        environment:
+    environment:
       VITE_API_URL: http://localhost:3001
       VITE_API_BASE_URL: http://localhost:3001
     ports:
@@ -97,7 +97,7 @@ services:
     depends_on:
       - backend
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      test: ["CMD", "curl", "-f", "http://localhost:8080"]
       interval: 30s
       timeout: 3s
       start_period: 10s
