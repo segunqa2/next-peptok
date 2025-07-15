@@ -98,15 +98,13 @@ export class MatchingService {
   ): Promise<MatchingRequest> {
     const matchingRequest = await this.findOne(id);
 
-    // Authorization check - only the requester, their company admin, or platform admin can update
+    // Authorization check - only the requester (company admin who created) or platform admin can update
     if (
       userType !== "platform_admin" &&
-      matchingRequest.requesterId !== userId &&
-      (userType !== "company_admin" ||
-        matchingRequest.companyId !== userCompanyId)
+      matchingRequest.requesterId !== userId
     ) {
       throw new ForbiddenException(
-        "You don't have permission to update this request",
+        "Only the company admin who created this program can edit it",
       );
     }
 
@@ -122,15 +120,13 @@ export class MatchingService {
   ): Promise<void> {
     const matchingRequest = await this.findOne(id);
 
-    // Authorization check - only the requester, their company admin, or platform admin can delete
+    // Authorization check - only the requester (company admin who created) or platform admin can delete
     if (
       userType !== "platform_admin" &&
-      matchingRequest.requesterId !== userId &&
-      (userType !== "company_admin" ||
-        matchingRequest.companyId !== userCompanyId)
+      matchingRequest.requesterId !== userId
     ) {
       throw new ForbiddenException(
-        "You don't have permission to delete this request",
+        "Only the company admin who created this program can delete it",
       );
     }
 
