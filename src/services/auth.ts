@@ -1,6 +1,6 @@
 import { toast } from "sonner";
 import { User } from "../types";
-// Removed demo users import - will use backend API
+import { demoUsers } from "../data/demoDatabase";
 import { backendStorage } from "./backendStorage";
 import LocalStorageService from "./localStorageService";
 
