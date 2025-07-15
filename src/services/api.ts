@@ -114,21 +114,9 @@ async function apiRequest<T>(
   } catch (error) {
     // Network or other fetch errors
     if (error instanceof TypeError && error.message.includes("fetch")) {
-      const isBackendAvailable = await checkBackendAvailability();
-      if (!isBackendAvailable) {
-        throw new Error(
-          `Backend Unavailable - The API server at ${API_BASE_URL} is not running. To fix this:\n\n` +
-            `1. Start the backend server:\n` +
-            `   cd backend && npm run dev\n\n` +
-            `2. Or use Docker:\n` +
-            `   docker-compose up -d\n\n` +
-            `3. The app will automatically use demo data until the backend is available.`,
-        );
-      } else {
-        throw new Error(
-          `Network Error - Cannot connect to API server at ${url}. Please check your network connection.`,
-        );
-      }
+      throw new Error(
+        `Network Error - Cannot connect to API server at ${API_BASE_URL}. Please ensure the backend is running on port 3001.`,
+      );
     }
     throw error; // Re-throw API errors as-is
   }
