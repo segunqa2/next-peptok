@@ -14,7 +14,7 @@ export interface DemoUser extends User {
 export const demoUsers: DemoUser[] = [
   {
     id: "user_023",
-    email: "employee1@techcorp.com",
+    email: "admin@techcorp.com",
     password: "emp123",
     name: "Sarah Johnson",
     firstName: "Sarah",
