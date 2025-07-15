@@ -227,8 +227,35 @@ export default function CreateCoachingRequest() {
         status: "submitted" as const,
       };
 
-      // Submit to API
-      const request = await apiEnhanced.createCoachingRequest(requestData);
+      // Check if this is a demo user
+      const isDemoUser = localStorage
+        .getItem("peptok_token")
+        ?.startsWith("demo_token_");
+      let request;
+
+      if (isDemoUser) {
+        // Create demo request
+        request = {
+          id: `req_${Date.now()}`,
+          ...requestData,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        };
+
+        // Update demo data with the new request
+        const demoData = JSON.parse(
+          localStorage.getItem("peptok_demo_data") || "{}",
+        );
+        if (demoData.dashboardStats) {
+          demoData.dashboardStats.coachingRequests = [request];
+          localStorage.setItem("peptok_demo_data", JSON.stringify(demoData));
+        }
+
+        console.log("🎭 Demo coaching request created:", request);
+      } else {
+        // Submit to API for real users
+        request = await apiEnhanced.createCoachingRequest(requestData);
+      }
 
       // Store in localStorage for persistence
       LocalStorageService.addCoachingRequest(request);
