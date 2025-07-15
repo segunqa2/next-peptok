@@ -50,7 +50,7 @@ function Write-ColorOutput {
 }
 
 try {
-    Write-ColorOutput $Blue "🛑 Stopping Peptok Coaching Platform..."
+    Write-ColorOutput $Blue "Stopping Peptok Coaching Platform..."
     
     # Navigate to project root
     $ScriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
@@ -61,7 +61,7 @@ try {
     $runningContainers = docker ps --filter "name=peptok" --format "table {{.Names}}" | Select-Object -Skip 1
     
     if (-not $runningContainers) {
-        Write-ColorOutput $Yellow "ℹ️  No Peptok containers are currently running"
+        Write-ColorOutput $Yellow "No Peptok containers are currently running"
         return
     }
     
@@ -85,50 +85,50 @@ try {
     }
     
     # Stop containers
-    Write-ColorOutput $Yellow "⏹️  Stopping containers..."
+    Write-ColorOutput $Yellow "Stopping containers..."
     & docker-compose @ComposeArgs stop
     
     if ($LASTEXITCODE -ne 0) {
-        Write-ColorOutput $Red "❌ Failed to stop some containers"
+        Write-ColorOutput $Red "Failed to stop some containers"
         exit 1
     }
     
-    Write-ColorOutput $Green "✅ All containers stopped successfully"
+    Write-ColorOutput $Green "All containers stopped successfully"
     
     # Remove containers if requested
     if ($Remove) {
-        Write-ColorOutput $Yellow "🗑️  Removing containers..."
+        Write-ColorOutput $Yellow "Removing containers..."
         
         if ($Volumes) {
-            Write-ColorOutput $Red "⚠️  WARNING: This will delete all data in volumes!"
+            Write-ColorOutput $Red "WARNING: This will delete all data in volumes!"
             $confirmation = Read-Host "Are you sure you want to continue? (y/N)"
             
             if ($confirmation -notmatch "^[Yy]$") {
-                Write-ColorOutput $Yellow "ℹ️  Operation cancelled"
+                Write-ColorOutput $Yellow "Operation cancelled"
                 return
             }
             
             & docker-compose @ComposeArgs down -v --remove-orphans
-            Write-ColorOutput $Green "✅ Containers and volumes removed"
+            Write-ColorOutput $Green "Containers and volumes removed"
         }
         else {
             & docker-compose @ComposeArgs down --remove-orphans
-            Write-ColorOutput $Green "✅ Containers removed"
+            Write-ColorOutput $Green "Containers removed"
         }
         
         if ($LASTEXITCODE -ne 0) {
-            Write-ColorOutput $Red "❌ Failed to remove containers"
+            Write-ColorOutput $Red "Failed to remove containers"
             exit 1
         }
     }
     
     # Show status
     Write-Host ""
-    Write-ColorOutput $Green "🎉 Peptok Platform stopped successfully!"
+    Write-ColorOutput $Green "Peptok Platform stopped successfully!"
     
     if (-not $Remove) {
         Write-Host ""
-        Write-ColorOutput $Yellow "💡 Tip: Use 'docker-compose start' to start the stopped containers quickly"
+        Write-ColorOutput $Yellow "Tip: Use 'docker-compose start' to start the stopped containers quickly"
         Write-ColorOutput $Yellow "     Or use '.\scripts\start.ps1' to start fresh"
     }
     
@@ -137,12 +137,12 @@ try {
     $cleanup = Read-Host "Would you like to clean up unused Docker resources? (y/N)"
     
     if ($cleanup -match "^[Yy]$") {
-        Write-ColorOutput $Yellow "🧹 Cleaning up unused Docker resources..."
+        Write-ColorOutput $Yellow "Cleaning up unused Docker resources..."
         docker system prune -f
-        Write-ColorOutput $Green "✅ Cleanup completed"
+        Write-ColorOutput $Green "Cleanup completed"
     }
 }
 catch {
-    Write-ColorOutput $Red "❌ An error occurred: $($_.Exception.Message)"
+    Write-ColorOutput $Red "An error occurred: $($_.Exception.Message)"
     exit 1
 }

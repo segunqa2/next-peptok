@@ -69,12 +69,12 @@ function Test-DockerInstallation {
 }
 
 try {
-    Write-ColorOutput $Blue "🔨 Building Peptok Coaching Platform..."
+    Write-ColorOutput $Blue "Building Peptok Coaching Platform..."
     Write-ColorOutput $Yellow "Environment: $Environment"
     
     # Check Docker installation
     if (-not (Test-DockerInstallation)) {
-        Write-ColorOutput $Red "❌ Docker or Docker Compose is not installed or not in PATH"
+        Write-ColorOutput $Red "Docker or Docker Compose is not installed or not in PATH"
         Write-ColorOutput $Yellow "Please install Docker Desktop and try again"
         exit 1
     }
@@ -84,17 +84,17 @@ try {
     $ProjectRoot = Split-Path -Parent $ScriptPath
     Set-Location $ProjectRoot
     
-    Write-ColorOutput $Green "📁 Working directory: $(Get-Location)"
+    Write-ColorOutput $Green "Working directory: $(Get-Location)"
     
     # Prepare docker-compose command
     $ComposeFiles = @("docker-compose.yml")
     
     if ($Environment -eq "development") {
         $ComposeFiles += "docker-compose.dev.yml"
-        Write-ColorOutput $Yellow "🔧 Building for development environment"
+        Write-ColorOutput $Yellow "Building for development environment"
     }
     else {
-        Write-ColorOutput $Yellow "🏭 Building for production environment"
+        Write-ColorOutput $Yellow "Building for production environment"
     }
     
     $ComposeArgs = @()
@@ -108,17 +108,17 @@ try {
     
     if ($NoCache) {
         $BuildArgs += "--no-cache"
-        Write-ColorOutput $Yellow "🚫 Building without cache"
+        Write-ColorOutput $Yellow "Building without cache"
     }
     
     if ($Parallel) {
         $BuildArgs += "--parallel"
-        Write-ColorOutput $Yellow "⚡ Building in parallel"
+        Write-ColorOutput $Yellow "Building in parallel"
     }
     
     # Show build information
     Write-Host ""
-    Write-ColorOutput $Yellow "📋 Build Configuration:"
+    Write-ColorOutput $Yellow "Build Configuration:"
     Write-ColorOutput $Yellow "  - Environment: $Environment"
     Write-ColorOutput $Yellow "  - No Cache: $($NoCache.ToString())"
     Write-ColorOutput $Yellow "  - Parallel: $($Parallel.ToString())"
@@ -126,7 +126,7 @@ try {
     
     # Start build process
     Write-Host ""
-    Write-ColorOutput $Blue "🚀 Starting build process..."
+    Write-ColorOutput $Blue "Starting build process..."
     
     $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
     
@@ -134,7 +134,7 @@ try {
     & docker-compose @ComposeArgs @BuildArgs
     
     if ($LASTEXITCODE -ne 0) {
-        Write-ColorOutput $Red "❌ Build failed!"
+        Write-ColorOutput $Red "Build failed!"
         exit 1
     }
     
@@ -142,12 +142,12 @@ try {
     $elapsed = $stopwatch.Elapsed
     
     Write-Host ""
-    Write-ColorOutput $Green "✅ Build completed successfully!"
-    Write-ColorOutput $Green "⏱️  Build time: $($elapsed.Minutes)m $($elapsed.Seconds)s"
+    Write-ColorOutput $Green "Build completed successfully!"
+    Write-ColorOutput $Green "Build time: $($elapsed.Minutes)m $($elapsed.Seconds)s"
     
     # Show built images
     Write-Host ""
-    Write-ColorOutput $Yellow "📦 Built images:"
+    Write-ColorOutput $Yellow "Built images:"
     
     $images = docker images --filter "reference=*peptok*" --format "table {{.Repository}}\t{{.Tag}}\t{{.Size}}\t{{.CreatedAt}}" | Select-Object -Skip 1
     
@@ -162,7 +162,7 @@ try {
     
     # Show next steps
     Write-Host ""
-    Write-ColorOutput $Yellow "🎯 Next steps:"
+    Write-ColorOutput $Yellow "Next steps:"
     Write-ColorOutput $Yellow "  - Start the platform: .\scripts\start.ps1"
     Write-ColorOutput $Yellow "  - View logs: .\scripts\logs.ps1"
     Write-ColorOutput $Yellow "  - Stop services: .\scripts\stop.ps1"
@@ -172,11 +172,11 @@ try {
     $startNow = Read-Host "Would you like to start the services now? (y/N)"
     
     if ($startNow -match "^[Yy]$") {
-        Write-ColorOutput $Yellow "🚀 Starting services..."
+        Write-ColorOutput $Yellow "Starting services..."
         & "$ScriptPath\start.ps1" -Environment $Environment
     }
 }
 catch {
-    Write-ColorOutput $Red "❌ An error occurred during build: $($_.Exception.Message)"
+    Write-ColorOutput $Red "An error occurred during build: $($_.Exception.Message)"
     exit 1
 }
