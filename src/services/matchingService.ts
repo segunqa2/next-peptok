@@ -293,6 +293,10 @@ class MatchingService {
 
     return await this.findMatches(sampleRequest);
   }
+
+  async getMatchingResult(requestId: string): Promise<MatchingResult | null> {
+    return await getMatchingResult(requestId);
+  }
 }
 
 export const matchingService = new MatchingService();
