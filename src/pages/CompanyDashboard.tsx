@@ -97,10 +97,16 @@ const CompanyDashboard = () => {
         setIsLoading(true);
 
         // Check if this is a demo user (Sarah or Daniel)
-        const isDemoUser = localStorage
-          .getItem("peptok_token")
-          ?.startsWith("demo_token_");
+        const token = localStorage.getItem("peptok_token");
+        const isDemoUser = token?.startsWith("demo_token_");
         const demoData = localStorage.getItem("peptok_demo_data");
+
+        console.log("🔍 Dashboard data loading check:", {
+          token: token ? `${token.substring(0, 20)}...` : "none",
+          isDemoUser,
+          hasDemoData: !!demoData,
+          userEmail: user?.email,
+        });
 
         if (isDemoUser && demoData) {
           console.log("🎭 Loading demo data for dashboard");
