@@ -71,6 +71,30 @@ const CoachProfile = () => {
     }
   }, [id]);
 
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <Header />
+        <div className="container mx-auto px-4 py-8 text-center">
+          <p>Loading coach profile...</p>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (!coach) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <Header />
+        <div className="container mx-auto px-4 py-8 text-center">
+          <p>Coach profile not available - backend service unavailable</p>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
   // Enhanced mock data for coach profile
   const reviews = [
     {
