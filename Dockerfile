@@ -10,8 +10,8 @@ RUN apk add --no-cache git
 # Copy package files
 COPY package*.json ./
 
-# Install dependencies with npm ci for reproducible builds
-RUN npm ci --no-audit --no-fund
+# Install dependencies
+RUN npm install --no-audit --no-fund
 
 # Copy source code (excluding files in .dockerignore)
 COPY . .
