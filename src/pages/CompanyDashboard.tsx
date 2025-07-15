@@ -96,6 +96,44 @@ const CompanyDashboard = () => {
       try {
         setIsLoading(true);
 
+        // Check if this is a demo user (Sarah or Daniel)
+        const isDemoUser = localStorage
+          .getItem("peptok_token")
+          ?.startsWith("demo_token_");
+        const demoData = localStorage.getItem("peptok_demo_data");
+
+        if (isDemoUser && demoData) {
+          console.log("🎭 Loading demo data for dashboard");
+          const parsedDemoData = JSON.parse(demoData);
+
+          // Use demo dashboard stats (empty for Sarah's initial state)
+          setDashboardMetrics({
+            activeSessions: parsedDemoData.dashboardStats.activeSessions,
+            activeCoaching: parsedDemoData.dashboardStats.activeCoaching,
+            goalsProgress: parsedDemoData.dashboardStats.goalsProgress,
+            totalHours: parsedDemoData.dashboardStats.totalHours,
+            totalPrograms: 0,
+            completedPrograms: 0,
+            pendingPrograms: 0,
+            totalParticipants: parsedDemoData.company.employeeCount,
+            averageRating: 0,
+            monthlySpend: 0,
+            completedSessions: 0,
+            scheduledSessions: 0,
+            engagementRate: 0,
+            successRate: 0,
+            retentionRate: 0,
+          });
+
+          // Use demo coaching requests (empty initially)
+          setMentorshipRequests(parsedDemoData.dashboardStats.coachingRequests);
+          setUpcomingSessions(parsedDemoData.dashboardStats.upcomingSessions);
+          setRecentActivities(parsedDemoData.dashboardStats.recentActivity);
+
+          console.log("✅ Demo data loaded successfully");
+          return;
+        }
+
         // Fetch dashboard metrics if user has a company
         if (user?.companyId) {
           try {
