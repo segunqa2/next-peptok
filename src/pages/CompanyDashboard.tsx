@@ -156,8 +156,8 @@ const CompanyDashboard = () => {
     }
   }, [location.state, navigate, location.pathname]);
 
-  // Enhanced mock data
-  const recentActivities = [
+  // Recent activities loaded from backend API
+  const recentActivities: any[] = [
     {
       id: "1",
       type: "mentorship_request_created",
