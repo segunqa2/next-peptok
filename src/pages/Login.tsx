@@ -385,19 +385,7 @@ const Login = () => {
             </CardContent>
           </Card>
 
-          {/* Demo Credentials */}
-          {/* Demo Credentials Section */}
-          <Card className="backdrop-blur-md bg-blue-50/80 border-blue-200/50">
-            <CardHeader>
-              <CardTitle className="text-lg flex items-center text-blue-800">
-                <Users className="w-5 h-5 mr-2" />
-                Demo Accounts ({demoCredentials.length} users)
-              </CardTitle>
-              <CardDescription className="text-blue-700">
-                Use these sample accounts to explore different user roles and
-                features
-              </CardDescription>
-            </CardHeader>
+          
             <CardContent>
               <Tabs defaultValue="platform" className="w-full">
                 <TabsList className="grid w-full grid-cols-4 bg-white/60">
