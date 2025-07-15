@@ -69,6 +69,8 @@ const CompanyDashboard = () => {
   const [mentorshipRequests, setMentorshipRequests] = useState<
     MentorshipRequest[]
   >([]);
+  const [upcomingSessions, setUpcomingSessions] = useState<any[]>([]);
+  const [recentActivities, setRecentActivities] = useState<any[]>([]);
   const [dashboardMetrics, setDashboardMetrics] =
     useState<CompanyDashboardMetrics>({
       activeSessions: 0,
