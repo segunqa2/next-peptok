@@ -334,6 +334,81 @@ class CompanyDashboardApiService {
   }
 
   /**
+   * Accept a session (coach only)
+   */
+  async acceptSession(sessionId: string): Promise<any> {
+    try {
+      const response = await fetch(
+        `${API_BASE_URL}/sessions/${sessionId}/accept`,
+        {
+          method: "POST",
+          headers: this.getAuthHeaders(),
+        },
+      );
+
+      if (!response.ok) {
+        throw new Error(`Failed to accept session: ${response.statusText}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error("Error accepting session:", error);
+      throw error;
+    }
+  }
+
+  /**
+   * Decline a session (coach only)
+   */
+  async declineSession(sessionId: string, reason?: string): Promise<any> {
+    try {
+      const response = await fetch(
+        `${API_BASE_URL}/sessions/${sessionId}/decline`,
+        {
+          method: "POST",
+          headers: this.getAuthHeaders(),
+          body: JSON.stringify({ reason }),
+        },
+      );
+
+      if (!response.ok) {
+        throw new Error(`Failed to decline session: ${response.statusText}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error("Error declining session:", error);
+      throw error;
+    }
+  }
+
+  /**
+   * Get sessions awaiting coach acceptance
+   */
+  async getSessionsAwaitingAcceptance(): Promise<any[]> {
+    try {
+      const response = await fetch(
+        `${API_BASE_URL}/sessions/coach/awaiting-acceptance`,
+        {
+          method: "GET",
+          headers: this.getAuthHeaders(),
+        },
+      );
+
+      if (!response.ok) {
+        throw new Error(
+          `Failed to fetch sessions awaiting acceptance: ${response.statusText}`,
+        );
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error("Error fetching sessions awaiting acceptance:", error);
+      return [];
+    }
+  }
+
+  /**
    * Check if the API is available
    */
   async checkApiHealth(): Promise<boolean> {
