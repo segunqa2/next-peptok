@@ -135,10 +135,19 @@ export const authAPI = {
     email: string,
     password: string,
   ): Promise<{ access_token: string; user: User }> {
-    return apiRequest("/auth/login", {
+    const response = await apiRequest<{
+      success: boolean;
+      data: { token: string; user: User };
+    }>("/auth/login", {
       method: "POST",
       body: JSON.stringify({ email, password }),
     });
+
+    // Transform backend response to frontend expected format
+    return {
+      access_token: response.data.token,
+      user: response.data.user,
+    };
   },
 
   async register(
