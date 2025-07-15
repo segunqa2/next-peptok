@@ -1,6 +1,7 @@
 import { toast } from "sonner";
 import { User } from "../types";
 import api, { setAuthToken } from "./api";
+import { findDemoUser, getDemoDataForUser } from "../data/demoUsers";
 
 export interface AuthResponse {
   success: boolean;
