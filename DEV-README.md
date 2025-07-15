@@ -21,11 +21,20 @@
 
 That's it! The environment is designed to be that simple.
 
-## Commands
+## All Available Commands
+
+### 🎯 Simple Commands (Recommended)
+
+| Command       | Description      |
+| ------------- | ---------------- |
+| `.\start.ps1` | Start everything |
+| `.\stop.ps1`  | Stop everything  |
+
+### 🔧 Advanced Commands
 
 | Command                              | Description                |
 | ------------------------------------ | -------------------------- |
-| `.\dev-start.ps1`                    | Start all services         |
+| `.\dev-start.ps1`                    | Start with full output     |
 | `.\dev-start.ps1 -Clean`             | Start with clean rebuild   |
 | `.\dev-start.ps1 -Logs`              | Start and show logs        |
 | `.\dev-stop.ps1`                     | Stop all services          |
