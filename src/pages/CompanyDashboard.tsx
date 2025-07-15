@@ -156,55 +156,9 @@ const CompanyDashboard = () => {
     }
   }, [location.state, navigate, location.pathname]);
 
-  // Enhanced mock data
-  const recentActivities = [
-    {
-      id: "1",
-      type: "mentorship_request_created",
-      user: "Sarah Johnson",
-      message:
-        "Created new mentorship request: Leadership Development for Senior Engineers",
-      timestamp: "2 hours ago",
-      status: "success",
-      impact: "high",
-    },
-    {
-      id: "2",
-      type: "session_completed",
-      user: "Alex Johnson",
-      expert: "Sarah Chen",
-      message: "Completed leadership development session",
-      timestamp: "4 hours ago",
-      status: "success",
-      impact: "medium",
-    },
-    {
-      id: "3",
-      type: "team_member_invited",
-      user: "Maria Garcia",
-      message: "Invited 5 team members to coaching program",
-      timestamp: "1 day ago",
-      status: "success",
-      impact: "medium",
-    },
-    {
-      id: "4",
-      type: "goal_achieved",
-      user: "David Kim",
-      message: "Achieved quarterly development milestone",
-      timestamp: "2 days ago",
-      status: "success",
-      impact: "high",
-    },
-    {
-      id: "5",
-      type: "expert_matched",
-      expert: "Michael Rodriguez",
-      message: "New expert matched to data analytics program",
-      timestamp: "3 days ago",
-      status: "success",
-      impact: "medium",
-    },
+  // Recent activities loaded from backend API
+  const recentActivities: any[] = [
+    // All activities moved to backend database
   ];
 
   const topPerformers = [

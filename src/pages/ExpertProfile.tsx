@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -36,11 +37,46 @@ import {
   Play,
   Download,
 } from "lucide-react";
-import { mockCoaches } from "@/data/mockData";
+// Removed mock coaches - will use backend API
 
 const ExpertProfile = () => {
   const { id } = useParams();
-  const expert = mockCoaches.find((e) => e.id === id) || mockCoaches[0];
+  // Load expert data from backend API
+  const [expert, setExpert] = useState<any>(null);
+
+  useEffect(() => {
+    const loadExpert = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:3001/api/v1/coaches/${id}`,
+        );
+        if (!response.ok) {
+          throw new Error("Expert not found");
+        }
+        const expertData = await response.json();
+        setExpert(expertData);
+      } catch (error) {
+        console.warn("Expert data unavailable - backend service down");
+        setExpert(null);
+      }
+    };
+
+    if (id) {
+      loadExpert();
+    }
+  }, [id]);
+
+  if (!expert) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <Header />
+        <div className="container mx-auto px-4 py-8 text-center">
+          <p>Expert profile not available - backend service unavailable</p>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
 
   // Enhanced mock data for expert profile
   const reviews = [

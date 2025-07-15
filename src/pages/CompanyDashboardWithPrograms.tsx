@@ -158,35 +158,9 @@ const CompanyDashboardWithPrograms = () => {
     navigate(`/programs/${program.id}`);
   };
 
-  // Enhanced activity data (placeholder for now)
-  const recentActivities = [
-    {
-      id: "1",
-      type: "program_created",
-      user: user?.name || "Company Admin",
-      message: "Created new coaching program: Leadership Development",
-      timestamp: "2 hours ago",
-      status: "success",
-      impact: "high",
-    },
-    {
-      id: "2",
-      type: "coach_accepted",
-      user: "Sarah Chen",
-      message: "Accepted coaching program assignment",
-      timestamp: "4 hours ago",
-      status: "success",
-      impact: "medium",
-    },
-    {
-      id: "3",
-      type: "session_completed",
-      user: "Team Session",
-      message: "Completed leadership development session #3",
-      timestamp: "1 day ago",
-      status: "success",
-      impact: "medium",
-    },
+  // Recent activities loaded from backend API
+  const recentActivities: any[] = [
+    // All activities moved to backend database
   ];
 
   const upcomingMilestones = [

@@ -199,7 +199,7 @@ export const validatePricingConfiguration = () => {
 };
 
 // Auto-run validation if in development
-if (typeof window !== "undefined" && process.env.NODE_ENV === "development") {
+if (typeof window !== "undefined" && import.meta.env.DEV) {
   // Make it available globally for console testing
   (window as any).validatePricingConfig = validatePricingConfiguration;
   console.log(

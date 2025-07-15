@@ -163,89 +163,10 @@ const EnterpriseDashboard = () => {
     }
   }, [location.state]);
 
-  // Mock data for demonstration
-  const upcomingSessions = [
-    {
-      id: "1",
-      title: "Leadership Development",
-      date: "Dec 15, 2024",
-      time: "2:00 PM",
-      duration: "1 hour",
-      coachName: "Sarah Chen",
-      coachAvatar:
-        "https://api.dicebear.com/7.x/avataaars/svg?seed=sarah&backgroundColor=b6e3f4",
-      type: "Video Call",
-      status: "confirmed",
-      mentorshipRequestId: "request-1",
-    },
-    {
-      id: "2",
-      title: "Data Analytics Review",
-      date: "Dec 17, 2024",
-      time: "10:00 AM",
-      duration: "45 minutes",
-      coachName: "Michael Rodriguez",
-      coachAvatar:
-        "https://api.dicebear.com/7.x/avataaars/svg?seed=michael&backgroundColor=c0aede",
-      type: "In-Person",
-      status: "pending",
-      mentorshipRequestId: "request-1",
-    },
-  ];
-
-  const achievements = [
-    {
-      id: "1",
-      title: "First Mentorship Request",
-      description: "Created your first mentorship request",
-      date: "Dec 1, 2024",
-      icon: Target,
-      color: "text-blue-600",
-    },
-    {
-      id: "2",
-      title: "Active Learner",
-      description: "Completed 5 coaching sessions",
-      date: "Nov 28, 2024",
-      icon: BookOpen,
-      color: "text-green-600",
-    },
-    {
-      id: "3",
-      title: "Goal Setter",
-      description: "Set and tracked 3 learning objectives",
-      date: "Nov 25, 2024",
-      icon: CheckCircle,
-      color: "text-purple-600",
-    },
-  ];
-
-  const recentActivity = [
-    {
-      id: "1",
-      type: "session_completed",
-      title: "Completed session with Sarah Chen",
-      description: "Leadership strategies for remote teams",
-      timestamp: "2 hours ago",
-      icon: Video,
-    },
-    {
-      id: "2",
-      type: "goal_progress",
-      title: "Goal progress updated",
-      description: "Communication skills - 75% complete",
-      timestamp: "1 day ago",
-      icon: TrendingUp,
-    },
-    {
-      id: "3",
-      type: "coach_feedback",
-      title: "Received feedback from Michael Rodriguez",
-      description: "Great progress on data analysis techniques!",
-      timestamp: "3 days ago",
-      icon: MessageSquare,
-    },
-  ];
+  // Data will be loaded from backend API
+  const upcomingSessions: any[] = [];
+  const achievements: any[] = [];
+  const recentActivity: any[] = [];
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -422,7 +343,7 @@ const EnterpriseDashboard = () => {
                         </p>
                         <p className="text-sm text-gray-500">
                           {session.date} at {session.time} • with{" "}
-                          {session.coachName} • {session.duration}
+                          {session.coachName} �� {session.duration}
                         </p>
                         <div className="flex items-center mt-2 space-x-2">
                           <Badge

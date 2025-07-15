@@ -354,7 +354,7 @@ export function CoachSessionSettings({
         )}
 
         {/* Debug Button (only in development) */}
-        {process.env.NODE_ENV === "development" && (
+        {import.meta.env.DEV && (
           <Button
             onClick={checkLocalStorage}
             variant="outline"

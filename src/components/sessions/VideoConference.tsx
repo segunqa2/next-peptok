@@ -175,10 +175,8 @@ export default function VideoConference() {
                   title: "Senior Leadership Coach",
                 };
 
-          // Fallback to mock data
-          sessionData = {
-            id: sessionId,
-            title: "React Development Training Session",
+                    // No fallback data - return error if backend unavailable
+          throw new Error("Session data not available - backend service unreachable");
             description:
               "Help our team improve their React skills and best practices",
             coach: fallbackCoachData,

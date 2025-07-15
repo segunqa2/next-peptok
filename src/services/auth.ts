@@ -1,6 +1,6 @@
 import { toast } from "sonner";
 import { User } from "../types";
-import { demoUsers } from "../data/demoDatabase";
+// Removed demo users import - will use backend API
 import { backendStorage } from "./backendStorage";
 import LocalStorageService from "./localStorageService";
 
@@ -31,18 +31,9 @@ export interface AuthResponse {
   isNewUser?: boolean;
 }
 
-// Convert demo database users to auth service format
-const mockUsers: User[] = demoUsers.map((user) => ({
-  id: user.id,
-  email: user.email,
-  name: user.name,
-  firstName: user.firstName,
-  lastName: user.lastName,
-  picture: user.picture,
-  provider: user.provider,
-  userType: user.userType as any,
-  companyId: user.companyId,
-}));
+// API Configuration for backend authentication
+const API_BASE_URL =
+  import.meta.env.VITE_API_URL || "http://localhost:3001/api/v1";
 
 class AuthService {
   private currentUser: User | null = null;
@@ -116,10 +107,8 @@ class AuthService {
 
   // Debug utility to check available demo accounts
   getAvailableDemoAccounts(): Array<{ email: string; userType: string }> {
-    return mockUsers.map((user) => ({
-      email: user.email,
-      userType: user.userType,
-    }));
+    console.warn("Demo accounts disabled - use backend authentication instead");
+    return [];
   }
 
   // Test specific demo account

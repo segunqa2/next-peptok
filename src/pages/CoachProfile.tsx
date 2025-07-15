@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -37,12 +38,62 @@ import {
   Play,
   Download,
 } from "lucide-react";
-import { mockCoaches } from "@/data/mockData";
+// Removed mock coaches - will use backend API
 
 const CoachProfile = () => {
   const { id } = useParams();
   const { user, isAuthenticated } = useAuth();
-  const coach = mockCoaches.find((e) => e.id === id) || mockCoaches[0];
+  // Load coach data from backend API
+  const [coach, setCoach] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadCoach = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:3001/api/v1/coaches/${id}`,
+        );
+        if (!response.ok) {
+          throw new Error("Coach not found");
+        }
+        const coachData = await response.json();
+        setCoach(coachData);
+      } catch (error) {
+        console.warn("Coach data unavailable - backend service down");
+        setCoach(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (id) {
+      loadCoach();
+    }
+  }, [id]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <Header />
+        <div className="container mx-auto px-4 py-8 text-center">
+          <p>Loading coach profile...</p>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (!coach) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <Header />
+        <div className="container mx-auto px-4 py-8 text-center">
+          <p>Coach profile not available - backend service unavailable</p>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
 
   // Enhanced mock data for coach profile
   const reviews = [

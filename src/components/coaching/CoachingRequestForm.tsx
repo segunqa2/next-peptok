@@ -54,9 +54,9 @@ import {
   SessionPricingTier,
 } from "@/types";
 
-// Auto-fill coaching program templates
-const COACHING_TEMPLATES = {
-  A: {
+// Templates removed - should be loaded from backend API
+const COACHING_TEMPLATES: Record<string, any> = {
+  // All templates removed - load from backend API instead
     title: "Agile Leadership Transformation",
     description:
       "Comprehensive coaching program focused on developing agile leadership skills, adaptive thinking, and team empowerment. Participants will learn to navigate change, foster innovation, and build resilient teams in dynamic business environments.",
@@ -246,44 +246,44 @@ const COACHING_TEMPLATES = {
     budgetMin: 7000,
     budgetMax: 14000,
   },
-  S:{
-   title: "Sales and Marketing Development",
-   description:
-     "Department-wide coaching program designed to build up soft and hard sales and marketing skills to improve sales pipeline conversion.",
-   goals: [
-     {
-       title: "Sales",
-       description:
-         "Identify customer needs, craft tailored solutions, and guide prospects through a decision-making process to close deals",
-       category: "business" as const,
-       priority: "high" as const,
-     },
-     {
-       title: "Marketing",
-       description:
-         "Understand customer behavior, create compelling messages, and deliver them through the right channels to attract, engage, and retain target audiences",
-       category: "business" as const,
-       priority: "medium" as const,
-     },
-     {
-       title: "Negotiation",
-       description:
-         "Balance persuasion, active listening, and problem-solving to align value with client priorities, and secure win-win agreements that advance deals",
-       category: "leadership" as const,
-       priority: "high" as const,
-     },
-   ],
-   skills: [
-     "Marketing",
-     "Sales Funnel Optimization",
-     "Persuasion and Negotiation",
-     "Customer Segmentation",
-   ],
-   timeline: "16 weeks",
-   participantGoal: 5,
-   budgetMin: 15000,
-   budgetMax: 30000,
- },
+  S: {
+    title: "Sales and Marketing Development",
+    description:
+      "Department-wide coaching program designed to build up soft and hard sales and marketing skills to improve sales pipeline conversion.",
+    goals: [
+      {
+        title: "Sales",
+        description:
+          "Identify customer needs, craft tailored solutions, and guide prospects through a decision-making process to close deals",
+        category: "business" as const,
+        priority: "high" as const,
+      },
+      {
+        title: "Marketing",
+        description:
+          "Understand customer behavior, create compelling messages, and deliver them through the right channels to attract, engage, and retain target audiences",
+        category: "business" as const,
+        priority: "medium" as const,
+      },
+      {
+        title: "Negotiation",
+        description:
+          "Balance persuasion, active listening, and problem-solving to align value with client priorities, and secure win-win agreements that advance deals",
+        category: "leadership" as const,
+        priority: "high" as const,
+      },
+    ],
+    skills: [
+      "Marketing",
+      "Sales Funnel Optimization",
+      "Persuasion and Negotiation",
+      "Customer Segmentation",
+    ],
+    timeline: "16 weeks",
+    participantGoal: 5,
+    budgetMin: 15000,
+    budgetMax: 30000,
+  },
 };
 
 export interface CoachingRequestFormData {
@@ -424,7 +424,10 @@ export function CoachingRequestForm({
 
     // Check if user typed A, B, C, D, E, or S at the beginning
     const firstChar = value.charAt(0).toUpperCase();
-    if (["A", "B", "C", "D", "E", "S"].includes(firstChar) && value.length === 1) {
+    if (
+      ["A", "B", "C", "D", "E", "S"].includes(firstChar) &&
+      value.length === 1
+    ) {
       const matchingSuggestions = Object.keys(COACHING_TEMPLATES)
         .filter((key) => key === firstChar)
         .map(

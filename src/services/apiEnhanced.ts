@@ -24,15 +24,7 @@ import {
 import { Environment } from "../utils/environment";
 import { analytics } from "./analytics";
 import { backendStorage } from "./backendStorage";
-import {
-  demoUsers,
-  demoCompanies,
-  demoMentorshipRequests,
-  demoSessions,
-  demoReviews,
-  getDemoStatistics,
-  type DemoUser,
-} from "../data/demoDatabase";
+// Removed demo database imports - using backend API only
 import { crossBrowserSync, SYNC_CONFIGS } from "./crossBrowserSync";
 // Removed: cacheInvalidation service (deleted)
 import { securityService } from "./securityService";
