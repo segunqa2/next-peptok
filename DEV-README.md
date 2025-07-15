@@ -1,16 +1,25 @@
 # Peptok Development Environment
 
-## Quick Start
+## 🚀 Super Quick Start
 
-1. **Start Development Environment**
+1. **Start Everything (One Command!)**
 
    ```powershell
-   .\dev-start.ps1
+   .\start.ps1
    ```
 
 2. **Access the Application**
+
    - Frontend: http://localhost:3000 (React with hot reload)
    - Backend: http://localhost:3001 (NestJS with hot reload)
+
+3. **Stop Everything**
+
+   ```powershell
+   .\stop.ps1
+   ```
+
+That's it! The environment is designed to be that simple.
 
 ## Commands
 
