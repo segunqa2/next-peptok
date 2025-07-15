@@ -548,6 +548,12 @@ export default function CoachingRequestDetails() {
               </Card>
             )}
 
+            {/* Session Schedule */}
+            <SessionScheduleCard
+              requestId={request.id}
+              programTitle={request.title}
+            />
+
             {/* Team Members */}
             <SimpleTeamMemberCard
               teamMembers={teamMembers}
