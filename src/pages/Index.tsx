@@ -341,8 +341,8 @@ const Index = () => {
                       ].map((stat, index) => {
                         const Icon = stat.icon;
                         return (
-                          <div key={index} className="text-center group">
-                                                        <div className="flex flex-col items-center space-y-2">
+                                                    <div key={index} className="text-center group">
+                            <div className="flex flex-col items-center space-y-2">
                               <Icon className="h-6 w-6 text-blue-600 group-hover:scale-110 transition-transform duration-300" />
                               <div className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-600 to-blue-700 bg-clip-text text-transparent">
                                 {stat.value}
