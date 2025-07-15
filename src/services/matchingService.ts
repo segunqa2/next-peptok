@@ -303,6 +303,83 @@ export async function findCoachMatches(
   return await matchingService.findMatches(request);
 }
 
+export async function getMatchingResult(
+  requestId: string,
+): Promise<MatchingResult | null> {
+  try {
+    console.log(`Getting existing matching results for request: ${requestId}`);
+
+    // Check if this is a demo user with demo data
+    const isDemoUser = localStorage
+      .getItem("peptok_token")
+      ?.startsWith("demo_token_");
+    const demoData = localStorage.getItem("peptok_demo_data");
+
+    if (isDemoUser && demoData) {
+      console.log("🎭 Loading demo matching results");
+      const parsedDemoData = JSON.parse(demoData);
+
+      if (parsedDemoData.coaches && requestId === "req_001") {
+        // Return demo matching results with coach data
+        const demoResult: MatchingResult = {
+          requestId: requestId,
+          matches: parsedDemoData.coaches.map((coach: any) => ({
+            id: coach.id,
+            name: coach.name,
+            title: coach.title,
+            skills: coach.skills,
+            experience: `${coach.experience} years`,
+            rating: coach.rating,
+            availability: "Available",
+            hourlyRate: coach.hourlyRate,
+            profileImage: coach.avatar,
+            bio: coach.bio,
+            expertise: coach.skills,
+            yearsExperience: coach.experience,
+            languages: ["English"],
+            timezone: "UTC-5",
+            matchScore: coach.matchScore,
+            matchReasons: [
+              `${coach.matchScore}% skill match`,
+              "Excellent rating",
+              "Available for immediate start",
+            ],
+            estimatedCost: coach.hourlyRate * 10, // 10 hours estimate
+          })),
+          algorithmVersion: "1.0.0",
+          configUsed: {
+            skillMatch: 0.4,
+            experience: 0.25,
+            rating: 0.2,
+            availability: 0.1,
+            price: 0.05,
+          },
+          timestamp: new Date().toISOString(),
+        };
+
+        console.log("✅ Demo matching results loaded:", demoResult);
+        return demoResult;
+      }
+    }
+
+    // For non-demo users, try to get from localStorage or API
+    const storageKey = `matching_results_${requestId}`;
+    const stored = localStorage.getItem(storageKey);
+
+    if (stored) {
+      const result = JSON.parse(stored);
+      console.log("✅ Found stored matching results:", result);
+      return result;
+    }
+
+    console.log("No existing matching results found for request:", requestId);
+    return null;
+  } catch (error) {
+    console.error("Failed to get matching results:", error);
+    return null;
+  }
+}
+
 export async function acceptCoachMatch(
   matchId: string,
   requestId: string,
