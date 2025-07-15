@@ -19,7 +19,7 @@ export const demoUsers: DemoUser[] = [
     name: "Sarah Johnson",
     firstName: "Sarah",
     lastName: "Johnson",
-    userType: "team_member",
+    userType: "company_admin",
     companyId: "comp_001",
     picture:
       "https://api.dicebear.com/7.x/avataaars/svg?seed=sarah-johnson-emp",
