@@ -33,43 +33,26 @@ describe("AuthController", () => {
 
   describe("login", () => {
     it("should return access token and user on successful login", async () => {
-      const loginDto = {
+      const mockUser = {
+        id: "user-1",
         email: "admin@techcorp.com",
-        password: "demo123",
+        name: "TechCorp Admin",
+        userType: "company_admin",
       };
 
       const expectedResult = {
         access_token: "jwt-token",
-        user: {
-          id: "user-1",
-          email: "admin@techcorp.com",
-          name: "TechCorp Admin",
-          userType: "company_admin",
-        },
+        user: mockUser,
       };
+
+      const mockRequest = { user: mockUser };
 
       mockAuthService.login.mockResolvedValue(expectedResult);
 
-      const result = await controller.login(loginDto);
+      const result = await controller.login(mockRequest);
 
-      expect(authService.login).toHaveBeenCalledWith(
-        loginDto.email,
-        loginDto.password,
-      );
+      expect(authService.login).toHaveBeenCalledWith(mockUser);
       expect(result).toEqual(expectedResult);
-    });
-
-    it("should throw error on invalid credentials", async () => {
-      const loginDto = {
-        email: "invalid@example.com",
-        password: "wrongpassword",
-      };
-
-      mockAuthService.login.mockRejectedValue(new Error("Invalid credentials"));
-
-      await expect(controller.login(loginDto)).rejects.toThrow(
-        "Invalid credentials",
-      );
     });
   });
 
