@@ -173,31 +173,10 @@ export default function VideoConference() {
                   name: "Sarah Johnson",
                   avatar: "https://avatar.vercel.sh/sarah@example.com",
                   title: "Senior Leadership Coach",
-                };
+                                };
 
-                    // No fallback data - return error if backend unavailable
+          // No fallback data - return error if backend unavailable
           throw new Error("Session data not available - backend service unreachable");
-            description:
-              "Help our team improve their React skills and best practices",
-            coach: fallbackCoachData,
-            startTime: new Date().toISOString(),
-            duration: 60,
-            status: "upcoming",
-            participants: [
-              {
-                id: user?.userType === "coach" ? user.id : "coach-1",
-                name: fallbackCoachData.name,
-                email:
-                  user?.userType === "coach" ? user.email : "sarah@example.com",
-                role: "coach",
-                userType: "coach",
-                isOnline: user?.userType === "coach",
-                videoEnabled: true,
-                audioEnabled: true,
-              },
-              {
-                id: "member_1",
-                name: "John Doe",
                 email: "john.doe@company.com",
                 role: "participant",
                 userType: "team_member",
