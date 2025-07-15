@@ -928,10 +928,7 @@ class EnhancedApiService {
     }
   }
 
-    // Duplicate getCoachProfile method removed
-
-    // Coaches can only access their own profile unless platform admin
-    if (user.userType === "coach" && user.id !== coachId) {
+      // Method duplicates removed - see original methods above
       throw new Error("Coaches can only access their own profile");
     }
 
