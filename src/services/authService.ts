@@ -86,6 +86,51 @@ class AuthService {
     try {
       console.log(`🔐 Login attempt for email: ${email}`);
 
+      // Check for demo users first
+      const demoUser = findDemoUser(email, password);
+      if (demoUser) {
+        console.log(`🎭 Demo login for: ${email}`);
+
+        const user: User = {
+          id: demoUser.id,
+          name: demoUser.name,
+          email: demoUser.email,
+          firstName: demoUser.firstName,
+          lastName: demoUser.lastName,
+          picture: demoUser.picture,
+          provider: demoUser.provider,
+          userType: demoUser.userType,
+          companyId: demoUser.companyId,
+          company: demoUser.company,
+          status: demoUser.status,
+          joinedAt: demoUser.joinedAt,
+          lastActive: demoUser.lastActive,
+          isAuthenticated: true,
+        };
+
+        // Generate a demo token
+        const demoToken = `demo_token_${demoUser.id}_${Date.now()}`;
+
+        console.log(
+          `✅ Demo login successful for "${email}", user type: ${user.userType}`,
+        );
+
+        this.saveUserToStorage(user, demoToken);
+
+        // Store demo data in localStorage for easy access
+        const demoData = getDemoDataForUser(demoUser);
+        if (demoData) {
+          localStorage.setItem("peptok_demo_data", JSON.stringify(demoData));
+        }
+
+        return {
+          success: true,
+          user,
+          token: demoToken,
+        };
+      }
+
+      // Fallback to backend API for non-demo users
       const response = await api.auth.login(email, password);
 
       const user: User = {
