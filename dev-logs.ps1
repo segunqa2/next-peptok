@@ -55,7 +55,7 @@ function Write-ColorOutput {
 }
 
 try {
-    Write-ColorOutput $Blue "📄 Viewing Peptok Development Logs..."
+    Write-ColorOutput $Blue "Viewing Peptok Development Logs..."
     
     $composeArgs = @("-f", "docker-compose.yml", "-f", "docker-compose.dev.yml", "logs")
     
@@ -66,19 +66,19 @@ try {
     $composeArgs += "--tail=$Tail"
     
     if ($Service) {
-        Write-ColorOutput $Yellow "🎯 Showing logs for: $Service"
+        Write-ColorOutput $Yellow "Showing logs for: $Service"
         $composeArgs += $Service
     } else {
-        Write-ColorOutput $Yellow "📊 Showing logs for all services"
+        Write-ColorOutput $Yellow "Showing logs for all services"
     }
     
     Write-Host ""
-    Write-ColorOutput $Cyan "💡 Press Ctrl+C to exit"
+    Write-ColorOutput $Cyan "Press Ctrl+C to exit"
     Write-Host ""
     
     & docker compose @composeArgs
 }
 catch {
-    Write-ColorOutput $Red "❌ An error occurred: $($_.Exception.Message)"
+    Write-ColorOutput $Red "An error occurred: $($_.Exception.Message)"
     exit 1
 }
