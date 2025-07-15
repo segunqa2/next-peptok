@@ -137,10 +137,11 @@ const CompanyDashboard = () => {
           setRecentActivities(parsedDemoData.dashboardStats.recentActivity);
 
           console.log("✅ Demo data loaded successfully");
+          setIsLoading(false);
           return;
         }
 
-        // Fetch dashboard metrics if user has a company
+        // Fetch dashboard metrics if user has a company (non-demo users only)
         if (user?.companyId) {
           try {
             const metrics = await companyDashboardApi.getDashboardMetrics(
