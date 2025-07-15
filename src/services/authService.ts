@@ -44,6 +44,7 @@ class AuthService {
       this.currentUser = user;
       this.authToken = token;
       setAuthToken(token);
+      setCurrentUser(user); // Set user for apiEnhanced authorization
       console.log(`✅ User saved to storage: ${user.email}`);
     } catch (error) {
       console.error("Failed to save user to storage:", error);
