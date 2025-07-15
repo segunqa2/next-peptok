@@ -217,6 +217,60 @@ export const CoachDashboard: React.FC = () => {
     try {
       setLoading(true);
 
+      // Check if this is a demo user (Daniel)
+      const isDemoUser = localStorage
+        .getItem("peptok_token")
+        ?.startsWith("demo_token_");
+      const demoData = localStorage.getItem("peptok_demo_data");
+
+      if (isDemoUser && demoData && user.id === "user_004") {
+        console.log("🎭 Loading demo coach dashboard data for Daniel");
+        const parsedDemoData = JSON.parse(demoData);
+
+        // Set demo data for Daniel
+        const demoProfile = {
+          id: user.id,
+          name: "Daniel Hayes",
+          title: "Senior Marketing Strategist",
+          bio: "Senior marketing strategist and sales consultant with over 10 years of experience in building sales funnels and optimizing customer segmentation.",
+          skills: [
+            "Marketing",
+            "Sales Funnel Optimization",
+            "Persuasion and Negotiation",
+            "Customer Segmentation",
+          ],
+          experience: 10,
+          rating: 4.9,
+          totalRatings: 127,
+          hourlyRate: 180,
+          avatar:
+            "https://images.unsplash.com/photo-1494790108755-2616b612b1-3c?w=150",
+        };
+
+        const demoStats = {
+          totalSessions: 245,
+          totalEarnings:
+            parsedDemoData.dashboardStats?.monthlyEarnings || 12500,
+          responseRate: parsedDemoData.dashboardStats?.responseRate || 95,
+          rating: 4.9,
+          successRate: parsedDemoData.dashboardStats?.successRate || 92,
+        };
+
+        // Demo coaching requests for Daniel
+        const demoRequests =
+          parsedDemoData.dashboardStats?.coachingRequests || [];
+
+        setProfile(demoProfile);
+        setStats(demoStats);
+        setCoachingRequests(demoRequests);
+        setSessions([]);
+        setRecentActivity([]);
+
+        console.log("✅ Demo coach dashboard data loaded for Daniel");
+        setLoading(false);
+        return;
+      }
+
       // Load all data in parallel with individual error handling
       const [profileData, statsData, matchesData, sessionsData, activityData] =
         await Promise.allSettled([
