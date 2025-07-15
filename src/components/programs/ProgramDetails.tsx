@@ -193,6 +193,7 @@ export const ProgramDetails: React.FC<ProgramDetailsProps> = ({
     return (
       user?.userType === "company_admin" &&
       program?.companyId === user.companyId &&
+      program?.requesterId === user.id && // Only the company admin who created the program
       (program?.status === "draft" ||
         program?.status === "pending_coach_acceptance")
     );
