@@ -1,7 +1,6 @@
 // This is a temporary file to help fix the matchingService.ts
 
-// Keep everything before the generateMockCoaches method and replace from that point
-
+export class TempMatchingService {
   private generateMockCoaches(): Omit<
     CoachMatch,
     "matchScore" | "matchReasons" | "estimatedCost"
