@@ -3,17 +3,40 @@ import react from "@vitejs/plugin-react";
 import path from "path";
 
 // https://vitejs.dev/config/
-export default defineConfig(({ mode }) => ({
-  server: {
-    host: "0.0.0.0",
-    port: 8080,
-    watch: {
-      usePolling: true,
-    },
-    hmr: {
-      port: 8080,
-    },
-  },
+export default defineConfig(({ mode }) => {
+  // Detect cloud environment
+  const isCloudEnvironment =
+    process.env.NODE_ENV === 'production' ||
+    process.env.FLY_APP_NAME ||
+    process.env.VERCEL ||
+    process.env.NETLIFY;
+
+  // Cloud-specific configuration
+  const serverConfig = isCloudEnvironment
+    ? {
+        // Production/cloud settings - disable HMR to prevent fetch errors
+        host: "0.0.0.0",
+        port: 8080,
+        hmr: false, // Disable HMR in cloud environments
+        watch: {
+          ignored: ['**/node_modules/**']
+        }
+      }
+    : {
+        // Local development settings
+        host: "0.0.0.0",
+        port: 8080,
+        watch: {
+          usePolling: true,
+        },
+        hmr: {
+          port: 8080,
+          host: 'localhost'
+        },
+      };
+
+  return {
+    server: serverConfig,
   plugins: [react()],
   resolve: {
     alias: {
