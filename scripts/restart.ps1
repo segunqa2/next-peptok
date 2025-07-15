@@ -70,13 +70,13 @@ function Test-ContainerExists {
 }
 
 try {
-    Write-ColorOutput $Blue "🔄 Restarting Peptok Coaching Platform..."
+    Write-ColorOutput $Blue "Restarting Peptok Coaching Platform..."
     
     if ($Service) {
-        Write-ColorOutput $Yellow "🎯 Target service: $Service"
+        Write-ColorOutput $Yellow "Target service: $Service"
     }
     else {
-        Write-ColorOutput $Yellow "🎯 Target: All services"
+        Write-ColorOutput $Yellow "Target: All services"
     }
     
     # Navigate to project root
@@ -89,10 +89,10 @@ try {
     
     if ($Environment -eq "development") {
         $ComposeFiles += "docker-compose.dev.yml"
-        Write-ColorOutput $Yellow "🔧 Using development environment"
+        Write-ColorOutput $Yellow "Using development environment"
     }
     else {
-        Write-ColorOutput $Yellow "🏭 Using production environment"
+        Write-ColorOutput $Yellow "Using production environment"
     }
     
     $ComposeArgs = @()
@@ -112,7 +112,7 @@ try {
     }
     
     if ($existingContainers.Count -eq 0) {
-        Write-ColorOutput $Yellow "ℹ️  No existing containers found. Starting fresh..."
+        Write-ColorOutput $Yellow "No existing containers found. Starting fresh..."
         & "$ScriptPath\start.ps1" -Environment $Environment -Build:$Build
         return
     }
@@ -125,17 +125,17 @@ try {
     
     # Build if requested
     if ($Build) {
-        Write-ColorOutput $Yellow "🔨 Rebuilding containers..."
+        Write-ColorOutput $Yellow "Rebuilding containers..."
         & "$ScriptPath\build.ps1" -Environment $Environment -NoCache
         
         if ($LASTEXITCODE -ne 0) {
-            Write-ColorOutput $Red "❌ Build failed"
+            Write-ColorOutput $Red "Build failed"
             exit 1
         }
     }
     
     # Stop services
-    Write-ColorOutput $Yellow "⏹️  Stopping services..."
+    Write-ColorOutput $Yellow "Stopping services..."
     
     if ($Service) {
         & docker-compose @ComposeArgs stop $Service
@@ -145,7 +145,7 @@ try {
     }
     
     if ($LASTEXITCODE -ne 0) {
-        Write-ColorOutput $Red "❌ Failed to stop services"
+        Write-ColorOutput $Red "Failed to stop services"
         exit 1
     }
     
@@ -153,7 +153,7 @@ try {
     Start-Sleep -Seconds 2
     
     # Start services
-    Write-ColorOutput $Yellow "🚀 Starting services..."
+    Write-ColorOutput $Yellow "Starting services..."
     
     if ($Service) {
         & docker-compose @ComposeArgs up -d $Service
@@ -163,12 +163,12 @@ try {
     }
     
     if ($LASTEXITCODE -ne 0) {
-        Write-ColorOutput $Red "❌ Failed to start services"
+        Write-ColorOutput $Red "Failed to start services"
         exit 1
     }
     
     # Wait for services to be healthy
-    Write-ColorOutput $Yellow "⏳ Waiting for services to be healthy..."
+    Write-ColorOutput $Yellow "Waiting for services to be healthy..."
     
     $maxAttempts = 30
     $attempt = 0
@@ -202,40 +202,40 @@ try {
     Write-Host ""
     
     if ($attempt -eq $maxAttempts) {
-        Write-ColorOutput $Yellow "⚠️  Services may not be fully healthy yet. Check status with:"
+        Write-ColorOutput $Yellow "Services may not be fully healthy yet. Check status with:"
         Write-ColorOutput $Yellow "     docker-compose ps"
     }
     else {
-        Write-ColorOutput $Green "✅ Services restarted successfully!"
+        Write-ColorOutput $Green "Services restarted successfully!"
     }
     
     # Show service URLs
     Write-Host ""
-    Write-ColorOutput $Green "🌟 Peptok Platform is running!"
+    Write-ColorOutput $Green "Peptok Platform is running!"
     
     if ($Environment -eq "development") {
-        Write-ColorOutput $Blue "📱 Frontend (Development): http://localhost:3000"
-        Write-ColorOutput $Blue "⚙️  Backend API: http://localhost:3001"
-        Write-ColorOutput $Blue "📊 API Health: http://localhost:3001/health"
+        Write-ColorOutput $Blue "Frontend (Development): http://localhost:3000"
+        Write-ColorOutput $Blue "Backend API: http://localhost:3001"
+        Write-ColorOutput $Blue "API Health: http://localhost:3001/health"
     }
     else {
-        Write-ColorOutput $Blue "📱 Frontend: http://localhost"
-        Write-ColorOutput $Blue "⚙️  Backend API: http://localhost:3001"
-        Write-ColorOutput $Blue "📊 API Health: http://localhost:3001/health"
+        Write-ColorOutput $Blue "Frontend: http://localhost"
+        Write-ColorOutput $Blue "Backend API: http://localhost:3001"
+        Write-ColorOutput $Blue "API Health: http://localhost:3001/health"
     }
     
     # Show container status
     Write-Host ""
-    Write-ColorOutput $Yellow "📊 Container Status:"
+    Write-ColorOutput $Yellow "Container Status:"
     & docker-compose @ComposeArgs ps
     
     Write-Host ""
-    Write-ColorOutput $Yellow "💡 Useful commands:"
+    Write-ColorOutput $Yellow "Useful commands:"
     Write-ColorOutput $Yellow "  - View logs: .\scripts\logs.ps1"
     Write-ColorOutput $Yellow "  - Stop services: .\scripts\stop.ps1"
     Write-ColorOutput $Yellow "  - Rebuild: .\scripts\restart.ps1 -Build"
 }
 catch {
-    Write-ColorOutput $Red "❌ An error occurred during restart: $($_.Exception.Message)"
+    Write-ColorOutput $Red "An error occurred during restart: $($_.Exception.Message)"
     exit 1
 }
