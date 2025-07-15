@@ -136,6 +136,21 @@ class DatabaseSeeder {
   // Company Admins (one for each company)
   private readonly companyAdmins: SeedUser[] = [
     {
+      id: "user_022",
+      email: "admin@techcorp.com",
+      password: "demo123",
+      name: "TechCorp Admin",
+      firstName: "TechCorp",
+      lastName: "Admin",
+      userType: "company_admin",
+      companyId: "comp_001",
+      picture: "https://api.dicebear.com/7.x/avataaars/svg?seed=techcorp-admin",
+      provider: "email",
+      joinedAt: "2024-01-15T00:00:00Z",
+      lastActive: "2024-03-15T18:00:00Z",
+      status: "active",
+    },
+    {
       id: "user_023",
       email: "employee1@techcorp.com",
       password: "emp123",
