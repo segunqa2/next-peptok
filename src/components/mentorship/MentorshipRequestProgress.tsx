@@ -312,7 +312,11 @@ export function MentorshipRequestProgress({
                     </Badge>
                   ))}
                   {request.goals.length > 3 && (
-                    <Badge variant="outline" className="text-xs">
+                    <Badge
+                      key={`${request.id}-goals-more`}
+                      variant="outline"
+                      className="text-xs"
+                    >
                       +{request.goals.length - 3} more
                     </Badge>
                   )}
@@ -356,7 +360,11 @@ export function MentorshipRequestProgress({
                     )}
                   </div>
                   {pendingMembers.length > 0 && (
-                    <Badge variant="secondary" className="text-xs">
+                    <Badge
+                      key={`${request.id}-pending-members`}
+                      variant="secondary"
+                      className="text-xs"
+                    >
                       {pendingMembers.length} pending
                     </Badge>
                   )}
@@ -397,7 +405,11 @@ export function MentorshipRequestProgress({
                       </Badge>
                     ))}
                   {(request.metricsToTrack || []).length > 2 && (
-                    <Badge variant="outline" className="text-xs">
+                    <Badge
+                      key={`${request.id}-metrics-more`}
+                      variant="outline"
+                      className="text-xs"
+                    >
                       +{(request.metricsToTrack || []).length - 2} more
                     </Badge>
                   )}
