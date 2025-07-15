@@ -497,8 +497,8 @@ class MatchingService {
         languages: ["English"],
         timezone: "EST",
       },
-    ];
-  }
+        ];
+    */
 
   private async getAvailableCoaches(): Promise<
     Omit<CoachMatch, "matchScore" | "matchReasons" | "estimatedCost">[]
