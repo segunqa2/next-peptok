@@ -173,10 +173,7 @@ const CompanyDashboard = () => {
     }
   }, [location.state, navigate, location.pathname]);
 
-  // Recent activities loaded from backend API
-  const recentActivities: any[] = [
-    // All activities moved to backend database
-  ];
+  // Recent activities are now loaded from backend API in useEffect
 
   const topPerformers = [
     {
