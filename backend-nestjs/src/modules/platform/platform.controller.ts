@@ -26,7 +26,7 @@ export class PlatformController {
   @ApiOperation({
     summary: "Get platform-wide statistics",
     description:
-      "Returns aggregated statistics including total coaches, sessions, companies, and average rating",
+      "Returns aggregated statistics including total coaches, sessions, companies, and average rating. Accessible by platform admins only.",
   })
   @ApiResponse({
     status: 200,
@@ -43,7 +43,17 @@ export class PlatformController {
       },
     },
   })
-  async getStatistics() {
+  @ApiResponse({
+    status: 403,
+    description: "Access denied - Platform admin role required",
+  })
+  async getStatistics(@Request() req: any) {
+    // Only platform admins can access platform-wide statistics
+    if (req.user?.userType !== "platform_admin") {
+      throw new ForbiddenException(
+        "Access denied - Platform admin role required",
+      );
+    }
     return this.platformService.getStatistics();
   }
 
