@@ -19,11 +19,13 @@ services:
       - backend-node-modules:/app/node_modules
     ports:
       - "3001:3000"
-    depends_on:
+        depends_on:
       postgres:
         condition: service_healthy
       redis:
         condition: service_healthy
+    networks:
+      - peptok-network
     command: npm run start:dev
 
     # Development frontend with hot reload
