@@ -78,10 +78,10 @@ services:
       dockerfile: Dockerfile.dev
     container_name: peptok-frontend
     restart: unless-stopped
-    environment:
+        environment:
       VITE_API_URL: http://localhost:3001
       VITE_API_BASE_URL: http://localhost:3001
-        ports:
+    ports:
       - "8080:8080"
     volumes:
       - ./src:/app/src
