@@ -107,10 +107,13 @@ const CompanyDashboard = () => {
           }
         }
 
-        // Fetch company's mentorship requests with proper authorization
-        // apiEnhanced automatically filters by user's company for company_admin users
-        const requests = await apiEnhanced.getMentorshipRequests();
-        setMentorshipRequests(requests || []);
+        // Fetch company's programs/requests with proper authorization
+        if (user?.companyId) {
+          const requests = await api.matching.getCompanyRequests(
+            user.companyId,
+          );
+          setMentorshipRequests(requests || []);
+        }
       } catch (error) {
         console.error("Failed to fetch dashboard data:", error);
 
