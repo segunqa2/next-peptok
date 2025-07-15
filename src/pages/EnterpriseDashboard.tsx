@@ -163,59 +163,10 @@ const EnterpriseDashboard = () => {
     }
   }, [location.state]);
 
-  const achievements = [
-    {
-      id: "1",
-      title: "First Mentorship Request",
-      description: "Created your first mentorship request",
-      date: "Dec 1, 2024",
-      icon: Target,
-      color: "text-blue-600",
-    },
-    {
-      id: "2",
-      title: "Active Learner",
-      description: "Completed 5 coaching sessions",
-      date: "Nov 28, 2024",
-      icon: BookOpen,
-      color: "text-green-600",
-    },
-    {
-      id: "3",
-      title: "Goal Setter",
-      description: "Set and tracked 3 learning objectives",
-      date: "Nov 25, 2024",
-      icon: CheckCircle,
-      color: "text-purple-600",
-    },
-  ];
-
-  const recentActivity = [
-    {
-      id: "1",
-      type: "session_completed",
-      title: "Completed session with Sarah Chen",
-      description: "Leadership strategies for remote teams",
-      timestamp: "2 hours ago",
-      icon: Video,
-    },
-    {
-      id: "2",
-      type: "goal_progress",
-      title: "Goal progress updated",
-      description: "Communication skills - 75% complete",
-      timestamp: "1 day ago",
-      icon: TrendingUp,
-    },
-    {
-      id: "3",
-      type: "coach_feedback",
-      title: "Received feedback from Michael Rodriguez",
-      description: "Great progress on data analysis techniques!",
-      timestamp: "3 days ago",
-      icon: MessageSquare,
-    },
-  ];
+  // Data will be loaded from backend API
+  const upcomingSessions: any[] = [];
+  const achievements: any[] = [];
+  const recentActivity: any[] = [];
 
   return (
     <div className="min-h-screen bg-gray-50">
