@@ -95,6 +95,9 @@ const PlatformValidationDashboard = React.lazy(
 const DataSyncTestingDashboard = React.lazy(
   () => import("@/pages/DataSyncTestingDashboard"),
 );
+const ValidationDashboard = React.lazy(
+  () => import("@/pages/ValidationDashboard"),
+);
 const CoachDashboardTest = React.lazy(() =>
   import("@/components/testing/CoachDashboardTest").then((module) => ({
     default: module.CoachDashboardTest,
@@ -386,6 +389,9 @@ export const FullApp: React.FC = () => {
 
           {/* Data Sync Testing Dashboard (for development/debugging) */}
           <Route path="/sync-testing" element={<DataSyncTestingDashboard />} />
+
+          {/* Session Modification Validation Dashboard (for development/testing) */}
+          <Route path="/session-validation" element={<ValidationDashboard />} />
 
           {/* Coach Dashboard Testing (for development/debugging) */}
           <Route path="/test-coach" element={<CoachDashboardTest />} />

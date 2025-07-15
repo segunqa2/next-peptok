@@ -2,17 +2,30 @@ services:
   # Development backend with hot reload
   backend:
     build:
-      context: ./backend
+      context: ./backend-nestjs
       dockerfile: Dockerfile.dev
     environment:
       - NODE_ENV=development
-      - PORT=3001
+      - DATABASE_HOST=postgres
+      - DATABASE_PORT=5432
+      - DATABASE_USER=peptok_user
+      - DATABASE_PASSWORD=peptok_password
+      - DATABASE_NAME=peptok_dev
+      - REDIS_URL=redis://redis:6379
+      - JWT_SECRET=your-super-secret-jwt-key-change-in-production
+      - PORT=3000
     volumes:
-      - ./backend/src:/app/src
-      - ./backend/.env:/app/.env
+      - ./backend-nestjs/src:/app/src
       - backend-node-modules:/app/node_modules
     ports:
       - "3001:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - peptok-network
     command: npm run start:dev
 
   # Development frontend with hot reload
@@ -32,8 +45,12 @@ services:
       - ./tsconfig.json:/app/tsconfig.json:ro
       - frontend-node-modules:/app/node_modules
     ports:
-      - "3000:3000"
-    command: npm run dev -- --host 0.0.0.0
+      - "8080:8080"
+    depends_on:
+      - backend
+    networks:
+      - peptok-network
+    command: npm run dev -- --host 0.0.0.0 --port 8080
 
 volumes:
   backend-node-modules:

@@ -1696,6 +1696,180 @@ class EnhancedApiService {
     }
   }
 
+  // ===== SESSION MODIFICATION METHODS =====
+
+  async requestSessionModification(
+    sessionId: string,
+    modification: {
+      newStartTime: Date;
+      newEndTime: Date;
+      reason: string;
+      urgency: "low" | "medium" | "high";
+      message?: string;
+      notifyImmediately: boolean;
+    },
+  ): Promise<any> {
+    const user = checkAuthorization(["company_admin", "platform_admin"]);
+
+    try {
+      const response = await this.request(
+        `/sessions/${sessionId}/modifications`,
+        {
+          method: "POST",
+          body: JSON.stringify({
+            ...modification,
+            requestedBy: user.id,
+            requestedAt: new Date().toISOString(),
+            status: "pending_coach_approval",
+          }),
+        },
+      );
+
+      analytics.trackAction({
+        action: "session_modification_requested",
+        component: "session_management",
+        metadata: {
+          sessionId,
+          urgency: modification.urgency,
+          userType: user.userType,
+          notifyImmediately: modification.notifyImmediately,
+        },
+      });
+
+      return response.data;
+    } catch (error) {
+      console.warn(
+        "API not available, using mock modification request:",
+        error,
+      );
+
+      // For demo purposes, return mock response
+      return {
+        id: `mod-${Date.now()}`,
+        sessionId,
+        status: "pending_coach_approval",
+        requestedAt: new Date().toISOString(),
+        ...modification,
+      };
+    }
+  }
+
+  async respondToSessionModification(
+    sessionId: string,
+    modificationId: string,
+    response: {
+      approved: boolean;
+      message?: string;
+    },
+  ): Promise<any> {
+    const user = checkAuthorization(["coach"]);
+
+    try {
+      const apiResponse = await this.request(
+        `/sessions/${sessionId}/modifications/${modificationId}/respond`,
+        {
+          method: "POST",
+          body: JSON.stringify({
+            ...response,
+            respondedBy: user.id,
+            respondedAt: new Date().toISOString(),
+          }),
+        },
+      );
+
+      analytics.trackAction({
+        action: "session_modification_responded",
+        component: "session_management",
+        metadata: {
+          sessionId,
+          modificationId,
+          approved: response.approved,
+          userType: user.userType,
+        },
+      });
+
+      return apiResponse.data;
+    } catch (error) {
+      console.warn(
+        "API not available, using mock modification response:",
+        error,
+      );
+
+      // For demo purposes, return mock response
+      return {
+        id: modificationId,
+        sessionId,
+        status: response.approved ? "approved" : "rejected",
+        coachResponse: {
+          ...response,
+          respondedAt: new Date().toISOString(),
+          respondedBy: user.id,
+        },
+      };
+    }
+  }
+
+  async getSessionModifications(sessionId: string): Promise<{
+    pending: any | null;
+    history: any[];
+  }> {
+    const user = checkAuthorization();
+
+    try {
+      const [pendingResponse, historyResponse] = await Promise.all([
+        this.request(`/sessions/${sessionId}/modifications/pending`),
+        this.request(`/sessions/${sessionId}/modifications/history`),
+      ]);
+
+      analytics.trackAction({
+        action: "session_modifications_viewed",
+        component: "session_management",
+        metadata: {
+          sessionId,
+          userType: user.userType,
+          hasPending: !!pendingResponse.data,
+          historyCount: historyResponse.data?.length || 0,
+        },
+      });
+
+      return {
+        pending: pendingResponse.data,
+        history: historyResponse.data || [],
+      };
+    } catch (error) {
+      console.warn("API not available, using mock modifications:", error);
+
+      // For demo purposes, return mock data
+      return {
+        pending: null,
+        history: [],
+      };
+    }
+  }
+
+  async logSessionModificationAction(
+    sessionId: string,
+    action: string,
+    details: any,
+  ): Promise<void> {
+    const user = checkAuthorization();
+
+    try {
+      await this.request(`/sessions/${sessionId}/modifications/log`, {
+        method: "POST",
+        body: JSON.stringify({
+          action,
+          details,
+          userId: user.id,
+          userType: user.userType,
+          timestamp: new Date().toISOString(),
+        }),
+      });
+    } catch (error) {
+      console.warn("Failed to log modification action:", error);
+    }
+  }
+
   // ===== GENERAL METHODS =====
 
   async getMentorshipRequests(params?: {
