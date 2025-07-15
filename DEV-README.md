@@ -45,7 +45,7 @@ That's it! The environment is designed to be that simple.
 
 ## Services
 
-- **Frontend (React)**: Port 3000 with hot reload
+- **Frontend (React)**: Port 8080 with hot reload
 - **Backend (NestJS)**: Port 3001 with hot reload
 - **Database (PostgreSQL)**: Port 5432
 - **Cache (Redis)**: Port 6379
