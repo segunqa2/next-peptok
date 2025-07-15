@@ -353,7 +353,12 @@ const Index = () => {
                             </div>
                           </div>
                         );
-                      })}
+                                            })}
+                    ) : (
+                      <div className="col-span-4 text-center py-8 text-gray-500">
+                        <p>Platform statistics unavailable - backend service down</p>
+                      </div>
+                    )}
                   </div>
                 </div>
 
