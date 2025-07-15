@@ -59,5 +59,16 @@ export default defineConfig(({ mode }) => {
       },
       chunkSizeWarningLimit: 1000,
     },
+    test: {
+      exclude: [
+        "**/node_modules/**",
+        "**/dist/**",
+        "**/backend/**",
+        "**/backend-nestjs/**",
+        "**/matching-service/**",
+        "**/.next/**",
+      ],
+      include: ["src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
+    },
   };
 });
