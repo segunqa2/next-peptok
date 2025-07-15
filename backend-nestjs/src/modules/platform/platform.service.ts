@@ -36,9 +36,9 @@ export class PlatformService {
         this.coachRepository.count({ where: { isActive: true } }),
         this.sessionRepository.count(),
         this.companyRepository.count({ where: { isActive: true } }),
-        this.userRepository.count({ where: { status: "active" } }),
+        this.userRepository.count({ where: { status: UserStatus.ACTIVE } }),
         this.sessionRepository.count({
-          where: { status: "in_progress" },
+          where: { status: SessionStatus.IN_PROGRESS },
         }),
         this.reviewRepository
           .createQueryBuilder("review")
