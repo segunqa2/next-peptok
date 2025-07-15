@@ -790,6 +790,7 @@ class DatabaseSeeder {
       console.log("     superadmin@peptok.com / admin123");
       console.log("");
       console.log("   Company Admins:");
+      console.log("     admin@techcorp.com / demo123 (TechCorp Admin)");
       console.log("     employee1@techcorp.com / emp123 (Sarah Johnson)");
       console.log("     admin@innovateco.com / admin123 (Michael Thompson)");
       console.log("");
@@ -817,7 +818,7 @@ class DatabaseSeeder {
       console.log("     carlos.mendoza@peptok.com / coach123 (Carlos Mendoza)");
       console.log("     jennifer.lee@peptok.com / coach123 (Jennifer Lee)");
       console.log("");
-      console.log("🏢 Companies:");
+      console.log("��� Companies:");
       console.log("   TechCorp Solutions (Enterprise tier)");
       console.log("   InnovateCo (Growth tier)");
       console.log("");
