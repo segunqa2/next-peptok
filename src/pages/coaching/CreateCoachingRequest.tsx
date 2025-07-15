@@ -54,7 +54,7 @@ export default function CreateCoachingRequest() {
       try {
         setLoadingTier(true);
         // Load session pricing tiers
-        const tiers = await api.getSessionPricingTiers();
+        const tiers = await apiEnhanced.getSessionPricingTiers();
         // For demo purposes, use Premium plan as default
         const defaultTier = tiers.find((t) => t.id === "premium") || tiers[1];
         setSessionPricingTier(defaultTier);
