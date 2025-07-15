@@ -329,7 +329,7 @@ const Index = () => {
                           icon: Target,
                         },
                         {
-                          value: `${demoStats.platformStats.averageRating}/5.0`,
+                          value: `${platformStats.averageRating}/5.0`,
                           label: "Average Rating",
                           icon: Star,
                         },
