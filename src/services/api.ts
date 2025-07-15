@@ -19,6 +19,7 @@ import {
   SessionJoinInfo,
 } from "../types/session";
 import { Environment } from "../utils/environment";
+import { API_ENDPOINTS } from "../config/api";
 
 const API_BASE_URL = Environment.getApiBaseUrl();
 
