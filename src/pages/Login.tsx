@@ -90,18 +90,6 @@ export default function Login() {
           </div>
         </div>
 
-        {/* Demo Mode Notice */}
-        <Alert className="bg-blue-50 border-blue-200 text-blue-800">
-          <Zap className="h-4 w-4" />
-          <AlertDescription>
-            <strong>Demo Mode Available:</strong> Try logging in with{" "}
-            <code className="bg-blue-100 px-1 rounded">admin@techcorp.com</code>{" "}
-            and password{" "}
-            <code className="bg-blue-100 px-1 rounded">demo123</code> if the
-            backend is not running.
-          </AlertDescription>
-        </Alert>
-
         {/* Main Login Form */}
         <Card className="backdrop-blur-md bg-white/90 shadow-xl border-white/20">
           <CardHeader className="space-y-1 pb-4">
