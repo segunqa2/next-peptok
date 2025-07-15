@@ -928,8 +928,7 @@ class EnhancedApiService {
     }
   }
 
-  async getCoachProfile(coachId: string): Promise<any> {
-    const user = checkAuthorization(["coach", "platform_admin"]);
+    // Duplicate getCoachProfile method removed
 
     // Coaches can only access their own profile unless platform admin
     if (user.userType === "coach" && user.id !== coachId) {
