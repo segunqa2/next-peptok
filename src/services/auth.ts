@@ -31,18 +31,9 @@ export interface AuthResponse {
   isNewUser?: boolean;
 }
 
-// Convert demo database users to auth service format
-const mockUsers: User[] = demoUsers.map((user) => ({
-  id: user.id,
-  email: user.email,
-  name: user.name,
-  firstName: user.firstName,
-  lastName: user.lastName,
-  picture: user.picture,
-  provider: user.provider,
-  userType: user.userType as any,
-  companyId: user.companyId,
-}));
+// API Configuration for backend authentication
+const API_BASE_URL =
+  import.meta.env.VITE_API_URL || "http://localhost:3001/api/v1";
 
 class AuthService {
   private currentUser: User | null = null;
