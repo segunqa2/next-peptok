@@ -325,31 +325,33 @@ export async function getMatchingResult(
 
       if (parsedDemoData.coaches && requestId === "req_001") {
         // Return demo matching results with coach data
+        const matches = parsedDemoData.coaches.map((coach: any) => ({
+          id: coach.id,
+          name: coach.name,
+          title: coach.title,
+          skills: coach.skills,
+          experience: `${coach.experience} years`,
+          rating: coach.rating,
+          availability: "Available",
+          hourlyRate: coach.hourlyRate,
+          profileImage: coach.avatar,
+          bio: coach.bio,
+          expertise: coach.skills,
+          yearsExperience: coach.experience,
+          languages: ["English"],
+          timezone: "UTC-5",
+          matchScore: coach.matchScore,
+          matchReasons: [
+            `${coach.matchScore}% skill match`,
+            "Excellent rating",
+            "Available for immediate start",
+          ],
+          estimatedCost: coach.hourlyRate * 10, // 10 hours estimate
+        }));
+
         const demoResult: MatchingResult = {
           requestId: requestId,
-          matches: parsedDemoData.coaches.map((coach: any) => ({
-            id: coach.id,
-            name: coach.name,
-            title: coach.title,
-            skills: coach.skills,
-            experience: `${coach.experience} years`,
-            rating: coach.rating,
-            availability: "Available",
-            hourlyRate: coach.hourlyRate,
-            profileImage: coach.avatar,
-            bio: coach.bio,
-            expertise: coach.skills,
-            yearsExperience: coach.experience,
-            languages: ["English"],
-            timezone: "UTC-5",
-            matchScore: coach.matchScore,
-            matchReasons: [
-              `${coach.matchScore}% skill match`,
-              "Excellent rating",
-              "Available for immediate start",
-            ],
-            estimatedCost: coach.hourlyRate * 10, // 10 hours estimate
-          })),
+          matches,
           algorithmVersion: "1.0.0",
           configUsed: {
             skillMatch: 0.4,
@@ -359,6 +361,7 @@ export async function getMatchingResult(
             price: 0.05,
           },
           timestamp: new Date().toISOString(),
+          totalMatches: matches.length,
         };
 
         console.log("✅ Demo matching results loaded:", demoResult);
