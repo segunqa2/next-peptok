@@ -76,7 +76,7 @@ async function bootstrap() {
   console.log(`🚀 Peptok NestJS API running on: http://localhost:${port}`);
   console.log(`📚 API Documentation: http://localhost:${port}/api/docs`);
   console.log(`🔍 Health check: http://localhost:${port}/api/health`);
-  console.log(`📊 Database: nestjs-database.json`);
+  console.log(`📊 Database: nestjs-database.sqlite`);
 }
 
 bootstrap().catch((error) => {
