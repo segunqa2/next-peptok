@@ -39,7 +39,7 @@ try {
     Write-Host ""
     Write-Color $Green "🎉 Peptok is starting up!"
     Write-Host ""
-    Write-Color $Blue "🌐 Frontend: http://localhost:3000"
+        Write-Color $Blue "🌐 Frontend: http://localhost:8080"
     Write-Color $Blue "🔧 Backend: http://localhost:3001"
     Write-Host ""
     Write-Color $Blue "📝 View logs: .\dev-logs.ps1"
