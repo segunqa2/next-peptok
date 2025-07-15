@@ -9,6 +9,30 @@ if (typeof window !== "undefined") {
   (window as any).React = React;
 }
 
+// Suppress console errors from HMR and third-party libraries in production
+if (Environment.isProduction()) {
+  const originalConsoleError = console.error;
+  console.error = (...args) => {
+    const message = args.join(" ").toLowerCase();
+
+    // Suppress HMR, Vite, and FullStory related errors
+    if (
+      message.includes("failed to fetch") ||
+      message.includes("@vite") ||
+      message.includes("__vite") ||
+      message.includes("fullstory") ||
+      message.includes("hmr") ||
+      message.includes("websocket")
+    ) {
+      console.debug("Suppressed production error:", ...args);
+      return;
+    }
+
+    // Allow other errors through
+    originalConsoleError.apply(console, args);
+  };
+}
+
 // Log environment information for debugging
 console.log(`🌍 Environment: ${Environment.getEnvironmentName()}`);
 console.log(`🔗 API Base URL: ${Environment.getApiBaseUrl()}`);
