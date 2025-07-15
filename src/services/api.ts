@@ -375,6 +375,9 @@ export const programAPI = {
 };
 
 // Unified API export
+// Helper function to get API base URL
+export const getApiBaseUrl = () => API_BASE_URL;
+
 export const api = {
   auth: authAPI,
   users: userAPI,
@@ -385,6 +388,7 @@ export const api = {
   programs: programAPI,
   platform: platformAPI,
   setAuthToken,
+  getApiBaseUrl,
 };
 
 export default api;
