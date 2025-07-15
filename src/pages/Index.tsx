@@ -314,9 +314,9 @@ const Index = () => {
                     </Button>
                   </div>
 
-                  {/* Enhanced Stats - Real Demo Data */}
+                                    {/* Enhanced Stats - Backend API Data */}
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-6 pt-8">
-                                                            {platformStats ?
+                    {platformStats ? (
                       [
                         {
                           value: `${platformStats.totalCoaches}`,
