@@ -43,15 +43,16 @@ export const Environment = {
 
   // Get the appropriate API base URL
   getApiBaseUrl(): string {
-    const envApiUrl = import.meta.env.VITE_API_URL;
+    const envApiUrl =
+      import.meta.env.VITE_API_URL || import.meta.env.VITE_API_BASE_URL;
 
     if (envApiUrl) {
       return envApiUrl;
     }
 
-    // Default to localhost in development
+    // Default to NestJS backend in development
     if (this.isLocalDevelopment()) {
-      return "http://localhost:3001/api/v1";
+      return "http://localhost:3001";
     }
 
     // In production, assume backend is at same domain
@@ -60,9 +61,9 @@ export const Environment = {
 
   // Check if backend should be attempted
   shouldTryBackend(): boolean {
-    // Only try backend if explicitly configured or in local development
+    // Always try backend in development, and in production if configured
     return (
-      (this.isLocalDevelopment() && !!import.meta.env.VITE_API_URL) ||
+      this.isLocalDevelopment() ||
       (this.isProduction() && !!import.meta.env.VITE_API_URL)
     );
   },
