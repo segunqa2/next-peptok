@@ -183,7 +183,7 @@ const CoachDashboardWithPrograms = () => {
     },
   ];
 
-  const recentActivity = [
+  const recentActivity: any[] = [
     {
       id: "1",
       type: "program_accepted",
