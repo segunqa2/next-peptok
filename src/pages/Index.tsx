@@ -334,7 +334,7 @@ const Index = () => {
                           icon: Star,
                         },
                         {
-                          value: `${demoStats.platformStats.totalCompanies}`,
+                          value: `${platformStats.totalCompanies}`,
                           label: "Companies Served",
                           icon: Building,
                         },
