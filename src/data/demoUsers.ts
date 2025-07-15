@@ -523,13 +523,35 @@ export const findDemoUser = (
   );
 };
 
+// Demo dashboard stats for Daniel (coach view)
+export const demoCoachDashboardStats = {
+  coachingRequests: [demoCoachingRequestForDashboard],
+  sessionSchedule: demoSessionScheduleDaniel,
+  coaches: demoCoaches,
+  monthlyEarnings: 12500,
+  responseRate: 95,
+  totalSessions: 245,
+  successRate: 92,
+};
+
 // Helper function to get demo data by user
 export const getDemoDataForUser = (user: DemoUser) => {
-  if (user.userType === "team_member" && user.companyId === "comp_001") {
+  if (user.userType === "company_admin" && user.companyId === "comp_001") {
     return {
       company: demoCompany,
       dashboardStats: demoCompanyDashboardStats,
-      coachingRequest: demoCoachingRequest,
+      coachingRequest: demoCoachingRequestForDashboard,
+      coaches: demoCoaches,
+      sessionSchedule: demoSessionScheduleSarah,
+    };
+  }
+
+  if (user.userType === "coach" && user.id === "user_004") {
+    return {
+      dashboardStats: demoCoachDashboardStats,
+      coachingRequest: demoCoachingRequestForDashboard,
+      coaches: demoCoaches,
+      sessionSchedule: demoSessionScheduleDaniel,
     };
   }
 
