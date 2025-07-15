@@ -44,3 +44,4 @@ export class TempMatchingService {
     // Fallback to mock data for development
     return this.generateMockCoaches();
   }
+}
