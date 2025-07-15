@@ -18,7 +18,7 @@ const DashboardRouter = () => {
           navigate("/platform-admin", { replace: true });
           break;
         case "company_admin":
-          navigate("/dashboard", { replace: true });
+          navigate("/company/dashboard/basic", { replace: true });
           break;
         case "coach":
           navigate("/coach/dashboard", { replace: true });
