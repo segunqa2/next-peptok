@@ -387,7 +387,7 @@ export function MentorshipRequestProgress({
                     .slice(0, 2)
                     .map((metric, index) => (
                       <Badge
-                        key={`${request.id}-metric-${index}`}
+                        key={`${request.id}-metric-${metric}-${index}`}
                         variant="outline"
                         className="text-xs"
                       >
