@@ -23,6 +23,12 @@ import { API_ENDPOINTS } from "../config/api";
 
 const API_BASE_URL = Environment.getApiBaseUrl();
 
+// Debug logging for API configuration
+console.log(`🔧 API Configuration:`);
+console.log(`  - Environment: ${Environment.getEnvironmentName()}`);
+console.log(`  - API Base URL: ${API_BASE_URL}`);
+console.log(`  - Should try backend: ${Environment.shouldTryBackend()}`);
+
 // Token management
 let authToken: string | null = null;
 
