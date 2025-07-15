@@ -115,6 +115,17 @@ const CompanyDashboard = () => {
             user.companyId,
           );
           setMentorshipRequests(requests || []);
+
+          // Fetch upcoming sessions
+          const sessions = await sessionManagementService.getUpcomingSessions({
+            limit: 5,
+          });
+          setUpcomingSessions(sessions);
+
+          // Fetch recent activities
+          const activities =
+            await sessionManagementService.getRecentActivities(10);
+          setRecentActivities(activities);
         }
       } catch (error) {
         console.error("Failed to fetch dashboard data:", error);
