@@ -24,13 +24,37 @@ export class PlatformController {
 
   @Get("statistics")
   @ApiOperation({
-    summary: "Get platform-wide statistics",
+    summary: "Get public platform statistics",
     description:
-      "Returns aggregated statistics including total coaches, sessions, companies, and average rating. Accessible by platform admins only.",
+      "Returns basic platform statistics for display on public pages. Shows aggregated counts without sensitive details.",
   })
   @ApiResponse({
     status: 200,
-    description: "Platform statistics retrieved successfully",
+    description: "Public platform statistics retrieved successfully",
+    schema: {
+      type: "object",
+      properties: {
+        totalCoaches: { type: "number", example: 25 },
+        totalSessions: { type: "number", example: 150 },
+        totalCompanies: { type: "number", example: 8 },
+        averageRating: { type: "number", example: 4.6 },
+      },
+    },
+  })
+  async getStatistics() {
+    // Return public statistics (no sensitive data)
+    return this.platformService.getPublicStatistics();
+  }
+
+  @Get("admin/statistics")
+  @ApiOperation({
+    summary: "Get detailed platform statistics",
+    description:
+      "Returns detailed platform statistics including sensitive data. Accessible by platform admins only.",
+  })
+  @ApiResponse({
+    status: 200,
+    description: "Detailed platform statistics retrieved successfully",
     schema: {
       type: "object",
       properties: {
@@ -40,6 +64,8 @@ export class PlatformController {
         averageRating: { type: "number", example: 4.6 },
         totalUsers: { type: "number", example: 200 },
         activeSessions: { type: "number", example: 12 },
+        revenue: { type: "number", example: 50000 },
+        growth: { type: "object" },
       },
     },
   })
@@ -47,8 +73,8 @@ export class PlatformController {
     status: 403,
     description: "Access denied - Platform admin role required",
   })
-  async getStatistics(@Request() req: any) {
-    // Only platform admins can access platform-wide statistics
+  async getDetailedStatistics(@Request() req: any) {
+    // Only platform admins can access detailed statistics
     if (req.user?.userType !== "platform_admin") {
       throw new ForbiddenException(
         "Access denied - Platform admin role required",
