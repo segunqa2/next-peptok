@@ -36,7 +36,7 @@ import {
   Play,
   Download,
 } from "lucide-react";
-import { mockCoaches } from "@/data/mockData";
+// Removed mock coaches - will use backend API
 
 const ExpertProfile = () => {
   const { id } = useParams();
