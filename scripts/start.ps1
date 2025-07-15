@@ -80,19 +80,19 @@ function Test-DockerRunning {
 
 # Main script
 try {
-    Write-ColorOutput $Blue "🚀 Starting Peptok Coaching Platform..."
+    Write-ColorOutput $Blue "Starting Peptok Coaching Platform..."
     Write-ColorOutput $Yellow "Environment: $Environment"
     
     # Check Docker installation
     if (-not (Test-DockerInstallation)) {
-        Write-ColorOutput $Red "❌ Docker or Docker Compose is not installed or not in PATH"
+        Write-ColorOutput $Red "Docker or Docker Compose is not installed or not in PATH"
         Write-ColorOutput $Yellow "Please install Docker Desktop and try again"
         exit 1
     }
     
     # Check if Docker is running
     if (-not (Test-DockerRunning)) {
-        Write-ColorOutput $Red "❌ Docker is not running"
+        Write-ColorOutput $Red "Docker is not running"
         Write-ColorOutput $Yellow "Please start Docker Desktop and try again"
         exit 1
     }
@@ -102,17 +102,17 @@ try {
     $ProjectRoot = Split-Path -Parent $ScriptPath
     Set-Location $ProjectRoot
     
-    Write-ColorOutput $Green "📁 Working directory: $(Get-Location)"
+    Write-ColorOutput $Green "Working directory: $(Get-Location)"
     
     # Prepare docker-compose command
     $ComposeFiles = @("docker-compose.yml")
     
     if ($Environment -eq "development") {
         $ComposeFiles += "docker-compose.dev.yml"
-        Write-ColorOutput $Yellow "🔧 Running in development mode with hot reload"
+        Write-ColorOutput $Yellow "Running in development mode with hot reload"
     }
     else {
-        Write-ColorOutput $Yellow "🏭 Running in production mode"
+        Write-ColorOutput $Yellow "Running in production mode"
     }
     
     $ComposeArgs = @()
@@ -123,25 +123,25 @@ try {
     
     # Build containers if requested
     if ($Build) {
-        Write-ColorOutput $Yellow "🔨 Building containers..."
+        Write-ColorOutput $Yellow "Building containers..."
         & docker-compose @ComposeArgs build --no-cache
         if ($LASTEXITCODE -ne 0) {
-            Write-ColorOutput $Red "❌ Failed to build containers"
+            Write-ColorOutput $Red "Failed to build containers"
             exit 1
         }
     }
     
     # Start containers
-    Write-ColorOutput $Yellow "🚀 Starting containers..."
+    Write-ColorOutput $Yellow "Starting containers..."
     & docker-compose @ComposeArgs up -d
     
     if ($LASTEXITCODE -ne 0) {
-        Write-ColorOutput $Red "❌ Failed to start containers"
+        Write-ColorOutput $Red "Failed to start containers"
         exit 1
     }
     
     # Wait for services to be healthy
-    Write-ColorOutput $Yellow "⏳ Waiting for services to be healthy..."
+    Write-ColorOutput $Yellow "Waiting for services to be healthy..."
     
     $maxAttempts = 30
     $attempt = 0
@@ -162,29 +162,29 @@ try {
     Write-Host ""
     
     if ($attempt -eq $maxAttempts) {
-        Write-ColorOutput $Red "⚠️  Services may not be fully healthy yet. Check logs with: .\scripts\logs.ps1"
+        Write-ColorOutput $Red "Services may not be fully healthy yet. Check logs with: .\scripts\logs.ps1"
     }
     else {
-        Write-ColorOutput $Green "✅ All services are healthy!"
+        Write-ColorOutput $Green "All services are healthy!"
     }
     
     # Show service URLs
-    Write-ColorOutput $Green "🌟 Peptok Platform is running!"
+    Write-ColorOutput $Green "Peptok Platform is running!"
     Write-Host ""
     
     if ($Environment -eq "development") {
-        Write-ColorOutput $Blue "📱 Frontend (Development): http://localhost:3000"
-        Write-ColorOutput $Blue "⚙️  Backend API: http://localhost:3001"
-        Write-ColorOutput $Blue "📊 API Health: http://localhost:3001/health"
+        Write-ColorOutput $Blue "Frontend (Development): http://localhost:3000"
+        Write-ColorOutput $Blue "Backend API: http://localhost:3001"
+        Write-ColorOutput $Blue "API Health: http://localhost:3001/health"
     }
     else {
-        Write-ColorOutput $Blue "📱 Frontend: http://localhost"
-        Write-ColorOutput $Blue "⚙️  Backend API: http://localhost:3001"
-        Write-ColorOutput $Blue "📊 API Health: http://localhost:3001/health"
+        Write-ColorOutput $Blue "Frontend: http://localhost"
+        Write-ColorOutput $Blue "Backend API: http://localhost:3001"
+        Write-ColorOutput $Blue "API Health: http://localhost:3001/health"
     }
     
     Write-Host ""
-    Write-ColorOutput $Yellow "📋 Available commands:"
+    Write-ColorOutput $Yellow "Available commands:"
     Write-ColorOutput $Yellow "  - View logs: .\scripts\logs.ps1"
     Write-ColorOutput $Yellow "  - Stop services: .\scripts\stop.ps1"
     Write-ColorOutput $Yellow "  - Restart services: .\scripts\restart.ps1"
@@ -192,11 +192,11 @@ try {
     # Show logs if requested
     if ($Logs) {
         Write-Host ""
-        Write-ColorOutput $Yellow "📄 Showing container logs (Ctrl+C to exit)..."
+        Write-ColorOutput $Yellow "Showing container logs (Ctrl+C to exit)..."
         & docker-compose @ComposeArgs logs -f
     }
 }
 catch {
-    Write-ColorOutput $Red "❌ An error occurred: $($_.Exception.Message)"
+    Write-ColorOutput $Red "An error occurred: $($_.Exception.Message)"
     exit 1
 }
