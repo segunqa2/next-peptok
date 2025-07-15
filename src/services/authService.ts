@@ -70,7 +70,13 @@ class AuthService {
   async isAuthenticated(): Promise<boolean> {
     if (this.currentUser && this.authToken) {
       try {
-        // Verify token with backend
+        // Check if it's a demo token
+        if (this.authToken.startsWith("demo_token_")) {
+          console.log("✅ Demo token verified");
+          return true;
+        }
+
+        // Verify token with backend for real users
         await api.auth.getProfile();
         return true;
       } catch (error) {
