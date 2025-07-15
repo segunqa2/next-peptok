@@ -71,7 +71,7 @@ services:
       start_period: 30s
       retries: 3
 
-  # React Frontend with Hot Reload
+    # React Frontend with Hot Reload
   frontend:
     build:
       context: .
@@ -80,7 +80,7 @@ services:
     restart: unless-stopped
     environment:
       VITE_API_URL: http://localhost:3001
-      VITE_API_BASE_URL: http://localhost:3001/api
+      VITE_API_BASE_URL: http://localhost:3001
     ports:
       - "3000:3000"
     volumes:
