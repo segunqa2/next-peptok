@@ -526,38 +526,58 @@ const CompanyDashboard = () => {
                         </Button>
                       </CardHeader>
                       <CardContent className="space-y-4">
-                        {recentActivities.map((activity) => (
-                          <div
-                            key={activity.id}
-                            className="flex items-start space-x-4 p-4 rounded-lg border bg-card hover:shadow-md transition-all duration-200"
-                          >
-                            <div className="p-2 rounded-full bg-muted">
-                              {getActivityIcon(activity.type, activity.status)}
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <div className="flex items-center justify-between">
-                                <p className="text-sm font-medium">
-                                  {activity.message}
-                                </p>
-                                <Badge
-                                  variant="outline"
-                                  className={getImpactBadge(activity.impact)}
-                                >
-                                  {activity.impact}
-                                </Badge>
+                        {recentActivities.length > 0 ? (
+                          recentActivities.map((activity) => (
+                            <div
+                              key={activity.id}
+                              className="flex items-start space-x-4 p-4 rounded-lg border bg-card hover:shadow-md transition-all duration-200"
+                            >
+                              <div className="p-2 rounded-full bg-muted">
+                                {getActivityIcon(
+                                  activity.type,
+                                  activity.status,
+                                )}
                               </div>
-                              {activity.user && (
+                              <div className="flex-1 min-w-0">
+                                <div className="flex items-center justify-between">
+                                  <p className="text-sm font-medium">
+                                    {activity.title}
+                                  </p>
+                                  <Badge
+                                    variant={
+                                      activity.actionRequired
+                                        ? "destructive"
+                                        : "outline"
+                                    }
+                                  >
+                                    {activity.actionRequired
+                                      ? "Action Required"
+                                      : activity.status}
+                                  </Badge>
+                                </div>
                                 <p className="text-xs text-muted-foreground mt-1">
-                                  {activity.user}
-                                  {activity.expert && ` • ${activity.expert}`}
+                                  {activity.description}
                                 </p>
-                              )}
-                              <p className="text-xs text-muted-foreground">
-                                {activity.timestamp}
-                              </p>
+                                <p className="text-xs text-muted-foreground">
+                                  {new Date(
+                                    activity.timestamp,
+                                  ).toLocaleDateString()}{" "}
+                                  at{" "}
+                                  {new Date(
+                                    activity.timestamp,
+                                  ).toLocaleTimeString()}
+                                </p>
+                              </div>
                             </div>
+                          ))
+                        ) : (
+                          <div className="text-center py-8">
+                            <Activity className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                            <p className="text-muted-foreground">
+                              No recent activities
+                            </p>
                           </div>
-                        ))}
+                        )}
                         <Button variant="outline" className="w-full" size="sm">
                           View All Activity
                         </Button>
