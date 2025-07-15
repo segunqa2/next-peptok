@@ -29,7 +29,7 @@ import {
 import { authService } from "@/services/auth";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
-import { getDemoLoginCredentials } from "@/data/demoDatabase";
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 
@@ -48,40 +48,6 @@ const Login = () => {
     password: "",
     rememberMe: false,
   });
-
-  // Debug function to test demo account
-  const debugDemoAccount = async () => {
-    console.log("🧪 Testing demo@platform.com login...");
-    const testResult = await authService.testDemoLogin("demo@platform.com");
-    toast.success("Check console for demo account debug info");
-  };
-
-  // Get demo credentials organized by user type
-  const demoCredentials = getDemoLoginCredentials();
-  const platformAdmins = demoCredentials.filter(
-    (u) => u.userType === "platform_admin",
-  );
-  const companyAdmins = demoCredentials.filter(
-    (u) => u.userType === "company_admin",
-  );
-  const coaches = demoCredentials.filter((u) => u.userType === "coach");
-  const teamMembers = demoCredentials.filter(
-    (u) => u.userType === "team_member",
-  );
-
-  // Quick demo login function
-  const quickDemoLogin = async (email: string, password: string) => {
-    setFormData({
-      email,
-      password,
-      rememberMe: false,
-    });
-
-    // Small delay to let state update
-    setTimeout(() => {
-      document.querySelector("form")?.requestSubmit();
-    }, 100);
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -241,33 +207,6 @@ const Login = () => {
                   demo@team.com
                 </AlertDescription>
               </Alert>
-
-              {/* Debug Section - Only in development */}
-              {import.meta.env.DEV && (
-                <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-                  <p className="text-sm font-medium text-yellow-800 mb-3">
-                    Debug Tools:
-                  </p>
-                  <div className="flex gap-2 flex-wrap">
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="sm"
-                      onClick={debugDemoAccount}
-                    >
-                      Debug Demo Account
-                    </Button>
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="sm"
-                      onClick={quickDemoLogin}
-                    >
-                      Quick Demo Login
-                    </Button>
-                  </div>
-                </div>
-              )}
 
               {/* Form */}
               <form onSubmit={handleSubmit} className="space-y-6">
