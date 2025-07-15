@@ -125,6 +125,24 @@ export class CompaniesController {
   /**
    * Get program statistics for a company
    */
+  @ApiOperation({
+    summary: "Get company program statistics",
+    description: "Returns program statistics for a specific company",
+  })
+  @ApiResponse({
+    status: 200,
+    description: "Program statistics retrieved successfully",
+    schema: {
+      type: "object",
+      properties: {
+        total: { type: "number" },
+        pending: { type: "number" },
+        processing: { type: "number" },
+        completed: { type: "number" },
+        failed: { type: "number" },
+      },
+    },
+  })
   @Get(":id/program-stats")
   async getProgramStats(@Param("id") id: string, @Request() req: any) {
     const user = req.user;
