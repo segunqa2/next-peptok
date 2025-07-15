@@ -6,7 +6,7 @@ import path from "path";
 export default defineConfig(({ mode }) => {
   // Detect cloud environment
   const isCloudEnvironment =
-    process.env.NODE_ENV === 'production' ||
+    process.env.NODE_ENV === "production" ||
     process.env.FLY_APP_NAME ||
     process.env.VERCEL ||
     process.env.NETLIFY;
@@ -19,8 +19,8 @@ export default defineConfig(({ mode }) => {
         port: 8080,
         hmr: false, // Disable HMR in cloud environments
         watch: {
-          ignored: ['**/node_modules/**']
-        }
+          ignored: ["**/node_modules/**"],
+        },
       }
     : {
         // Local development settings
@@ -31,32 +31,33 @@ export default defineConfig(({ mode }) => {
         },
         hmr: {
           port: 8080,
-          host: 'localhost'
+          host: "localhost",
         },
       };
 
   return {
     server: serverConfig,
-  plugins: [react()],
-  resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "./src"),
-    },
-  },
-  esbuild: {
-    // Only allow TypeScript and TSX files
-    include: /\.(ts|tsx)$/,
-    exclude: /\.(js|jsx)$/,
-  },
-  optimizeDeps: {
-    include: ["react", "react-dom", "react/jsx-runtime"],
-  },
-  build: {
-    rollupOptions: {
-      input: {
-        main: "./index.html",
+    plugins: [react()],
+    resolve: {
+      alias: {
+        "@": path.resolve(__dirname, "./src"),
       },
     },
-    chunkSizeWarningLimit: 1000,
-  },
-}));
+    esbuild: {
+      // Only allow TypeScript and TSX files
+      include: /\.(ts|tsx)$/,
+      exclude: /\.(js|jsx)$/,
+    },
+    optimizeDeps: {
+      include: ["react", "react-dom", "react/jsx-runtime"],
+    },
+    build: {
+      rollupOptions: {
+        input: {
+          main: "./index.html",
+        },
+      },
+      chunkSizeWarningLimit: 1000,
+    },
+  };
+});
