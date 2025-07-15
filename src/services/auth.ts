@@ -198,7 +198,7 @@ class AuthService {
       // Fallback to demo mode for development/demo purposes
       console.log(
         `🧪 Demo mode login for:`,
-        mockUsers.map((u) => ({
+        demoUsers.map((u) => ({
           email: u.email,
           id: u.id,
           userType: u.userType,
