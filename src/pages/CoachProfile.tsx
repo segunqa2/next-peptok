@@ -42,7 +42,33 @@ import {
 const CoachProfile = () => {
   const { id } = useParams();
   const { user, isAuthenticated } = useAuth();
-  const coach = mockCoaches.find((e) => e.id === id) || mockCoaches[0];
+  // Load coach data from backend API
+  const [coach, setCoach] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadCoach = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:3001/api/v1/coaches/${id}`,
+        );
+        if (!response.ok) {
+          throw new Error("Coach not found");
+        }
+        const coachData = await response.json();
+        setCoach(coachData);
+      } catch (error) {
+        console.warn("Coach data unavailable - backend service down");
+        setCoach(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (id) {
+      loadCoach();
+    }
+  }, [id]);
 
   // Enhanced mock data for coach profile
   const reviews = [
