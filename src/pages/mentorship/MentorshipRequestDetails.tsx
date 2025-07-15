@@ -23,6 +23,7 @@ import { useEffect, useState } from "react";
 import { apiEnhanced as api } from "@/services/apiEnhanced";
 import {
   matchingService,
+  getMatchingResult,
   type CoachMatch,
   type MatchingResult,
 } from "@/services/matchingService";
