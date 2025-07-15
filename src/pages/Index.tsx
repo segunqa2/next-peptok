@@ -2,12 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import {
-  getDemoStatistics,
-  demoUsers,
-  demoReviews,
-  demoCompanies,
-} from "@/data/demoDatabase";
+// Removed demo data imports - will use backend API
 import { Button } from "@/components/ui/button";
 import {
   Card,
