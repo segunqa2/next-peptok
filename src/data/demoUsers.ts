@@ -150,6 +150,7 @@ const demoCoachingRequestForDashboard = {
     "Department-wide coaching program designed to build up soft and hard sales and marketing skills to improve sales pipeline conversion.",
   goals: [
     {
+      id: "goal_001",
       title: "Sales",
       description:
         "Identify customer needs, craft tailored solutions, and guide prospects through a decision-making process to close deals",
@@ -157,6 +158,7 @@ const demoCoachingRequestForDashboard = {
       priority: "high" as const,
     },
     {
+      id: "goal_002",
       title: "Marketing",
       description:
         "Understand customer behavior, create compelling messages, and deliver them through the right channels to attract, engage, and retain target audiences",
@@ -164,6 +166,7 @@ const demoCoachingRequestForDashboard = {
       priority: "medium" as const,
     },
     {
+      id: "goal_003",
       title: "Negotiation",
       description:
         "Balance persuasion, active listening, and problem-solving to align value with client priorities, and secure win-win agreements that advance deals",
