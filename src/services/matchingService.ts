@@ -297,6 +297,12 @@ class MatchingService {
 
 export const matchingService = new MatchingService();
 
+export async function findCoachMatches(
+  request: MatchingRequest,
+): Promise<MatchingResult> {
+  return await matchingService.findMatches(request);
+}
+
 export async function acceptCoachMatch(
   matchId: string,
   requestId: string,
