@@ -164,14 +164,12 @@ class MatchingService {
     };
   }
 
-  private generateMockCoaches(): Omit<
+    private generateMockCoaches(): Omit<
     CoachMatch,
     "matchScore" | "matchReasons" | "estimatedCost"
   >[] {
-        console.warn("Mock coaches disabled - use backend API instead");
+    console.warn("Mock coaches disabled - use backend API instead");
     return []; // All mock data removed - use backend API instead
-
-        // Disabled mock data below (removed for clarity)
       {
         id: "coach_1",
         name: "Olivia Hayes",
