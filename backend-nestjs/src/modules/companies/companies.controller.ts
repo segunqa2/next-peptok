@@ -84,6 +84,30 @@ export class CompaniesController {
    * Get comprehensive dashboard metrics for a company
    * Accessible by company admins for their own company or platform admins for any company
    */
+  @ApiOperation({
+    summary: "Get company dashboard metrics",
+    description:
+      "Returns comprehensive dashboard metrics for a specific company including sessions, programs, and statistics",
+  })
+  @ApiResponse({
+    status: 200,
+    description: "Dashboard metrics retrieved successfully",
+    schema: {
+      type: "object",
+      properties: {
+        activeSessions: { type: "number" },
+        activeCoaching: { type: "number" },
+        goalsProgress: { type: "number" },
+        totalHours: { type: "number" },
+        totalPrograms: { type: "number" },
+        completedPrograms: { type: "number" },
+        averageRating: { type: "number" },
+        monthlySpend: { type: "number" },
+      },
+    },
+  })
+  @ApiResponse({ status: 403, description: "Access denied to company metrics" })
+  @ApiResponse({ status: 404, description: "Company not found" })
   @Get(":id/dashboard-metrics")
   async getDashboardMetrics(@Param("id") id: string, @Request() req: any) {
     const user = req.user;
