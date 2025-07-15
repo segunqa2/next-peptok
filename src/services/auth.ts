@@ -213,7 +213,7 @@ class AuthService {
       console.log(`🔄 Normalized email: "${normalizedEmail}"`);
 
       // Find user with exact email match
-      const user = mockUsers.find(
+      const user = demoUsers.find(
         (u) => u.email.toLowerCase().trim() === normalizedEmail,
       );
 
@@ -221,7 +221,7 @@ class AuthService {
         console.error(`❌ No user found for email: "${normalizedEmail}"`);
         return {
           success: false,
-          error: `No account found with email "${email}". Available demo accounts: ${mockUsers.map((u) => u.email).join(", ")}`,
+          error: `No account found with email "${email}". Available demo accounts: ${demoUsers.map((u) => u.email).join(", ")}`,
         };
       }
 
