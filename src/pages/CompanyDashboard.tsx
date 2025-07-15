@@ -51,8 +51,9 @@ import {
   Activity,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
-import { api } from "@/services/apiEnhanced";
-import { apiEnhanced } from "@/services/apiEnhanced";
+import api from "@/services/api";
+import { sessionManagementService } from "@/services/sessionManagementService";
+import { programService } from "@/services/programService";
 import {
   companyDashboardApi,
   type CompanyDashboardMetrics,
