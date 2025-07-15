@@ -168,320 +168,333 @@ class MatchingService {
     CoachMatch,
     "matchScore" | "matchReasons" | "estimatedCost"
   >[] {
+    console.warn("Mock coaches disabled - use backend API instead");
     return [
-  {
-    "id": "coach_1",
-    "name": "Olivia Hayes",
-    "title": "Senior Marketing Strategist & Sales Consultant",
-    "skills": [
-      "Marketing",
-      "Sales Funnel Optimization",
-      "Persuasion and Negotiation",
-      "Customer Segmentation"
-    ],
-    "experience": "senior",
-    "rating": 4.9,
-    "availability": "immediate",
-    "hourlyRate": 180,
-    "profileImage": "https://images.unsplash.com/photo-1494790108755-2616b612b1-3c?w=150",
-    "bio": "Senior marketing strategist and sales consultant with over 10 years of experience in building sales funnels and optimizing customer segmentation.",
-    "expertise": [
-      "Marketing Strategy",
-      "Sales Funnel Optimization",
-      "Negotiation Coaching",
-      "Customer Segmentation"
-    ],
-    "yearsExperience": 10,
-    "languages": ["English"],
-    "timezone": "PST"
-  },
-  {
-    "id": "coach_2",
-    "name": "John Peters",
-    "title": "Sales & Marketing Expert",
-    "skills": [
-      "Marketing Strategy",
-      "Sales Funnel Optimization",
-      "Negotiation Tactics",
-      "Customer Segmentation"
-    ],
-    "experience": "senior",
-    "rating": 4.8,
-    "availability": "this_week",
-    "hourlyRate": 160,
-    "profileImage": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150",
-    "bio": "Sales and marketing expert with 15 years of experience helping organizations optimize their sales pipelines and improve conversion rates.",
-    "expertise": [
-      "Sales Funnel Optimization",
-      "Marketing Strategy",
-      "Negotiation Coaching",
-      "Customer Segmentation"
-    ],
-    "yearsExperience": 15,
-    "languages": ["English"],
-    "timezone": "EST"
-  },
-  {
-    "id": "coach_3",
-    "name": "Charlotte Brooks",
-    "title": "Marketing Director & Growth Hacker",
-    "skills": [
-      "Marketing",
-      "Sales Funnel Optimization",
-      "Persuasion",
-      "Customer Segmentation"
-    ],
-    "experience": "senior",
-    "rating": 4.7,
-    "availability": "next_week",
-    "hourlyRate": 150,
-    "profileImage": "https://images.unsplash.com/photo-1494790108755-2616b612b1-c?w=150",
-    "bio": "Marketing director and growth hacker with expertise in scaling businesses and optimizing sales funnels through strategic marketing.",
-    "expertise": [
-      "Growth Hacking",
-      "Sales Funnel Optimization",
-      "Customer Segmentation",
-      "Marketing Strategy"
-    ],
-    "yearsExperience": 12,
-    "languages": ["English"],
-    "timezone": "PST"
-  },
-  {
-    "id": "coach_4",
-    "name": "Michael Bell",
-    "title": "Sales Consultant & Business Development Expert",
-    "skills": [
-      "Sales Funnel Optimization",
-      "Persuasion and Negotiation",
-      "Marketing Strategy",
-      "Customer Segmentation"
-    ],
-    "experience": "senior",
-    "rating": 4.8,
-    "availability": "immediate",
-    "hourlyRate": 140,
-    "profileImage": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150",
-    "bio": "Sales consultant with expertise in optimizing sales processes and teaching advanced negotiation techniques to drive conversions.",
-    "expertise": [
-      "Sales Funnel Optimization",
-      "Negotiation Coaching",
-      "Marketing Strategy",
-      "Customer Segmentation"
-    ],
-    "yearsExperience": 8,
-    "languages": ["English"],
-    "timezone": "PST"
-  },
-  {
-    "id": "coach_5",
-    "name": "Samantha Kelly",
-    "title": "Marketing Strategist & Negotiation Coach",
-    "skills": [
-      "Marketing",
-      "Sales Funnel Optimization",
-      "Persuasion and Negotiation",
-      "Customer Segmentation"
-    ],
-    "experience": "senior",
-    "rating": 4.9,
-    "availability": "this_week",
-    "hourlyRate": 175,
-    "profileImage": "https://images.unsplash.com/photo-1494790108755-2616b612b1-c?w=150",
-    "bio": "Experienced marketing strategist and negotiation coach with a strong track record of improving sales performance and customer acquisition.",
-    "expertise": [
-      "Sales Funnel Optimization",
-      "Negotiation Coaching",
-      "Customer Segmentation",
-      "Marketing Strategy"
-    ],
-    "yearsExperience": 10,
-    "languages": ["English"],
-    "timezone": "EST"
-  },
-  {
-    "id": "coach_6",
-    "name": "Tom Richards",
-    "title": "Head of Marketing & Sales Operations",
-    "skills": [
-      "Marketing",
-      "Sales Funnel Optimization",
-      "Persuasion and Negotiation",
-      "Customer Segmentation"
-    ],
-    "experience": "senior",
-    "rating": 4.7,
-    "availability": "this_week",
-    "hourlyRate": 160,
-    "profileImage": "https://images.unsplash.com/photo-1494790108755-2616b612b1-c?w=150",
-    "bio": "Head of marketing and sales operations with 13 years of experience in leading sales teams and optimizing marketing strategies for better results.",
-    "expertise": [
-      "Sales Funnel Optimization",
-      "Marketing Strategy",
-      "Customer Segmentation",
-      "Negotiation Coaching"
-    ],
-    "yearsExperience": 13,
-    "languages": ["English"],
-    "timezone": "EST"
-  },
-  {
-    "id": "coach_7",
-    "name": "Emily Roberts",
-    "title": "Sales and Marketing Coach",
-    "skills": [
-      "Marketing",
-      "Sales Funnel Optimization",
-      "Persuasion",
-      "Customer Segmentation"
-    ],
-    "experience": "senior",
-    "rating": 4.6,
-    "availability": "next_week",
-    "hourlyRate": 145,
-    "profileImage": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150",
-    "bio": "Sales and marketing coach focused on sales funnel optimization and customer segmentation for businesses looking to improve their conversion rates.",
-    "expertise": [
-      "Sales Funnel Optimization",
-      "Customer Segmentation",
-      "Marketing Strategy",
-      "Persuasion Coaching"
-    ],
-    "yearsExperience": 9,
-    "languages": ["English"],
-    "timezone": "CST"
-  },
-  {
-    "id": "coach_8",
-    "name": "James Stewart",
-    "title": "Senior Sales Funnel Consultant",
-    "skills": [
-      "Sales Funnel Optimization",
-      "Persuasion and Negotiation",
-      "Customer Segmentation",
-      "Marketing Strategy"
-    ],
-    "experience": "senior",
-    "rating": 4.9,
-    "availability": "immediate",
-    "hourlyRate": 155,
-    "profileImage": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150",
-    "bio": "Specialist in sales funnel optimization with 11 years of experience helping companies build effective funnels and improve conversion rates.",
-    "expertise": [
-      "Sales Funnel Optimization",
-      "Negotiation Coaching",
-      "Customer Segmentation",
-      "Marketing Strategy"
-    ],
-    "yearsExperience": 11,
-    "languages": ["English"],
-    "timezone": "EST"
-  },
-  {
-    "id": "coach_9",
-    "name": "Sophia Turner",
-    "title": "Marketing and Sales Performance Coach",
-    "skills": [
-      "Marketing",
-      "Sales Funnel Optimization",
-      "Persuasion",
-      "Customer Segmentation"
-    ],
-    "experience": "senior",
-    "rating": 4.8,
-    "availability": "this_week",
-    "hourlyRate": 150,
-    "profileImage": "https://images.unsplash.com/photo-1494790108755-2616b612b1-c?w=150",
-    "bio": "Experienced marketing and sales performance coach with a focus on improving sales funnels and boosting marketing results.",
-    "expertise": [
-      "Sales Funnel Optimization",
-      "Customer Segmentation",
-      "Marketing Strategy",
-      "Persuasion Coaching"
-    ],
-    "yearsExperience": 10,
-    "languages": ["English"],
-    "timezone": "PST"
-  },
-  {
-    "id": "coach_10",
-    "name": "David Marshall",
-    "title": "Chief Marketing Officer & Negotiation Trainer",
-    "skills": [
-      "Marketing Strategy",
-      "Sales Funnel Optimization",
-      "Persuasion and Negotiation",
-      "Customer Segmentation"
-    ],
-    "experience": "senior",
-    "rating": 4.9,
-    "availability": "next_week",
-    "hourlyRate": 170,
-    "profileImage": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150",
-    "bio": "Chief marketing officer with extensive experience in B2B and B2C marketing leadership and negotiation coaching.",
-    "expertise": [
-      "Sales Funnel Optimization",
-      "Negotiation Coaching",
-      "Marketing Strategy",
-      "Customer Segmentation"
-    ],
-    "yearsExperience": 15,
-    "languages": ["English"],
-    "timezone": "EST"
-  },
-  {
-    "id": "coach_11",
-    "name": "Sophia Adams",
-    "title": "Senior Marketing Analyst & Funnel Optimization Coach",
-    "skills": [
-      "Marketing",
-      "Sales Funnel Optimization",
-      "Persuasion and Negotiation",
-      "Customer Segmentation"
-    ],
-    "experience": "senior",
-    "rating": 4.8,
-    "availability": "immediate",
-    "hourlyRate": 145,
-    "profileImage": "https://images.unsplash.com/photo-1494790108755-2616b612b1-c?w=150",
-    "bio": "Marketing analyst with a focus on sales funnel optimization and customer journey mapping to maximize conversions.",
-    "expertise": [
-      "Sales Funnel Optimization",
-      "Customer Segmentation",
-      "Marketing Strategy",
-      "Persuasion Coaching"
-    ],
-    "yearsExperience": 12,
-    "languages": ["English"],
-    "timezone": "PST"
-  },
-  {
-    "id": "coach_12",
-    "name": "Jack Thompson",
-    "title": "Sales Enablement & Marketing Specialist",
-    "skills": [
-      "Marketing",
-      "Sales Funnel Optimization",
-      "Persuasion and Negotiation",
-      "Customer Segmentation"
-    ],
-    "experience": "senior",
-    "rating": 4.7,
-    "availability": "this_week",
-    "hourlyRate": 160,
-    "profileImage": "https://images.unsplash.com/photo-1494790108755-2616b612b1-c?w=150",
-    "bio": "Sales enablement specialist with expertise in sales funnel optimization and improving customer segmentation processes.",
-    "expertise": [
-      "Sales Funnel Optimization",
-      "Marketing Strategy",
-      "Customer Segmentation",
-      "Persuasion Coaching"
-    ],
-    "yearsExperience": 10,
-    "languages": ["English"],
-    "timezone": "EST"
-  }
-];
+      {
+        id: "coach_1",
+        name: "Olivia Hayes",
+        title: "Senior Marketing Strategist & Sales Consultant",
+        skills: [
+          "Marketing",
+          "Sales Funnel Optimization",
+          "Persuasion and Negotiation",
+          "Customer Segmentation",
+        ],
+        experience: "senior",
+        rating: 4.9,
+        availability: "immediate",
+        hourlyRate: 180,
+        profileImage:
+          "https://images.unsplash.com/photo-1494790108755-2616b612b1-3c?w=150",
+        bio: "Senior marketing strategist and sales consultant with over 10 years of experience in building sales funnels and optimizing customer segmentation.",
+        expertise: [
+          "Marketing Strategy",
+          "Sales Funnel Optimization",
+          "Negotiation Coaching",
+          "Customer Segmentation",
+        ],
+        yearsExperience: 10,
+        languages: ["English"],
+        timezone: "PST",
+      },
+      {
+        id: "coach_2",
+        name: "John Peters",
+        title: "Sales & Marketing Expert",
+        skills: [
+          "Marketing Strategy",
+          "Sales Funnel Optimization",
+          "Negotiation Tactics",
+          "Customer Segmentation",
+        ],
+        experience: "senior",
+        rating: 4.8,
+        availability: "this_week",
+        hourlyRate: 160,
+        profileImage:
+          "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150",
+        bio: "Sales and marketing expert with 15 years of experience helping organizations optimize their sales pipelines and improve conversion rates.",
+        expertise: [
+          "Sales Funnel Optimization",
+          "Marketing Strategy",
+          "Negotiation Coaching",
+          "Customer Segmentation",
+        ],
+        yearsExperience: 15,
+        languages: ["English"],
+        timezone: "EST",
+      },
+      {
+        id: "coach_3",
+        name: "Charlotte Brooks",
+        title: "Marketing Director & Growth Hacker",
+        skills: [
+          "Marketing",
+          "Sales Funnel Optimization",
+          "Persuasion",
+          "Customer Segmentation",
+        ],
+        experience: "senior",
+        rating: 4.7,
+        availability: "next_week",
+        hourlyRate: 150,
+        profileImage:
+          "https://images.unsplash.com/photo-1494790108755-2616b612b1-c?w=150",
+        bio: "Marketing director and growth hacker with expertise in scaling businesses and optimizing sales funnels through strategic marketing.",
+        expertise: [
+          "Growth Hacking",
+          "Sales Funnel Optimization",
+          "Customer Segmentation",
+          "Marketing Strategy",
+        ],
+        yearsExperience: 12,
+        languages: ["English"],
+        timezone: "PST",
+      },
+      {
+        id: "coach_4",
+        name: "Michael Bell",
+        title: "Sales Consultant & Business Development Expert",
+        skills: [
+          "Sales Funnel Optimization",
+          "Persuasion and Negotiation",
+          "Marketing Strategy",
+          "Customer Segmentation",
+        ],
+        experience: "senior",
+        rating: 4.8,
+        availability: "immediate",
+        hourlyRate: 140,
+        profileImage:
+          "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150",
+        bio: "Sales consultant with expertise in optimizing sales processes and teaching advanced negotiation techniques to drive conversions.",
+        expertise: [
+          "Sales Funnel Optimization",
+          "Negotiation Coaching",
+          "Marketing Strategy",
+          "Customer Segmentation",
+        ],
+        yearsExperience: 8,
+        languages: ["English"],
+        timezone: "PST",
+      },
+      {
+        id: "coach_5",
+        name: "Samantha Kelly",
+        title: "Marketing Strategist & Negotiation Coach",
+        skills: [
+          "Marketing",
+          "Sales Funnel Optimization",
+          "Persuasion and Negotiation",
+          "Customer Segmentation",
+        ],
+        experience: "senior",
+        rating: 4.9,
+        availability: "this_week",
+        hourlyRate: 175,
+        profileImage:
+          "https://images.unsplash.com/photo-1494790108755-2616b612b1-c?w=150",
+        bio: "Experienced marketing strategist and negotiation coach with a strong track record of improving sales performance and customer acquisition.",
+        expertise: [
+          "Sales Funnel Optimization",
+          "Negotiation Coaching",
+          "Customer Segmentation",
+          "Marketing Strategy",
+        ],
+        yearsExperience: 10,
+        languages: ["English"],
+        timezone: "EST",
+      },
+      {
+        id: "coach_6",
+        name: "Tom Richards",
+        title: "Head of Marketing & Sales Operations",
+        skills: [
+          "Marketing",
+          "Sales Funnel Optimization",
+          "Persuasion and Negotiation",
+          "Customer Segmentation",
+        ],
+        experience: "senior",
+        rating: 4.7,
+        availability: "this_week",
+        hourlyRate: 160,
+        profileImage:
+          "https://images.unsplash.com/photo-1494790108755-2616b612b1-c?w=150",
+        bio: "Head of marketing and sales operations with 13 years of experience in leading sales teams and optimizing marketing strategies for better results.",
+        expertise: [
+          "Sales Funnel Optimization",
+          "Marketing Strategy",
+          "Customer Segmentation",
+          "Negotiation Coaching",
+        ],
+        yearsExperience: 13,
+        languages: ["English"],
+        timezone: "EST",
+      },
+      {
+        id: "coach_7",
+        name: "Emily Roberts",
+        title: "Sales and Marketing Coach",
+        skills: [
+          "Marketing",
+          "Sales Funnel Optimization",
+          "Persuasion",
+          "Customer Segmentation",
+        ],
+        experience: "senior",
+        rating: 4.6,
+        availability: "next_week",
+        hourlyRate: 145,
+        profileImage:
+          "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150",
+        bio: "Sales and marketing coach focused on sales funnel optimization and customer segmentation for businesses looking to improve their conversion rates.",
+        expertise: [
+          "Sales Funnel Optimization",
+          "Customer Segmentation",
+          "Marketing Strategy",
+          "Persuasion Coaching",
+        ],
+        yearsExperience: 9,
+        languages: ["English"],
+        timezone: "CST",
+      },
+      {
+        id: "coach_8",
+        name: "James Stewart",
+        title: "Senior Sales Funnel Consultant",
+        skills: [
+          "Sales Funnel Optimization",
+          "Persuasion and Negotiation",
+          "Customer Segmentation",
+          "Marketing Strategy",
+        ],
+        experience: "senior",
+        rating: 4.9,
+        availability: "immediate",
+        hourlyRate: 155,
+        profileImage:
+          "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150",
+        bio: "Specialist in sales funnel optimization with 11 years of experience helping companies build effective funnels and improve conversion rates.",
+        expertise: [
+          "Sales Funnel Optimization",
+          "Negotiation Coaching",
+          "Customer Segmentation",
+          "Marketing Strategy",
+        ],
+        yearsExperience: 11,
+        languages: ["English"],
+        timezone: "EST",
+      },
+      {
+        id: "coach_9",
+        name: "Sophia Turner",
+        title: "Marketing and Sales Performance Coach",
+        skills: [
+          "Marketing",
+          "Sales Funnel Optimization",
+          "Persuasion",
+          "Customer Segmentation",
+        ],
+        experience: "senior",
+        rating: 4.8,
+        availability: "this_week",
+        hourlyRate: 150,
+        profileImage:
+          "https://images.unsplash.com/photo-1494790108755-2616b612b1-c?w=150",
+        bio: "Experienced marketing and sales performance coach with a focus on improving sales funnels and boosting marketing results.",
+        expertise: [
+          "Sales Funnel Optimization",
+          "Customer Segmentation",
+          "Marketing Strategy",
+          "Persuasion Coaching",
+        ],
+        yearsExperience: 10,
+        languages: ["English"],
+        timezone: "PST",
+      },
+      {
+        id: "coach_10",
+        name: "David Marshall",
+        title: "Chief Marketing Officer & Negotiation Trainer",
+        skills: [
+          "Marketing Strategy",
+          "Sales Funnel Optimization",
+          "Persuasion and Negotiation",
+          "Customer Segmentation",
+        ],
+        experience: "senior",
+        rating: 4.9,
+        availability: "next_week",
+        hourlyRate: 170,
+        profileImage:
+          "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150",
+        bio: "Chief marketing officer with extensive experience in B2B and B2C marketing leadership and negotiation coaching.",
+        expertise: [
+          "Sales Funnel Optimization",
+          "Negotiation Coaching",
+          "Marketing Strategy",
+          "Customer Segmentation",
+        ],
+        yearsExperience: 15,
+        languages: ["English"],
+        timezone: "EST",
+      },
+      {
+        id: "coach_11",
+        name: "Sophia Adams",
+        title: "Senior Marketing Analyst & Funnel Optimization Coach",
+        skills: [
+          "Marketing",
+          "Sales Funnel Optimization",
+          "Persuasion and Negotiation",
+          "Customer Segmentation",
+        ],
+        experience: "senior",
+        rating: 4.8,
+        availability: "immediate",
+        hourlyRate: 145,
+        profileImage:
+          "https://images.unsplash.com/photo-1494790108755-2616b612b1-c?w=150",
+        bio: "Marketing analyst with a focus on sales funnel optimization and customer journey mapping to maximize conversions.",
+        expertise: [
+          "Sales Funnel Optimization",
+          "Customer Segmentation",
+          "Marketing Strategy",
+          "Persuasion Coaching",
+        ],
+        yearsExperience: 12,
+        languages: ["English"],
+        timezone: "PST",
+      },
+      {
+        id: "coach_12",
+        name: "Jack Thompson",
+        title: "Sales Enablement & Marketing Specialist",
+        skills: [
+          "Marketing",
+          "Sales Funnel Optimization",
+          "Persuasion and Negotiation",
+          "Customer Segmentation",
+        ],
+        experience: "senior",
+        rating: 4.7,
+        availability: "this_week",
+        hourlyRate: 160,
+        profileImage:
+          "https://images.unsplash.com/photo-1494790108755-2616b612b1-c?w=150",
+        bio: "Sales enablement specialist with expertise in sales funnel optimization and improving customer segmentation processes.",
+        expertise: [
+          "Sales Funnel Optimization",
+          "Marketing Strategy",
+          "Customer Segmentation",
+          "Persuasion Coaching",
+        ],
+        yearsExperience: 10,
+        languages: ["English"],
+        timezone: "EST",
+      },
+    ];
   }
 
   private async getAvailableCoaches(): Promise<
