@@ -87,10 +87,16 @@ const EnterpriseDashboard = () => {
         setIsLoading(true);
 
         // Check if this is a demo user (Sarah)
-        const isDemoUser = localStorage
-          .getItem("peptok_token")
-          ?.startsWith("demo_token_");
+        const token = localStorage.getItem("peptok_token");
+        const isDemoUser = token?.startsWith("demo_token_");
         const demoData = localStorage.getItem("peptok_demo_data");
+
+        console.log("🔍 Enterprise dashboard loading check:", {
+          token: token ? `${token.substring(0, 20)}...` : "none",
+          isDemoUser,
+          hasDemoData: !!demoData,
+          userEmail: user?.email,
+        });
 
         if (isDemoUser && demoData) {
           console.log("🎭 Loading demo data for enterprise dashboard");
@@ -122,6 +128,10 @@ const EnterpriseDashboard = () => {
           setConnections([]);
 
           console.log("✅ Demo enterprise dashboard data loaded successfully");
+          console.log(
+            "📋 Demo coaching requests loaded:",
+            parsedDemoData.dashboardStats.coachingRequests,
+          );
           setIsLoading(false);
           return;
         }
