@@ -9,6 +9,7 @@ import { CoachesModule } from "./modules/coaches/coaches.module";
 import { CompaniesModule } from "./modules/companies/companies.module";
 import { SessionsModule } from "./modules/sessions/sessions.module";
 import { MatchingModule } from "./modules/matching/matching.module";
+import { PlatformModule } from "./modules/platform/platform.module";
 import { createTypeOrmConfig } from "./config/typeorm.config";
 
 @Module({
