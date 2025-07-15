@@ -1,9 +1,26 @@
 import { User, CoachingRequest, TeamMember, Company, Session } from "@/types";
 
 /**
- * Comprehensive localStorage service for Peptok application
+ * ⚠️  DEPRECATED: Comprehensive localStorage service for Peptok application
+ *
+ * WARNING: This service is deprecated and should be phased out in favor of backend API calls.
+ *
+ * localStorage should only be used for:
+ * - User preferences (theme, language)
+ * - Temporary UI state
+ * - Auth tokens (handled by auth service)
+ *
+ * All persistent data (users, programs, sessions, etc.) should come from the backend API.
+ *
+ * This service will be removed in a future cleanup.
+ *
  * Provides type-safe storage and retrieval of all app data
  */
+
+// Warn when this service is used
+console.warn(
+  "⚠���  WARNING: Using deprecated localStorage service. Please use backend API instead.",
+);
 export class LocalStorageService {
   private static readonly KEYS = {
     // Authentication
