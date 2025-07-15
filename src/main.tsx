@@ -36,18 +36,21 @@ const resizeObserverErrorHandler = (e: ErrorEvent) => {
 // Add error listener for ResizeObserver errors
 window.addEventListener("error", resizeObserverErrorHandler);
 
-// Also suppress uncaught promise rejections for ResizeObserver
+// Also suppress uncaught promise rejections for ResizeObserver and HMR fetch errors
 window.addEventListener("unhandledrejection", (e) => {
   if (
     e.reason &&
     typeof e.reason === "string" &&
-    e.reason.includes(
+    (e.reason.includes(
       "ResizeObserver loop completed with undelivered notifications",
-    )
+    ) ||
+      e.reason.includes("Failed to fetch") ||
+      e.reason.includes("fetch"))
   ) {
     e.preventDefault();
     console.debug(
-      "ResizeObserver loop detected in promise (suppressed - this is harmless)",
+      "Harmless error suppressed (ResizeObserver or HMR fetch):",
+      e.reason,
     );
   }
 });
