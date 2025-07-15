@@ -24,7 +24,8 @@
     "migration:revert": "typeorm-ts-node-commonjs migration:revert -d src/config/typeorm.config.ts",
     "schema:sync": "typeorm-ts-node-commonjs schema:sync -d src/config/typeorm.config.ts",
     "schema:drop": "typeorm-ts-node-commonjs schema:drop -d src/config/typeorm.config.ts",
-    "seed": "ts-node -r tsconfig-paths/register src/database/seeds/run-seed.ts"
+    "seed": "ts-node -r tsconfig-paths/register src/database/seeds/run-seed.ts",
+    "db:reset": "npm run schema:drop && npm run schema:sync && npm run seed"
   },
   "dependencies": {
     "@nestjs/cache-manager": "^2.1.1",
