@@ -462,21 +462,21 @@ export const demoCoaches = [
 export const demoSessionScheduleSarah = [
   {
     id: "session_001",
-    date: "2024-07-17",
+    date: "2024-07-17", // First Wed after July 16
     time: "10:00",
     day: "Wed",
     title: "Session 1: Sales Fundamentals",
   },
   {
     id: "session_002",
-    date: "2024-07-24",
+    date: "2024-07-24", // Second Wed
     time: "10:00",
     day: "Wed",
     title: "Session 2: Marketing Strategies",
   },
   {
     id: "session_003",
-    date: "2024-07-31",
+    date: "2024-07-31", // Last Wed of July
     time: "10:00",
     day: "Wed",
     title: "Session 3: Negotiation Mastery",
@@ -487,21 +487,21 @@ export const demoSessionScheduleSarah = [
 export const demoSessionScheduleDaniel = [
   {
     id: "session_001",
-    date: "2024-07-17",
+    date: "2024-07-17", // First Wed after July 16
     time: "10:00",
     day: "Wed",
     title: "Session 1: Sales Fundamentals",
   },
   {
     id: "session_002",
-    date: "2024-07-24",
+    date: "2024-07-24", // Second Wed
     time: "10:00",
     day: "Wed",
     title: "Session 2: Marketing Strategies",
   },
   {
     id: "session_003",
-    date: "2024-07-29",
+    date: "2024-07-29", // Mon 28th (July 29 is Monday)
     time: "10:00",
     day: "Mon",
     title: "Session 3: Negotiation Mastery",
