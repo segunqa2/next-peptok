@@ -92,8 +92,15 @@ async function apiRequest<T>(
     if (!contentType || !contentType.includes("application/json")) {
       // If no JSON content type, try to read as text for error context
       const text = await response.text();
+      console.error(`❌ API Response Debug:`, {
+        url,
+        status: response.status,
+        statusText: response.statusText,
+        contentType,
+        responseText: text.substring(0, 500),
+      });
       throw new Error(
-        `API Error - Expected JSON response but got ${contentType || "unknown content type"}. Response: ${text.substring(0, 200)}`,
+        `API Error - Expected JSON response but got ${contentType || "unknown content type"}. Status: ${response.status}. Response: ${text.substring(0, 200)}`,
       );
     }
 
