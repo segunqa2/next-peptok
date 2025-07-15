@@ -181,35 +181,8 @@ export default function CompanyDashboardEnhanced() {
 
       setMetrics(calculatedMetrics);
 
-      // Generate recent activity
-      const activities: RecentActivity[] = [
-        {
-          id: "1",
-          type: "session_completed",
-          title: "Leadership Session Completed",
-          description: "Team session with Sarah Johnson",
-          timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000),
-          employeeName: "Alex Chen",
-          coachName: "Sarah Johnson",
-          rating: 5,
-        },
-        {
-          id: "2",
-          type: "program_started",
-          title: "New Program Started",
-          description: "React Development Training program initiated",
-          timestamp: new Date(Date.now() - 6 * 60 * 60 * 1000),
-        },
-        {
-          id: "3",
-          type: "rating_received",
-          title: "Excellent Rating Received",
-          description: "5-star rating for communication skills session",
-          timestamp: new Date(Date.now() - 24 * 60 * 60 * 1000),
-          rating: 5,
-        },
-      ];
-
+      // Load activities from backend API
+      const activities: RecentActivity[] = [];
       setRecentActivity(activities);
 
       analytics.trackAction({
