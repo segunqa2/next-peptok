@@ -1,33 +1,21 @@
 /**
- * Sample Data Initializer - DISABLED
- * All sample data moved to backend database.
- * Frontend should only consume data from backend APIs.
+ * DEPRECATED: Sample data initializer removed
+ *
+ * This file has been deprecated in favor of using the production backend API.
+ * All sample data functionality has been removed.
  */
 
-export const initializeSampleData = (): void => {
-  console.warn(
-    "Sample data initialization disabled - all data managed by backend API",
-  );
-};
+console.warn(
+  "⚠️ Sample data initializer deprecated. Use production API instead.",
+);
 
-export const getSampleCoachingRequests = (): any[] => {
-  console.warn(
-    "Sample coaching requests disabled - fetch from backend API instead",
-  );
+// Empty exports for compatibility during migration
+export const initializeSampleData = () => {
+  console.log("Sample data initialization disabled - using production API");
   return [];
 };
 
-export const getSampleTeamMembers = (): any[] => {
-  console.warn("Sample team members disabled - fetch from backend API instead");
+export const getSampleData = () => {
+  console.log("Sample data retrieval disabled - using production API");
   return [];
 };
-
-export const getSampleInvitations = (): any[] => {
-  console.warn("Sample invitations disabled - fetch from backend API instead");
-  return [];
-};
-
-// Deprecated - use backend API
-export const sampleCoachingRequests: any[] = [];
-export const sampleTeamMembers: any[] = [];
-export const sampleInvitations: any[] = [];

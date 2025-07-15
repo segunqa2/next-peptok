@@ -43,7 +43,7 @@ import { toast } from "sonner";
 import { useAuth } from "@/contexts/AuthContext";
 import { programService } from "@/services/programService";
 import { CreateProgramRequest } from "@/types/program";
-import { apiEnhanced } from "@/services/apiEnhanced";
+// Updated to use production API services
 
 const programSchema = z.object({
   title: z.string().min(1, "Title is required"),

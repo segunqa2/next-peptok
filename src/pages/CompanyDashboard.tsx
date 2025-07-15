@@ -51,8 +51,9 @@ import {
   Activity,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
-import { api } from "@/services/apiEnhanced";
-import { apiEnhanced } from "@/services/apiEnhanced";
+import api from "@/services/api";
+import { sessionManagementService } from "@/services/sessionManagementService";
+import { programService } from "@/services/programService";
 import {
   companyDashboardApi,
   type CompanyDashboardMetrics,
@@ -68,6 +69,8 @@ const CompanyDashboard = () => {
   const [mentorshipRequests, setMentorshipRequests] = useState<
     MentorshipRequest[]
   >([]);
+  const [upcomingSessions, setUpcomingSessions] = useState<any[]>([]);
+  const [recentActivities, setRecentActivities] = useState<any[]>([]);
   const [dashboardMetrics, setDashboardMetrics] =
     useState<CompanyDashboardMetrics>({
       activeSessions: 0,
@@ -106,10 +109,24 @@ const CompanyDashboard = () => {
           }
         }
 
-        // Fetch company's mentorship requests with proper authorization
-        // apiEnhanced automatically filters by user's company for company_admin users
-        const requests = await apiEnhanced.getMentorshipRequests();
-        setMentorshipRequests(requests || []);
+        // Fetch company's programs/requests with proper authorization
+        if (user?.companyId) {
+          const requests = await api.matching.getCompanyRequests(
+            user.companyId,
+          );
+          setMentorshipRequests(requests || []);
+
+          // Fetch upcoming sessions
+          const sessions = await sessionManagementService.getUpcomingSessions({
+            limit: 5,
+          });
+          setUpcomingSessions(sessions);
+
+          // Fetch recent activities
+          const activities =
+            await sessionManagementService.getRecentActivities(10);
+          setRecentActivities(activities);
+        }
       } catch (error) {
         console.error("Failed to fetch dashboard data:", error);
 
@@ -156,10 +173,7 @@ const CompanyDashboard = () => {
     }
   }, [location.state, navigate, location.pathname]);
 
-  // Recent activities loaded from backend API
-  const recentActivities: any[] = [
-    // All activities moved to backend database
-  ];
+  // Recent activities are now loaded from backend API in useEffect
 
   const topPerformers = [
     {
@@ -512,38 +526,58 @@ const CompanyDashboard = () => {
                         </Button>
                       </CardHeader>
                       <CardContent className="space-y-4">
-                        {recentActivities.map((activity) => (
-                          <div
-                            key={activity.id}
-                            className="flex items-start space-x-4 p-4 rounded-lg border bg-card hover:shadow-md transition-all duration-200"
-                          >
-                            <div className="p-2 rounded-full bg-muted">
-                              {getActivityIcon(activity.type, activity.status)}
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <div className="flex items-center justify-between">
-                                <p className="text-sm font-medium">
-                                  {activity.message}
-                                </p>
-                                <Badge
-                                  variant="outline"
-                                  className={getImpactBadge(activity.impact)}
-                                >
-                                  {activity.impact}
-                                </Badge>
+                        {recentActivities.length > 0 ? (
+                          recentActivities.map((activity) => (
+                            <div
+                              key={activity.id}
+                              className="flex items-start space-x-4 p-4 rounded-lg border bg-card hover:shadow-md transition-all duration-200"
+                            >
+                              <div className="p-2 rounded-full bg-muted">
+                                {getActivityIcon(
+                                  activity.type,
+                                  activity.status,
+                                )}
                               </div>
-                              {activity.user && (
+                              <div className="flex-1 min-w-0">
+                                <div className="flex items-center justify-between">
+                                  <p className="text-sm font-medium">
+                                    {activity.title}
+                                  </p>
+                                  <Badge
+                                    variant={
+                                      activity.actionRequired
+                                        ? "destructive"
+                                        : "outline"
+                                    }
+                                  >
+                                    {activity.actionRequired
+                                      ? "Action Required"
+                                      : activity.status}
+                                  </Badge>
+                                </div>
                                 <p className="text-xs text-muted-foreground mt-1">
-                                  {activity.user}
-                                  {activity.expert && ` • ${activity.expert}`}
+                                  {activity.description}
                                 </p>
-                              )}
-                              <p className="text-xs text-muted-foreground">
-                                {activity.timestamp}
-                              </p>
+                                <p className="text-xs text-muted-foreground">
+                                  {new Date(
+                                    activity.timestamp,
+                                  ).toLocaleDateString()}{" "}
+                                  at{" "}
+                                  {new Date(
+                                    activity.timestamp,
+                                  ).toLocaleTimeString()}
+                                </p>
+                              </div>
                             </div>
+                          ))
+                        ) : (
+                          <div className="text-center py-8">
+                            <Activity className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                            <p className="text-muted-foreground">
+                              No recent activities
+                            </p>
                           </div>
-                        ))}
+                        )}
                         <Button variant="outline" className="w-full" size="sm">
                           View All Activity
                         </Button>
@@ -670,6 +704,85 @@ const CompanyDashboard = () => {
                         </Card>
                       ))}
                     </div>
+                  </CardContent>
+                </Card>
+
+                {/* Upcoming Sessions Section */}
+                <Card className="backdrop-blur-md bg-white/80 border-white/20 shadow-lg">
+                  <CardHeader>
+                    <CardTitle className="flex items-center space-x-2">
+                      <Calendar className="h-5 w-5 text-blue-600" />
+                      <span>Upcoming Sessions</span>
+                    </CardTitle>
+                    <CardDescription>
+                      Sessions scheduled and awaiting coach acceptance
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    {upcomingSessions.length > 0 ? (
+                      <div className="space-y-4">
+                        {upcomingSessions.map((session) => (
+                          <div
+                            key={session.id}
+                            className="flex items-center justify-between p-4 border rounded-lg hover:shadow-md transition-all duration-200"
+                          >
+                            <div className="flex items-center space-x-4">
+                              <div className="p-2 rounded-full bg-blue-100">
+                                <Calendar className="h-4 w-4 text-blue-600" />
+                              </div>
+                              <div>
+                                <p className="font-medium">{session.title}</p>
+                                <p className="text-sm text-muted-foreground">
+                                  {new Date(
+                                    session.scheduledAt,
+                                  ).toLocaleDateString()}{" "}
+                                  at{" "}
+                                  {new Date(
+                                    session.scheduledAt,
+                                  ).toLocaleTimeString()}
+                                </p>
+                                <p className="text-xs text-muted-foreground">
+                                  Duration: {session.duration || 60} minutes
+                                </p>
+                              </div>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                              <Badge
+                                variant={
+                                  session.status === "confirmed"
+                                    ? "default"
+                                    : session.status ===
+                                        "pending_coach_acceptance"
+                                      ? "secondary"
+                                      : "outline"
+                                }
+                              >
+                                {session.status === "confirmed"
+                                  ? "Confirmed"
+                                  : session.status ===
+                                      "pending_coach_acceptance"
+                                    ? "Awaiting Coach"
+                                    : session.status}
+                              </Badge>
+                              <Button variant="outline" size="sm">
+                                View Details
+                              </Button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="text-center py-8">
+                        <Calendar className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                        <p className="text-muted-foreground">
+                          No upcoming sessions
+                        </p>
+                        <p className="text-sm text-muted-foreground mt-2">
+                          Sessions will appear here once programs are created
+                          and scheduled
+                        </p>
+                      </div>
+                    )}
                   </CardContent>
                 </Card>
               </TabsContent>

@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { User, authService } from "@/services/auth";
-import { setCurrentUser } from "@/services/apiEnhanced";
+import { User } from "@/types";
+import { authService } from "@/services/authService";
+import { setCurrentUser } from "@/services/apiService";
 import { analytics } from "@/services/analytics";
 import LocalStorageService from "@/services/localStorageService";
 
