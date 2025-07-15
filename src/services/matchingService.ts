@@ -169,8 +169,10 @@ class MatchingService {
     "matchScore" | "matchReasons" | "estimatedCost"
   >[] {
     console.warn("Mock coaches disabled - use backend API instead");
-    return []; // All mock data removed - use backend API instead
-      {
+        return []; // All mock data removed - use backend API instead
+  }
+
+  private async getAvailableCoaches(): Promise<
         id: "coach_1",
         name: "Olivia Hayes",
         title: "Senior Marketing Strategist & Sales Consultant",
