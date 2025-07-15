@@ -55,8 +55,8 @@ import {
 } from "@/types";
 
 // Templates removed - should be loaded from backend API
-const COACHING_TEMPLATES = {
-  A: {
+const COACHING_TEMPLATES: Record<string, any> = {
+  // All templates removed - load from backend API instead
     title: "Agile Leadership Transformation",
     description:
       "Comprehensive coaching program focused on developing agile leadership skills, adaptive thinking, and team empowerment. Participants will learn to navigate change, foster innovation, and build resilient teams in dynamic business environments.",
