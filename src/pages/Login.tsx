@@ -243,7 +243,7 @@ const Login = () => {
               </Alert>
 
               {/* Debug Section - Only in development */}
-              {process.env.NODE_ENV === "development" && (
+              {import.meta.env.DEV && (
                 <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
                   <p className="text-sm font-medium text-yellow-800 mb-3">
                     Debug Tools:
