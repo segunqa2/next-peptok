@@ -80,9 +80,9 @@ function Stop-ProcessOnPort {
                     Write-ColorOutput $Yellow "  Stopping process $processId using port $Port..."
                     try {
                         Stop-Process -Id $processId -Force -ErrorAction Stop
-                        Write-ColorOutput $Green "  ✓ Process stopped successfully"
+                        Write-ColorOutput $Green "  Process stopped successfully"
                     } catch {
-                        Write-ColorOutput $Red "  ✗ Failed to stop process $processId"
+                        Write-ColorOutput $Red "  Failed to stop process $processId"
                     }
                 }
             }
@@ -94,26 +94,26 @@ function Stop-ProcessOnPort {
 
 # Main script
 try {
-    Write-ColorOutput $Blue "🚀 Starting Peptok Coaching Platform (Development Mode)..."
+    Write-ColorOutput $Blue "Starting Peptok Coaching Platform (Development Mode)..."
     
     # Check Docker installation
     if (-not (Test-DockerInstallation)) {
-        Write-ColorOutput $Red "❌ Docker or Docker Compose is not installed or not in PATH"
+        Write-ColorOutput $Red "Docker or Docker Compose is not installed or not in PATH"
         Write-ColorOutput $Yellow "Please install Docker Desktop and try again"
         exit 1
     }
     
     # Check if Docker is running
     if (-not (Test-DockerRunning)) {
-        Write-ColorOutput $Red "❌ Docker is not running"
+        Write-ColorOutput $Red "Docker is not running"
         Write-ColorOutput $Yellow "Please start Docker Desktop and try again"
         exit 1
     }
     
-    Write-ColorOutput $Green "✓ Docker is ready"
+    Write-ColorOutput $Green "Docker is ready"
     
     # Clean up existing containers
-    Write-ColorOutput $Yellow "🧹 Cleaning up existing containers..."
+    Write-ColorOutput $Yellow "Cleaning up existing containers..."
     try {
         docker compose down 2>$null
         docker compose -f docker-compose.dev.yml down 2>$null
@@ -122,14 +122,14 @@ try {
     }
     
     # Free up ports
-    Write-ColorOutput $Yellow "🔓 Freeing up ports..."
+    Write-ColorOutput $Yellow "Freeing up ports..."
     Stop-ProcessOnPort 8080
     Stop-ProcessOnPort 3001
     Stop-ProcessOnPort 5433
     Stop-ProcessOnPort 6379
     
     # Generate package-lock.json files if they don't exist
-    Write-ColorOutput $Yellow "📦 Ensuring package-lock.json files exist..."
+    Write-ColorOutput $Yellow "Ensuring package-lock.json files exist..."
     
     if (-not (Test-Path "package-lock.json")) {
         Write-ColorOutput $Yellow "  Generating frontend package-lock.json..."
@@ -143,35 +143,35 @@ try {
         Pop-Location
     }
     
-    Write-ColorOutput $Green "✓ Package-lock files ready"
+    Write-ColorOutput $Green "Package-lock files ready"
     
     # Build containers
     if ($Clean) {
-        Write-ColorOutput $Yellow "🔨 Building containers (clean)..."
+        Write-ColorOutput $Yellow "Building containers (clean)..."
         docker compose -f docker-compose.yml -f docker-compose.dev.yml build --no-cache
     } else {
-        Write-ColorOutput $Yellow "🔨 Building containers..."
+        Write-ColorOutput $Yellow "Building containers..."
         docker compose -f docker-compose.yml -f docker-compose.dev.yml build
     }
     
     if ($LASTEXITCODE -ne 0) {
-        Write-ColorOutput $Red "❌ Failed to build containers"
+        Write-ColorOutput $Red "Failed to build containers"
         exit 1
     }
     
-    Write-ColorOutput $Green "✓ Containers built successfully"
+    Write-ColorOutput $Green "Containers built successfully"
     
     # Start containers
-    Write-ColorOutput $Yellow "🚀 Starting development services..."
+    Write-ColorOutput $Yellow "Starting development services..."
     docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d
     
     if ($LASTEXITCODE -ne 0) {
-        Write-ColorOutput $Red "❌ Failed to start containers"
+        Write-ColorOutput $Red "Failed to start containers"
         exit 1
     }
     
     # Wait for services to be healthy
-    Write-ColorOutput $Yellow "⏳ Waiting for services to be healthy..."
+    Write-ColorOutput $Yellow "Waiting for services to be healthy..."
     
     $maxAttempts = 60
     $attempt = 0
@@ -199,23 +199,23 @@ try {
     Write-Host ""
     
     if ($attempt -eq $maxAttempts) {
-        Write-ColorOutput $Yellow "⚠️  Services may not be fully healthy yet."
+        Write-ColorOutput $Yellow "Services may not be fully healthy yet."
         Write-ColorOutput $Yellow "   This is normal for development mode. Check logs if issues persist."
     } else {
-        Write-ColorOutput $Green "✅ All services are healthy!"
+        Write-ColorOutput $Green "All services are healthy!"
     }
     
     # Show service URLs
-    Write-ColorOutput $Green "🌟 Peptok Platform is running in development mode!"
+    Write-ColorOutput $Green "Peptok Platform is running in development mode!"
     Write-Host ""
-    Write-ColorOutput $Cyan "📱 Frontend (Hot Reload): http://localhost:8080"
-    Write-ColorOutput $Cyan "⚙️  Backend API (Hot Reload): http://localhost:3001"
-    Write-ColorOutput $Cyan "📊 API Health: http://localhost:3001/health"
-    Write-ColorOutput $Cyan "🗄️  Database: localhost:5433"
-    Write-ColorOutput $Cyan "🔴 Redis: localhost:6379"
+    Write-ColorOutput $Cyan "Frontend (Hot Reload): http://localhost:8080"
+    Write-ColorOutput $Cyan "Backend API (Hot Reload): http://localhost:3001"
+    Write-ColorOutput $Cyan "API Health: http://localhost:3001/health"
+    Write-ColorOutput $Cyan "Database: localhost:5433"
+    Write-ColorOutput $Cyan "Redis: localhost:6379"
     
     Write-Host ""
-    Write-ColorOutput $Yellow "📋 Available commands:"
+    Write-ColorOutput $Yellow "Available commands:"
     Write-ColorOutput $Yellow "  - View logs: docker compose -f docker-compose.yml -f docker-compose.dev.yml logs -f"
     Write-ColorOutput $Yellow "  - Stop services: docker compose -f docker-compose.yml -f docker-compose.dev.yml down"
     Write-ColorOutput $Yellow "  - Restart service: docker compose -f docker-compose.yml -f docker-compose.dev.yml restart [service]"
@@ -223,12 +223,12 @@ try {
     # Show logs if requested
     if ($Logs) {
         Write-Host ""
-        Write-ColorOutput $Yellow "📄 Showing container logs (Ctrl+C to exit)..."
+        Write-ColorOutput $Yellow "Showing container logs (Ctrl+C to exit)..."
         docker compose -f docker-compose.yml -f docker-compose.dev.yml logs -f
     }
 }
 catch {
-    Write-ColorOutput $Red "❌ An error occurred: $($_.Exception.Message)"
-    Write-ColorOutput $Yellow "💡 Try running with -Clean flag to force rebuild"
+    Write-ColorOutput $Red "An error occurred: $($_.Exception.Message)"
+    Write-ColorOutput $Yellow "Try running with -Clean flag to force rebuild"
     exit 1
 }
