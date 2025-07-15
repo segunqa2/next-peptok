@@ -21,6 +21,8 @@ import { CompaniesService } from "./companies.service";
 import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
 import { RolesGuard } from "../auth/guards/roles.guard";
 
+@ApiTags("companies")
+@ApiBearerAuth("JWT-auth")
 @Controller("companies")
 @UseGuards(JwtAuthGuard)
 export class CompaniesController {
