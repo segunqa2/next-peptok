@@ -768,6 +768,5 @@ export async function rejectCoachMatch(
   } catch (error) {
         console.error("Failed to reject coach match:", error);
     return false;
-  }
+    }
 }
-*/
