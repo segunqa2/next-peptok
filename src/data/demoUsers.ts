@@ -142,16 +142,14 @@ export const demoCompany = {
   joinedAt: "2024-01-20T00:00:00Z",
 };
 
-// Demo coaching request for the dashboard
-const demoCoachingRequestForDashboard: CoachingRequest = {
+// Demo coaching request for the dashboard (exact specification)
+const demoCoachingRequestForDashboard = {
   id: "req_001",
-  companyId: "comp_001",
   title: "Sales and Marketing Development",
   description:
     "Department-wide coaching program designed to build up soft and hard sales and marketing skills to improve sales pipeline conversion.",
   goals: [
     {
-      id: "goal_001",
       title: "Sales",
       description:
         "Identify customer needs, craft tailored solutions, and guide prospects through a decision-making process to close deals",
@@ -159,7 +157,6 @@ const demoCoachingRequestForDashboard: CoachingRequest = {
       priority: "high" as const,
     },
     {
-      id: "goal_002",
       title: "Marketing",
       description:
         "Understand customer behavior, create compelling messages, and deliver them through the right channels to attract, engage, and retain target audiences",
@@ -167,7 +164,6 @@ const demoCoachingRequestForDashboard: CoachingRequest = {
       priority: "medium" as const,
     },
     {
-      id: "goal_003",
       title: "Negotiation",
       description:
         "Balance persuasion, active listening, and problem-solving to align value with client priorities, and secure win-win agreements that advance deals",
@@ -175,6 +171,18 @@ const demoCoachingRequestForDashboard: CoachingRequest = {
       priority: "high" as const,
     },
   ],
+  skills: [
+    "Marketing",
+    "Sales Funnel Optimization",
+    "Persuasion and Negotiation",
+    "Customer Segmentation",
+  ],
+  timeline: "16 weeks",
+  participantGoal: 5,
+  budgetMin: 15000,
+  budgetMax: 30000,
+  // Additional fields for compatibility
+  companyId: "comp_001",
   metricsToTrack: [
     "Sales conversion rate",
     "Lead generation",
@@ -202,7 +210,7 @@ const demoCoachingRequestForDashboard: CoachingRequest = {
     min: 15000,
     max: 30000,
   },
-  timeline: {
+  timelineDetails: {
     startDate: "2024-07-16T00:00:00Z",
     endDate: "2024-10-30T00:00:00Z",
     sessionFrequency: "weekly" as const,
