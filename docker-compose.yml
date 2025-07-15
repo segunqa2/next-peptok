@@ -69,9 +69,13 @@ services:
       dockerfile: Dockerfile
     container_name: peptok-backend
     restart: unless-stopped
-    environment:
+        environment:
       NODE_ENV: production
-      DATABASE_URL: postgresql://peptok_user:peptok_password@postgres:5432/peptok_dev
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+      DATABASE_USER: peptok_user
+      DATABASE_PASSWORD: peptok_password
+      DATABASE_NAME: peptok_dev
       REDIS_URL: redis://redis:6379
       JWT_SECRET: your-super-secret-jwt-key-change-in-production
       PORT: 3000
