@@ -741,6 +741,21 @@ export const ProgramDetails: React.FC<ProgramDetailsProps> = ({
               </div>
             </CardContent>
           </Card>
+
+          {/* Session Generation */}
+          {canEditProgram() && (
+            <SessionGenerator
+              programId={program.id}
+              programTitle={program.title}
+              startDate={program.timeline.startDate}
+              endDate={program.timeline.endDate}
+              defaultFrequency={program.timeline.sessionFrequency}
+              onSessionsGenerated={(sessions) => {
+                console.log("Sessions generated:", sessions);
+                // Optionally refresh program data or show success message
+              }}
+            />
+          )}
         </TabsContent>
 
         {/* Goals Tab */}
