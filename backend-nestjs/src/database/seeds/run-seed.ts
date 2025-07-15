@@ -303,29 +303,31 @@ class DatabaseSeeder {
         });
 
         // Create coach profile
-        await this.coachesService.create({
-          userId: user.id,
-          specialization: coachData.specialization,
-          experience: coachData.experience,
-          hourlyRate: coachData.hourlyRate,
-          skills: coachData.skills,
-          languages: coachData.languages,
-          bio: `Experienced ${coachData.specialization.toLowerCase()} coach with proven track record of helping professionals achieve their goals.`,
-          yearsExperience:
-            coachData.experience === "senior"
-              ? 10
-              : coachData.experience === "mid"
-                ? 5
-                : 2,
-          rating: 4.5 + Math.random() * 0.5, // Random rating between 4.5-5.0
-          isActive: true,
-          isVerified: true,
-        });
+        await this.coachesService.create(
+          {
+            specialization: coachData.specialization,
+            experience: coachData.experience,
+            hourlyRate: coachData.hourlyRate,
+            skills: coachData.skills,
+            languages: coachData.languages,
+            bio: `Experienced ${coachData.specialization.toLowerCase()} coach with proven track record of helping professionals achieve their goals.`,
+            yearsExperience:
+              coachData.experience === "senior"
+                ? 10
+                : coachData.experience === "mid"
+                  ? 5
+                  : 2,
+            rating: 4.5 + Math.random() * 0.5, // Random rating between 4.5-5.0
+            isActive: true,
+            isVerified: true,
+          },
+          user.id,
+        );
 
         console.log(`✅ Created coach: ${coachData.name}`);
       } catch (error) {
         console.error(
-          `��� Failed to create coach ${coachData.name}:`,
+          `❌ Failed to create coach ${coachData.name}:`,
           error.message,
         );
       }
