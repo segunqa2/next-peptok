@@ -383,13 +383,19 @@ export function MentorshipRequestProgress({
                   Tracking Metrics ({(request.metricsToTrack || []).length})
                 </div>
                 <div className="flex flex-wrap gap-1">
-                  {(request.metricsToTrack || []).slice(0, 2).map((metric) => (
-                    <Badge key={metric} variant="outline" className="text-xs">
-                      {metric
-                        .replace(/_/g, " ")
-                        .replace(/\b\w/g, (l) => l.toUpperCase())}
-                    </Badge>
-                  ))}
+                  {(request.metricsToTrack || [])
+                    .slice(0, 2)
+                    .map((metric, index) => (
+                      <Badge
+                        key={`${request.id}-metric-${index}`}
+                        variant="outline"
+                        className="text-xs"
+                      >
+                        {metric
+                          .replace(/_/g, " ")
+                          .replace(/\b\w/g, (l) => l.toUpperCase())}
+                      </Badge>
+                    ))}
                   {(request.metricsToTrack || []).length > 2 && (
                     <Badge variant="outline" className="text-xs">
                       +{(request.metricsToTrack || []).length - 2} more
