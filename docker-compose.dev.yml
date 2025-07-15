@@ -26,7 +26,7 @@ services:
         condition: service_healthy
     command: npm run start:dev
 
-  # Development frontend with hot reload
+    # Development frontend with hot reload
   frontend:
     build:
       context: .
@@ -43,8 +43,10 @@ services:
       - ./tsconfig.json:/app/tsconfig.json:ro
       - frontend-node-modules:/app/node_modules
     ports:
-      - "3000:3000"
-    command: npm run dev -- --host 0.0.0.0
+      - "8080:8080"
+    depends_on:
+      - backend
+    command: npm run dev -- --host 0.0.0.0 --port 8080
 
 volumes:
   backend-node-modules:
