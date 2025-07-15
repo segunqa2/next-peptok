@@ -319,7 +319,7 @@ const Index = () => {
                     {platformStats &&
                       [
                         {
-                          value: `${demoStats.platformStats.totalCoaches}`,
+                          value: `${platformStats.totalCoaches}`,
                           label: "Professional Coaches",
                           icon: UserCheck,
                         },
