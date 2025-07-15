@@ -706,6 +706,85 @@ const CompanyDashboard = () => {
                     </div>
                   </CardContent>
                 </Card>
+
+                {/* Upcoming Sessions Section */}
+                <Card className="backdrop-blur-md bg-white/80 border-white/20 shadow-lg">
+                  <CardHeader>
+                    <CardTitle className="flex items-center space-x-2">
+                      <Calendar className="h-5 w-5 text-blue-600" />
+                      <span>Upcoming Sessions</span>
+                    </CardTitle>
+                    <CardDescription>
+                      Sessions scheduled and awaiting coach acceptance
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    {upcomingSessions.length > 0 ? (
+                      <div className="space-y-4">
+                        {upcomingSessions.map((session) => (
+                          <div
+                            key={session.id}
+                            className="flex items-center justify-between p-4 border rounded-lg hover:shadow-md transition-all duration-200"
+                          >
+                            <div className="flex items-center space-x-4">
+                              <div className="p-2 rounded-full bg-blue-100">
+                                <Calendar className="h-4 w-4 text-blue-600" />
+                              </div>
+                              <div>
+                                <p className="font-medium">{session.title}</p>
+                                <p className="text-sm text-muted-foreground">
+                                  {new Date(
+                                    session.scheduledAt,
+                                  ).toLocaleDateString()}{" "}
+                                  at{" "}
+                                  {new Date(
+                                    session.scheduledAt,
+                                  ).toLocaleTimeString()}
+                                </p>
+                                <p className="text-xs text-muted-foreground">
+                                  Duration: {session.duration || 60} minutes
+                                </p>
+                              </div>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                              <Badge
+                                variant={
+                                  session.status === "confirmed"
+                                    ? "default"
+                                    : session.status ===
+                                        "pending_coach_acceptance"
+                                      ? "secondary"
+                                      : "outline"
+                                }
+                              >
+                                {session.status === "confirmed"
+                                  ? "Confirmed"
+                                  : session.status ===
+                                      "pending_coach_acceptance"
+                                    ? "Awaiting Coach"
+                                    : session.status}
+                              </Badge>
+                              <Button variant="outline" size="sm">
+                                View Details
+                              </Button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="text-center py-8">
+                        <Calendar className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                        <p className="text-muted-foreground">
+                          No upcoming sessions
+                        </p>
+                        <p className="text-sm text-muted-foreground mt-2">
+                          Sessions will appear here once programs are created
+                          and scheduled
+                        </p>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
               </TabsContent>
 
               {/* Mentorship Requests Tab */}
