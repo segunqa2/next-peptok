@@ -107,10 +107,8 @@ class AuthService {
 
   // Debug utility to check available demo accounts
   getAvailableDemoAccounts(): Array<{ email: string; userType: string }> {
-    return mockUsers.map((user) => ({
-      email: user.email,
-      userType: user.userType,
-    }));
+    console.warn("Demo accounts disabled - use backend authentication instead");
+    return [];
   }
 
   // Test specific demo account
