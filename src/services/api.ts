@@ -23,6 +23,24 @@ import { API_ENDPOINTS } from "../config/api";
 
 const API_BASE_URL = Environment.getApiBaseUrl();
 
+// Debug logging for API configuration
+console.log(`🔧 API Configuration:`);
+console.log(`  - Environment: ${Environment.getEnvironmentName()}`);
+console.log(`  - API Base URL: ${API_BASE_URL}`);
+console.log(`  - Should try backend: ${Environment.shouldTryBackend()}`);
+
+// Simple backend health check for debugging
+async function isBackendHealthy(): Promise<boolean> {
+  try {
+    const response = await fetch(`${API_BASE_URL}/platform/health`, {
+      method: "GET",
+    });
+    return response.ok;
+  } catch (error) {
+    return false;
+  }
+}
+
 // Token management
 let authToken: string | null = null;
 
@@ -49,20 +67,66 @@ async function apiRequest<T>(
 ): Promise<T> {
   const url = `${API_BASE_URL}${endpoint}`;
 
-  const response = await fetch(url, {
-    ...options,
-    headers: {
-      ...getAuthHeaders(),
-      ...options.headers,
-    },
-  });
+  try {
+    const response = await fetch(url, {
+      ...options,
+      headers: {
+        ...getAuthHeaders(),
+        ...options.headers,
+      },
+    });
 
-  if (!response.ok) {
-    const error = await response.text();
-    throw new Error(`API Error ${response.status}: ${error}`);
+    if (!response.ok) {
+      let errorMessage = `HTTP ${response.status}`;
+      try {
+        const errorText = await response.text();
+        errorMessage += errorText ? `: ${errorText}` : "";
+      } catch (e) {
+        // If we can't read the error response, just use the status
+      }
+      throw new Error(`API Error - ${errorMessage}`);
+    }
+
+    // Check if response has content
+    const contentType = response.headers.get("content-type");
+    if (!contentType || !contentType.includes("application/json")) {
+      // If no JSON content type, try to read as text for error context
+      const text = await response.text();
+      console.error(`❌ API Response Debug:`, {
+        url,
+        status: response.status,
+        statusText: response.statusText,
+        contentType,
+        responseText: text.substring(0, 500),
+      });
+      throw new Error(
+        `API Error - Expected JSON response but got ${contentType || "unknown content type"}. Status: ${response.status}. Response: ${text.substring(0, 200)}`,
+      );
+    }
+
+    // Check if response body is empty
+    const responseText = await response.text();
+    if (!responseText.trim()) {
+      throw new Error("API Error - Empty response from server");
+    }
+
+    // Parse JSON safely
+    try {
+      return JSON.parse(responseText);
+    } catch (parseError) {
+      throw new Error(
+        `API Error - Invalid JSON response: ${parseError instanceof Error ? parseError.message : "Unknown parsing error"}. Response: ${responseText.substring(0, 200)}`,
+      );
+    }
+  } catch (error) {
+    // Network or other fetch errors
+    if (error instanceof TypeError && error.message.includes("fetch")) {
+      throw new Error(
+        `Network Error - Cannot connect to API server at ${API_BASE_URL}. Please ensure the backend is running on port 3001.`,
+      );
+    }
+    throw error; // Re-throw API errors as-is
   }
-
-  return response.json();
 }
 
 // Authentication API

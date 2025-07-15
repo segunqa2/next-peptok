@@ -136,6 +136,21 @@ class DatabaseSeeder {
   // Company Admins (one for each company)
   private readonly companyAdmins: SeedUser[] = [
     {
+      id: "user_022",
+      email: "admin@techcorp.com",
+      password: "demo123",
+      name: "TechCorp Admin",
+      firstName: "TechCorp",
+      lastName: "Admin",
+      userType: "company_admin",
+      companyId: "comp_001",
+      picture: "https://api.dicebear.com/7.x/avataaars/svg?seed=techcorp-admin",
+      provider: "email",
+      joinedAt: "2024-01-15T00:00:00Z",
+      lastActive: "2024-03-15T18:00:00Z",
+      status: "active",
+    },
+    {
       id: "user_023",
       email: "employee1@techcorp.com",
       password: "emp123",
@@ -775,6 +790,7 @@ class DatabaseSeeder {
       console.log("     superadmin@peptok.com / admin123");
       console.log("");
       console.log("   Company Admins:");
+      console.log("     admin@techcorp.com / demo123 (TechCorp Admin)");
       console.log("     employee1@techcorp.com / emp123 (Sarah Johnson)");
       console.log("     admin@innovateco.com / admin123 (Michael Thompson)");
       console.log("");
@@ -802,7 +818,7 @@ class DatabaseSeeder {
       console.log("     carlos.mendoza@peptok.com / coach123 (Carlos Mendoza)");
       console.log("     jennifer.lee@peptok.com / coach123 (Jennifer Lee)");
       console.log("");
-      console.log("🏢 Companies:");
+      console.log("��� Companies:");
       console.log("   TechCorp Solutions (Enterprise tier)");
       console.log("   InnovateCo (Growth tier)");
       console.log("");

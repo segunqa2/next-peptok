@@ -364,6 +364,5 @@ export class ApiService {
 export const apiService = new ApiService();
 
 // Export commonly used functions
-export { setCurrentUser };
 
 export default apiService;

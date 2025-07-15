@@ -26,7 +26,7 @@ async function bootstrap() {
   );
 
   // Global prefix
-  app.setGlobalPrefix("api/v1");
+  app.setGlobalPrefix("api");
 
   // Swagger API Documentation
   const config = new DocumentBuilder()
@@ -75,8 +75,8 @@ async function bootstrap() {
 
   console.log(`🚀 Peptok NestJS API running on: http://localhost:${port}`);
   console.log(`📚 API Documentation: http://localhost:${port}/api/docs`);
-  console.log(`🔍 Health check: http://localhost:${port}/api/v1/health`);
-  console.log(`📊 Database: nestjs-database.json`);
+  console.log(`🔍 Health check: http://localhost:${port}/api/health`);
+  console.log(`📊 Database: nestjs-database.sqlite`);
 }
 
 bootstrap().catch((error) => {
