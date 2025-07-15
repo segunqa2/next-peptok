@@ -178,12 +178,35 @@ const fallbackPricingPlans = [
 
 const Index = () => {
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
-  const [demoStats, setDemoStats] = useState<any>(null);
+  const [platformStats, setPlatformStats] = useState<any>(null);
+  const [backendAvailable, setBackendAvailable] = useState(true);
 
   useEffect(() => {
-    // Load demo statistics
-    const stats = getDemoStatistics();
-    setDemoStats(stats);
+    // Load platform statistics from backend API
+    const loadStats = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost:3001/api/v1/platform/statistics",
+        );
+        if (!response.ok) {
+          throw new Error("Backend unavailable");
+        }
+        const stats = await response.json();
+        setPlatformStats(stats);
+        setBackendAvailable(true);
+      } catch (error) {
+        console.warn("Platform statistics unavailable - backend service down");
+        setBackendAvailable(false);
+        setPlatformStats({
+          totalCoaches: 0,
+          totalSessions: 0,
+          averageRating: 0,
+          totalCompanies: 0,
+        });
+      }
+    };
+
+    loadStats();
   }, []);
 
   return (
