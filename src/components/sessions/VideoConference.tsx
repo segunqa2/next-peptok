@@ -173,29 +173,12 @@ export default function VideoConference() {
                   name: "Sarah Johnson",
                   avatar: "https://avatar.vercel.sh/sarah@example.com",
                   title: "Senior Leadership Coach",
-                                };
+                };
 
           // No fallback data - return error if backend unavailable
-          throw new Error("Session data not available - backend service unreachable");
-                email: "john.doe@company.com",
-                role: "participant",
-                userType: "team_member",
-                isOnline: user?.id === "member_1",
-                videoEnabled: true,
-                audioEnabled: true,
-              },
-              {
-                id: user?.id || "current-user",
-                name: user?.name || "Current User",
-                email: user?.email || "user@example.com",
-                role: user?.role || "participant",
-                userType: user?.userType || "team_member",
-                isOnline: false,
-                videoEnabled: true,
-                audioEnabled: true,
-              },
-            ],
-          };
+          throw new Error(
+            "Session data not available - backend service unreachable",
+          );
         }
 
         // Add meeting ID to session data
