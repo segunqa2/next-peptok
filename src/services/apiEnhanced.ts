@@ -928,14 +928,36 @@ class EnhancedApiService {
     }
   }
 
-        // ===== COMPANY-SPECIFIC METHODS =====
+  // ===== COMPANY-SPECIFIC METHODS =====
 
   async getCompanyRequests(companyId?: string): Promise<MentorshipRequest[]> {
-      throw new Error("Coaches can only access their own profile");
+    const user = checkAuthorization(["company_admin", "platform_admin"]);
+    const targetCompanyId = companyId || user.companyId;
+
+    // Company admins can only see their company's requests
+    if (
+      user.userType === "company_admin" &&
+      targetCompanyId !== user.companyId
+    ) {
+      throw new Error(
+        "Company admins can only view their own company's requests",
+      );
     }
 
     try {
-      const response = await this.request<any>(`/coaches/${coachId}/profile`);
+      const response = await this.request(
+        `/companies/${targetCompanyId}/requests`,
+      );
+
+      analytics.trackAction({
+        action: "company_requests_viewed",
+        component: "company_dashboard",
+        metadata: {
+          companyId: targetCompanyId,
+          requestCount: response.data.length,
+        },
+      });
+
       return response.data;
     } catch (error) {
       console.warn("API not available, using demo coach profile:", error);
