@@ -390,6 +390,9 @@ export const FullApp: React.FC = () => {
           {/* Data Sync Testing Dashboard (for development/debugging) */}
           <Route path="/sync-testing" element={<DataSyncTestingDashboard />} />
 
+          {/* Session Modification Validation Dashboard (for development/testing) */}
+          <Route path="/session-validation" element={<ValidationDashboard />} />
+
           {/* Coach Dashboard Testing (for development/debugging) */}
           <Route path="/test-coach" element={<CoachDashboardTest />} />
 
