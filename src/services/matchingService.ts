@@ -168,8 +168,11 @@ class MatchingService {
     CoachMatch,
     "matchScore" | "matchReasons" | "estimatedCost"
   >[] {
-    console.warn("Mock coaches disabled - use backend API instead");
-    return [
+        console.warn("Mock coaches disabled - use backend API instead");
+    return []; // All mock data removed - use backend API instead
+
+    // Disabled mock data below:
+    /* return [
       {
         id: "coach_1",
         name: "Olivia Hayes",
