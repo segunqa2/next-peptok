@@ -22,6 +22,45 @@ export class PlatformService {
     private readonly reviewRepository: Repository<Review>,
   ) {}
 
+  async getPublicStatistics() {
+    try {
+      // Get basic counts for public display
+      const [totalCoaches, totalSessions, totalCompanies, averageRatingResult] =
+        await Promise.all([
+          this.coachRepository.count({ where: { isActive: true } }),
+          this.sessionRepository.count(),
+          this.companyRepository.count({ where: { isActive: true } }),
+          this.reviewRepository
+            .createQueryBuilder("review")
+            .select("AVG(review.rating)", "averageRating")
+            .getRawOne(),
+        ]);
+
+      // Calculate average rating
+      const averageRating = averageRatingResult?.averageRating
+        ? parseFloat(parseFloat(averageRatingResult.averageRating).toFixed(1))
+        : 0;
+
+      return {
+        totalCoaches,
+        totalSessions,
+        totalCompanies,
+        averageRating,
+        lastUpdated: new Date().toISOString(),
+      };
+    } catch (error) {
+      console.error("Error calculating public platform statistics:", error);
+      // Return default statistics if calculation fails
+      return {
+        totalCoaches: 0,
+        totalSessions: 0,
+        totalCompanies: 0,
+        averageRating: 0,
+        lastUpdated: new Date().toISOString(),
+      };
+    }
+  }
+
   async getStatistics() {
     try {
       // Get total counts
