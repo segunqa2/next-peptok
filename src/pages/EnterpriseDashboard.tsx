@@ -163,36 +163,6 @@ const EnterpriseDashboard = () => {
     }
   }, [location.state]);
 
-  // Mock data for demonstration
-  const upcomingSessions = [
-    {
-      id: "1",
-      title: "Leadership Development",
-      date: "Dec 15, 2024",
-      time: "2:00 PM",
-      duration: "1 hour",
-      coachName: "Sarah Chen",
-      coachAvatar:
-        "https://api.dicebear.com/7.x/avataaars/svg?seed=sarah&backgroundColor=b6e3f4",
-      type: "Video Call",
-      status: "confirmed",
-      mentorshipRequestId: "request-1",
-    },
-    {
-      id: "2",
-      title: "Data Analytics Review",
-      date: "Dec 17, 2024",
-      time: "10:00 AM",
-      duration: "45 minutes",
-      coachName: "Michael Rodriguez",
-      coachAvatar:
-        "https://api.dicebear.com/7.x/avataaars/svg?seed=michael&backgroundColor=c0aede",
-      type: "In-Person",
-      status: "pending",
-      mentorshipRequestId: "request-1",
-    },
-  ];
-
   const achievements = [
     {
       id: "1",
@@ -422,7 +392,7 @@ const EnterpriseDashboard = () => {
                         </p>
                         <p className="text-sm text-gray-500">
                           {session.date} at {session.time} • with{" "}
-                          {session.coachName} • {session.duration}
+                          {session.coachName} �� {session.duration}
                         </p>
                         <div className="flex items-center mt-2 space-x-2">
                           <Badge
