@@ -508,13 +508,24 @@ export const demoSessionScheduleDaniel = [
   },
 ];
 
-// Demo dashboard stats for Sarah (with the coaching request)
+// Demo dashboard stats for Sarah (always with the coaching request except new login)
 export const demoCompanyDashboardStats = {
   activeSessions: 0,
   activeCoaching: 0,
   goalsProgress: 0,
   totalHours: 0.0,
   coachingRequests: [demoCoachingRequestForDashboard],
+  upcomingSessions: [] as any[],
+  recentActivity: [] as any[],
+};
+
+// Demo dashboard stats for Sarah when newly logging in (empty)
+export const demoCompanyDashboardStatsEmpty = {
+  activeSessions: 0,
+  activeCoaching: 0,
+  goalsProgress: 0,
+  totalHours: 0.0,
+  coachingRequests: [] as any[],
   upcomingSessions: [] as any[],
   recentActivity: [] as any[],
 };
