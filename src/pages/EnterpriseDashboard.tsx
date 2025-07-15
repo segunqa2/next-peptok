@@ -102,7 +102,7 @@ const EnterpriseDashboard = () => {
           console.log("🎭 Loading demo data for enterprise dashboard");
           const parsedDemoData = JSON.parse(demoData);
 
-          // Use demo dashboard stats (empty for Sarah's initial state)
+          // Use demo dashboard stats (always show coaching request except for new login)
           setDashboardMetrics({
             activeSessions: parsedDemoData.dashboardStats.activeSessions,
             activeCoaching: parsedDemoData.dashboardStats.activeCoaching,
@@ -121,18 +121,19 @@ const EnterpriseDashboard = () => {
             retentionRate: 0,
           });
 
-          // Use demo coaching requests
-          setMentorshipRequests(
-            parsedDemoData.dashboardStats.coachingRequests || [],
-          );
+          // Always show the coaching request (except for new login scenario)
+          const coachingRequests =
+            parsedDemoData.dashboardStats.coachingRequests || [];
+          setMentorshipRequests(coachingRequests);
           setConnections([]);
 
           console.log("✅ Demo enterprise dashboard data loaded successfully");
-          console.log(
-            "📋 Demo coaching requests loaded:",
-            parsedDemoData.dashboardStats.coachingRequests,
-          );
-          setIsLoading(false);
+          console.log("📋 Demo coaching requests loaded:", coachingRequests);
+
+          // Brief delay to show loading spinner, then finish loading
+          setTimeout(() => {
+            setIsLoading(false);
+          }, 100);
           return;
         }
 
