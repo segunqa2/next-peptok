@@ -351,8 +351,8 @@ const Index = () => {
                                 {stat.label}
                               </div>
                             </div>
-                          </div>
-                                                );
+                                                    </div>
+                        );
                       })}
                     ) : (
                       <div className="col-span-4 text-center py-8 text-gray-500">
