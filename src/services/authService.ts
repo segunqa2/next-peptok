@@ -54,6 +54,7 @@ class AuthService {
     try {
       localStorage.removeItem("peptok_user");
       localStorage.removeItem("peptok_token");
+      localStorage.removeItem("peptok_demo_data");
       this.currentUser = null;
       this.authToken = null;
       setAuthToken(null);
