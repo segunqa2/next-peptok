@@ -180,7 +180,7 @@ const demoCoachingRequestForDashboard = {
     "Persuasion and Negotiation",
     "Customer Segmentation",
   ],
-  timeline: "16 weeks",
+  timeline: "weekly for 3 weeks",
   participantGoal: 5,
   budgetMin: 15000,
   budgetMax: 30000,
