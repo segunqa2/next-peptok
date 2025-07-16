@@ -320,7 +320,7 @@ export async function getMatchingResult(
       const matches = [
         {
           id: "coach_daniel",
-          name: "Daniel Martinez",
+          name: "Daniel Hayes",
           title: "Senior Sales & Marketing Strategist",
           skills: [
             "Sales Strategy",
