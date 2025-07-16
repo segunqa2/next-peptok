@@ -1023,7 +1023,7 @@ export default function MentorshipRequestDetails() {
                     <label className="text-sm font-medium text-gray-600">
                       Duration
                     </label>
-                    <p className="font-semibold">{request.timeline}</p>
+                    <p className="font-semibold">weekly for 3 weeks</p>
                   </div>
                 ) : (
                   <>
