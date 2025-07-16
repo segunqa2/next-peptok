@@ -266,7 +266,7 @@ export default function MentorshipRequestDetails() {
               "Customer Segmentation",
             ],
             budget: { min: 15000, max: 30000 },
-            timeline: "16 weeks",
+            timeline: "weekly for 3 weeks",
             participantGoal: 5,
             status: "active" as const,
             createdAt: new Date(
