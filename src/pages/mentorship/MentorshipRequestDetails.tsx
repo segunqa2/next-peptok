@@ -359,20 +359,9 @@ export default function MentorshipRequestDetails() {
     let hoursPerSession: number;
 
     if (typeof request.timeline === "string") {
-      // Old format - estimate based on timeline string
-      const timelineStr = request.timeline.toLowerCase();
-      if (timelineStr.includes("week")) {
-        const weeks = parseInt(timelineStr.match(/(\d+)/)?.[0] || "4");
-        totalSessions = weeks;
-        hoursPerSession = 2; // Default assumption
-      } else if (timelineStr.includes("month")) {
-        const months = parseInt(timelineStr.match(/(\d+)/)?.[0] || "3");
-        totalSessions = months * 4; // Weekly sessions
-        hoursPerSession = 2;
-      } else {
-        totalSessions = 8; // Default fallback
-        hoursPerSession = 2;
-      }
+      // Hardcoded to 3 weeks for Sales and Marketing Development program
+      totalSessions = 3;
+      hoursPerSession = 2;
     } else {
       // New detailed timeline format
       totalSessions = request.timeline.totalSessions;
