@@ -358,7 +358,7 @@ export async function getMatchingResult(
               "Available for immediate start",
               "Specializes in sales and marketing transformation",
             ],
-            estimatedCost: 29600, // 16 weeks * 2 hours * $185
+            estimatedCost: 1110, // 3 weeks * 2 hours * $185
           },
           {
             id: "coach_sarah",
