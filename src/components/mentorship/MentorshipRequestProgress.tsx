@@ -312,7 +312,11 @@ export function MentorshipRequestProgress({
                     </Badge>
                   ))}
                   {request.goals.length > 3 && (
-                    <Badge variant="outline" className="text-xs">
+                    <Badge
+                      key={`${request.id}-goals-more`}
+                      variant="outline"
+                      className="text-xs"
+                    >
                       +{request.goals.length - 3} more
                     </Badge>
                   )}
@@ -356,7 +360,11 @@ export function MentorshipRequestProgress({
                     )}
                   </div>
                   {pendingMembers.length > 0 && (
-                    <Badge variant="secondary" className="text-xs">
+                    <Badge
+                      key={`${request.id}-pending-members`}
+                      variant="secondary"
+                      className="text-xs"
+                    >
                       {pendingMembers.length} pending
                     </Badge>
                   )}
@@ -383,15 +391,25 @@ export function MentorshipRequestProgress({
                   Tracking Metrics ({(request.metricsToTrack || []).length})
                 </div>
                 <div className="flex flex-wrap gap-1">
-                  {(request.metricsToTrack || []).slice(0, 2).map((metric) => (
-                    <Badge key={metric} variant="outline" className="text-xs">
-                      {metric
-                        .replace(/_/g, " ")
-                        .replace(/\b\w/g, (l) => l.toUpperCase())}
-                    </Badge>
-                  ))}
+                  {(request.metricsToTrack || [])
+                    .slice(0, 2)
+                    .map((metric, index) => (
+                      <Badge
+                        key={`${request.id}-metric-${metric}-${index}`}
+                        variant="outline"
+                        className="text-xs"
+                      >
+                        {metric
+                          .replace(/_/g, " ")
+                          .replace(/\b\w/g, (l) => l.toUpperCase())}
+                      </Badge>
+                    ))}
                   {(request.metricsToTrack || []).length > 2 && (
-                    <Badge variant="outline" className="text-xs">
+                    <Badge
+                      key={`${request.id}-metrics-more`}
+                      variant="outline"
+                      className="text-xs"
+                    >
                       +{(request.metricsToTrack || []).length - 2} more
                     </Badge>
                   )}

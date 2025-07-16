@@ -201,13 +201,12 @@ const TeamMemberDashboard = () => {
         // Load program information from accepted invitations
         let programsFromInvitations: TeamMemberProgram[] = [];
         if (user?.email) {
-          const acceptedInvitations = invitationService
-            .getInvitations({
-              companyId: user.companyId,
-            })
-            .filter(
-              (inv) => inv.email === user.email && inv.status === "accepted",
-            );
+          const allInvitations = await invitationService.getInvitations({
+            companyId: user.companyId,
+          });
+          const acceptedInvitations = allInvitations.filter(
+            (inv) => inv.email === user.email && inv.status === "accepted",
+          );
 
           programsFromInvitations = acceptedInvitations.map((inv) => ({
             id: inv.programId,

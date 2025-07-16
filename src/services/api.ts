@@ -65,6 +65,13 @@ async function apiRequest<T>(
   endpoint: string,
   options: RequestInit = {},
 ): Promise<T> {
+  // Check if this is a demo user and prevent API calls
+  const token = localStorage.getItem("peptok_token");
+  if (token?.startsWith("demo_token_")) {
+    console.warn(`🎭 Demo user detected - blocking API call to ${endpoint}`);
+    throw new Error("Demo mode: API calls are disabled for demo users");
+  }
+
   const url = `${API_BASE_URL}${endpoint}`;
 
   try {

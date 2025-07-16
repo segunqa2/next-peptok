@@ -53,14 +53,66 @@ export default function CreateCoachingRequest() {
     const loadSessionPricingTier = async () => {
       try {
         setLoadingTier(true);
-        // Load session pricing tiers
-        const tiers = await api.getSessionPricingTiers();
-        // For demo purposes, use Premium plan as default
-        const defaultTier = tiers.find((t) => t.id === "premium") || tiers[1];
-        setSessionPricingTier(defaultTier);
+
+        // Check if this is a demo user
+        const isDemoUser = localStorage
+          .getItem("peptok_token")
+          ?.startsWith("demo_token_");
+
+        if (isDemoUser) {
+          console.log("🎭 Loading demo session pricing tier");
+          // Use demo session pricing tier
+          const demoTier: SessionPricingTier = {
+            id: "premium",
+            name: "Premium",
+            description: "Best value for growing teams",
+            baseSessionPrice: 180,
+            participantFee: 25,
+            maxParticipantsIncluded: 5,
+            features: [
+              "Unlimited sessions",
+              "Advanced analytics",
+              "Priority support",
+              "Custom integrations",
+            ],
+            supportLevel: "premium",
+            customizations: true,
+            analytics: "advanced",
+            platformServiceCharge: 15,
+            currency: "USD",
+          };
+          setSessionPricingTier(demoTier);
+          console.log("✅ Demo session pricing tier loaded");
+          return;
+        }
+
+        // For non-demo users, try to load from API (but method doesn't exist yet)
+        console.warn("Session pricing API not available, using default tier");
+        // Fallback to default tier
+        const fallbackTier: SessionPricingTier = {
+          id: "standard",
+          name: "Standard",
+          description: "Perfect for small teams",
+          baseSessionPrice: 150,
+          participantFee: 20,
+          maxParticipantsIncluded: 3,
+          features: ["Standard sessions", "Basic analytics", "Email support"],
+          supportLevel: "basic",
+          customizations: false,
+          analytics: "basic",
+          platformServiceCharge: 10,
+          currency: "USD",
+        };
+        setSessionPricingTier(fallbackTier);
       } catch (error) {
         console.error("Failed to load session pricing:", error);
-        toast.error("Failed to load session pricing information");
+        // Don't show error toast for demo users
+        const isDemoUser = localStorage
+          .getItem("peptok_token")
+          ?.startsWith("demo_token_");
+        if (!isDemoUser) {
+          toast.error("Failed to load session pricing information");
+        }
       } finally {
         setLoadingTier(false);
       }
@@ -227,8 +279,35 @@ export default function CreateCoachingRequest() {
         status: "submitted" as const,
       };
 
-      // Submit to API
-      const request = await apiEnhanced.createCoachingRequest(requestData);
+      // Check if this is a demo user
+      const isDemoUser = localStorage
+        .getItem("peptok_token")
+        ?.startsWith("demo_token_");
+      let request;
+
+      if (isDemoUser) {
+        // Create demo request
+        request = {
+          id: `req_${Date.now()}`,
+          ...requestData,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        };
+
+        // Update demo data with the new request
+        const demoData = JSON.parse(
+          localStorage.getItem("peptok_demo_data") || "{}",
+        );
+        if (demoData.dashboardStats) {
+          demoData.dashboardStats.coachingRequests = [request];
+          localStorage.setItem("peptok_demo_data", JSON.stringify(demoData));
+        }
+
+        console.log("🎭 Demo coaching request created:", request);
+      } else {
+        // Submit to API for real users
+        request = await apiEnhanced.createCoachingRequest(requestData);
+      }
 
       // Store in localStorage for persistence
       LocalStorageService.addCoachingRequest(request);

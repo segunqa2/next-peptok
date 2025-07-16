@@ -86,6 +86,57 @@ const EnterpriseDashboard = () => {
       try {
         setIsLoading(true);
 
+        // Check if this is a demo user (Sarah)
+        const token = localStorage.getItem("peptok_token");
+        const isDemoUser = token?.startsWith("demo_token_");
+        const demoData = localStorage.getItem("peptok_demo_data");
+
+        console.log("🔍 Enterprise dashboard loading check:", {
+          token: token ? `${token.substring(0, 20)}...` : "none",
+          isDemoUser,
+          hasDemoData: !!demoData,
+          userEmail: user?.email,
+        });
+
+        if (isDemoUser && demoData) {
+          console.log("🎭 Loading demo data for enterprise dashboard");
+          const parsedDemoData = JSON.parse(demoData);
+
+          // Use demo dashboard stats (always show coaching request except for new login)
+          setDashboardMetrics({
+            activeSessions: parsedDemoData.dashboardStats.activeSessions,
+            activeCoaching: parsedDemoData.dashboardStats.activeCoaching,
+            goalsProgress: parsedDemoData.dashboardStats.goalsProgress,
+            totalHours: parsedDemoData.dashboardStats.totalHours,
+            totalPrograms: 0,
+            completedPrograms: 0,
+            pendingPrograms: 0,
+            totalParticipants: parsedDemoData.company?.employeeCount || 125,
+            averageRating: 0,
+            monthlySpend: 0,
+            completedSessions: 0,
+            scheduledSessions: 0,
+            engagementRate: 0,
+            successRate: 0,
+            retentionRate: 0,
+          });
+
+          // Always show the coaching request (except for new login scenario)
+          const coachingRequests =
+            parsedDemoData.dashboardStats.coachingRequests || [];
+          setMentorshipRequests(coachingRequests);
+          setConnections([]);
+
+          console.log("✅ Demo enterprise dashboard data loaded successfully");
+          console.log("📋 Demo coaching requests loaded:", coachingRequests);
+
+          // Brief delay to show loading spinner, then finish loading
+          setTimeout(() => {
+            setIsLoading(false);
+          }, 100);
+          return;
+        }
+
         // Initialize sample data for testing (this ensures we have data to display)
         initializeSampleData();
 
@@ -99,14 +150,23 @@ const EnterpriseDashboard = () => {
             console.log("Loaded dashboard metrics:", metrics);
           } catch (error) {
             console.error("Error loading dashboard metrics:", error);
-            toast.error("Failed to load dashboard metrics");
+            // Don't show error toast for demo users or when API is unavailable
+            if (!isDemoUser) {
+              toast.error("Failed to load dashboard metrics");
+            }
           }
         }
 
         // Fetch coaching requests for the user's company with proper authorization
-        const requests = await apiEnhanced.getCoachingRequests();
-        console.log("Loaded coaching requests:", requests);
-        setMentorshipRequests(requests || []);
+        try {
+          const requests = await apiEnhanced.getCoachingRequests();
+          console.log("Loaded coaching requests:", requests);
+          setMentorshipRequests(requests || []);
+        } catch (error) {
+          console.error("Error loading coaching requests:", error);
+          // Use empty array as fallback, don't show error for demo users
+          setMentorshipRequests([]);
+        }
 
         // Get connections (with fallback)
         try {

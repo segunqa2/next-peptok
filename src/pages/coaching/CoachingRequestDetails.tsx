@@ -35,6 +35,7 @@ import {
 import { CoachingRequest } from "@/types";
 import { toast } from "sonner";
 import { SimpleTeamMemberCard } from "@/components/coaching/SimpleTeamMemberCard";
+import { SessionScheduleCard } from "@/components/sessions/SessionScheduleCard";
 import { useAuth } from "@/contexts/AuthContext";
 import LocalStorageService from "@/services/localStorageService";
 
@@ -60,6 +61,54 @@ export default function CoachingRequestDetails() {
       setError(null);
 
       console.log(`📄 Loading coaching request: ${requestId}`);
+
+      // Check if this is a demo user
+      const isDemoUser = localStorage
+        .getItem("peptok_token")
+        ?.startsWith("demo_token_");
+      const demoData = localStorage.getItem("peptok_demo_data");
+
+      if (isDemoUser && demoData) {
+        console.log("🎭 Loading demo coaching request details");
+        const parsedDemoData = JSON.parse(demoData);
+
+        // Use demo coaching request
+        const demoRequest =
+          parsedDemoData.coachingRequest ||
+          parsedDemoData.dashboardStats?.coachingRequests?.[0];
+        if (demoRequest) {
+          setRequest(demoRequest);
+          setTeamMembers(demoRequest.teamMembers || []);
+
+          // Set demo coaches with match scores
+          const demoCoaches = parsedDemoData.coaches || [];
+          const matchedCoaches = demoCoaches.map((coach: any) => ({
+            id: coach.id,
+            name: coach.name,
+            title: coach.title,
+            company: coach.company,
+            avatar: coach.avatar,
+            bio: coach.bio,
+            skills: coach.skills,
+            experience: coach.experience,
+            rating: coach.rating,
+            totalRatings: coach.totalRatings,
+            hourlyRate: coach.hourlyRate,
+            matchScore: coach.matchScore,
+            responseRate: coach.responseRate,
+            monthlyEarnings: coach.monthlyEarnings,
+            totalSessions: coach.totalSessions,
+            successRate: coach.successRate,
+            availableSlots: ["Mon 9-11am", "Wed 10am-12pm", "Fri 2-4pm"],
+            nextAvailable: "Tomorrow",
+            isAvailable: true,
+          }));
+
+          setMatchedCoaches(matchedCoaches);
+          console.log("✅ Demo coaching request details loaded");
+          return;
+        }
+      }
 
       // Try to get from API first
       let foundRequest: CoachingRequest | null = null;
@@ -499,6 +548,12 @@ export default function CoachingRequestDetails() {
                 </CardContent>
               </Card>
             )}
+
+            {/* Session Schedule */}
+            <SessionScheduleCard
+              requestId={request.id}
+              programTitle={request.title}
+            />
 
             {/* Team Members */}
             <SimpleTeamMemberCard

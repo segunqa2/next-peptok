@@ -78,7 +78,16 @@ class CompanyDashboardApiService {
         );
       }
 
-      return await response.json();
+      // Check if response has content before trying to parse JSON
+      const text = await response.text();
+      if (!text || text.trim() === "") {
+        console.warn(
+          "Empty response from dashboard metrics API, using fallback",
+        );
+        return this.getFallbackMetrics();
+      }
+
+      return JSON.parse(text);
     } catch (error) {
       console.error("Error fetching dashboard metrics:", error);
       // Return fallback data if API fails

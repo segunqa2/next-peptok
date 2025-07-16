@@ -77,6 +77,38 @@ const CompanyDashboardWithPrograms = () => {
     try {
       setIsLoading(true);
 
+      // Check if this is a demo user (Sarah)
+      const isDemoUser = localStorage
+        .getItem("peptok_token")
+        ?.startsWith("demo_token_");
+      const demoData = localStorage.getItem("peptok_demo_data");
+
+      if (isDemoUser && demoData) {
+        console.log("🎭 Loading demo data for company dashboard");
+        const parsedDemoData = JSON.parse(demoData);
+
+        // Use empty programs initially (Sarah starts with no programs)
+        setPrograms([]);
+
+        // Set empty dashboard stats
+        setDashboardStats({
+          activeSessions: 0,
+          activeCoaching: 0,
+          goalsProgress: 0,
+          totalHours: 0,
+          activePrograms: 0,
+          completedPrograms: 0,
+          pendingPrograms: 0,
+          totalParticipants: parsedDemoData.company.employeeCount,
+          averageRating: 0,
+          totalBudget: 0,
+          spentBudget: 0,
+        });
+
+        console.log("✅ Demo dashboard data loaded successfully");
+        return;
+      }
+
       // Clear dummy data first
       programService.clearDummyData();
 

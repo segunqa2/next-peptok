@@ -96,7 +96,52 @@ const CompanyDashboard = () => {
       try {
         setIsLoading(true);
 
-        // Fetch dashboard metrics if user has a company
+        // Check if this is a demo user (Sarah or Daniel)
+        const token = localStorage.getItem("peptok_token");
+        const isDemoUser = token?.startsWith("demo_token_");
+        const demoData = localStorage.getItem("peptok_demo_data");
+
+        console.log("🔍 Dashboard data loading check:", {
+          token: token ? `${token.substring(0, 20)}...` : "none",
+          isDemoUser,
+          hasDemoData: !!demoData,
+          userEmail: user?.email,
+        });
+
+        if (isDemoUser && demoData) {
+          console.log("🎭 Loading demo data for dashboard");
+          const parsedDemoData = JSON.parse(demoData);
+
+          // Use demo dashboard stats (empty for Sarah's initial state)
+          setDashboardMetrics({
+            activeSessions: parsedDemoData.dashboardStats.activeSessions,
+            activeCoaching: parsedDemoData.dashboardStats.activeCoaching,
+            goalsProgress: parsedDemoData.dashboardStats.goalsProgress,
+            totalHours: parsedDemoData.dashboardStats.totalHours,
+            totalPrograms: 0,
+            completedPrograms: 0,
+            pendingPrograms: 0,
+            totalParticipants: parsedDemoData.company.employeeCount,
+            averageRating: 0,
+            monthlySpend: 0,
+            completedSessions: 0,
+            scheduledSessions: 0,
+            engagementRate: 0,
+            successRate: 0,
+            retentionRate: 0,
+          });
+
+          // Use demo coaching requests (empty initially)
+          setMentorshipRequests(parsedDemoData.dashboardStats.coachingRequests);
+          setUpcomingSessions(parsedDemoData.dashboardStats.upcomingSessions);
+          setRecentActivities(parsedDemoData.dashboardStats.recentActivity);
+
+          console.log("✅ Demo data loaded successfully");
+          setIsLoading(false);
+          return;
+        }
+
+        // Fetch dashboard metrics if user has a company (non-demo users only)
         if (user?.companyId) {
           try {
             const metrics = await companyDashboardApi.getDashboardMetrics(
@@ -109,23 +154,33 @@ const CompanyDashboard = () => {
           }
         }
 
-        // Fetch company's programs/requests with proper authorization
+        // Fetch company's programs/requests with proper authorization (only for non-demo users)
         if (user?.companyId) {
-          const requests = await api.matching.getCompanyRequests(
-            user.companyId,
-          );
-          setMentorshipRequests(requests || []);
+          try {
+            const requests = await api.matching.getCompanyRequests(
+              user.companyId,
+            );
+            setMentorshipRequests(requests || []);
 
-          // Fetch upcoming sessions
-          const sessions = await sessionManagementService.getUpcomingSessions({
-            limit: 5,
-          });
-          setUpcomingSessions(sessions);
+            // Fetch upcoming sessions
+            const sessions = await sessionManagementService.getUpcomingSessions(
+              {
+                limit: 5,
+              },
+            );
+            setUpcomingSessions(sessions);
 
-          // Fetch recent activities
-          const activities =
-            await sessionManagementService.getRecentActivities(10);
-          setRecentActivities(activities);
+            // Fetch recent activities
+            const activities =
+              await sessionManagementService.getRecentActivities(10);
+            setRecentActivities(activities);
+          } catch (apiError) {
+            console.warn("API calls failed for non-demo user:", apiError);
+            // Use empty data as fallback
+            setMentorshipRequests([]);
+            setUpcomingSessions([]);
+            setRecentActivities([]);
+          }
         }
       } catch (error) {
         console.error("Failed to fetch dashboard data:", error);

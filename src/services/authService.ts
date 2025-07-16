@@ -1,6 +1,8 @@
 import { toast } from "sonner";
 import { User } from "../types";
 import api, { setAuthToken } from "./api";
+import { setCurrentUser } from "./apiEnhanced";
+import { findDemoUser, getDemoDataForUser } from "../data/demoUsers";
 
 export interface AuthResponse {
   success: boolean;
@@ -27,6 +29,7 @@ class AuthService {
         this.currentUser = JSON.parse(storedUser);
         this.authToken = storedToken;
         setAuthToken(storedToken);
+        setCurrentUser(this.currentUser); // Set user for apiEnhanced authorization
         console.log(`✅ User loaded from storage: ${this.currentUser?.email}`);
       }
     } catch (error) {
@@ -42,6 +45,7 @@ class AuthService {
       this.currentUser = user;
       this.authToken = token;
       setAuthToken(token);
+      setCurrentUser(user); // Set user for apiEnhanced authorization
       console.log(`✅ User saved to storage: ${user.email}`);
     } catch (error) {
       console.error("Failed to save user to storage:", error);
@@ -53,9 +57,11 @@ class AuthService {
     try {
       localStorage.removeItem("peptok_user");
       localStorage.removeItem("peptok_token");
+      localStorage.removeItem("peptok_demo_data");
       this.currentUser = null;
       this.authToken = null;
       setAuthToken(null);
+      setCurrentUser(null); // Clear user for apiEnhanced authorization
       console.log("🧹 Authentication data cleared");
     } catch (error) {
       console.error("Failed to clear auth:", error);
@@ -69,7 +75,13 @@ class AuthService {
   async isAuthenticated(): Promise<boolean> {
     if (this.currentUser && this.authToken) {
       try {
-        // Verify token with backend
+        // Check if it's a demo token
+        if (this.authToken.startsWith("demo_token_")) {
+          console.log("✅ Demo token verified");
+          return true;
+        }
+
+        // Verify token with backend for real users
         await api.auth.getProfile();
         return true;
       } catch (error) {
@@ -85,6 +97,51 @@ class AuthService {
     try {
       console.log(`🔐 Login attempt for email: ${email}`);
 
+      // Check for demo users first
+      const demoUser = findDemoUser(email, password);
+      if (demoUser) {
+        console.log(`🎭 Demo login for: ${email}`);
+
+        const user: User = {
+          id: demoUser.id,
+          name: demoUser.name,
+          email: demoUser.email,
+          firstName: demoUser.firstName,
+          lastName: demoUser.lastName,
+          picture: demoUser.picture,
+          provider: demoUser.provider,
+          userType: demoUser.userType,
+          companyId: demoUser.companyId,
+          company: demoUser.company,
+          status: demoUser.status,
+          joinedAt: demoUser.joinedAt,
+          lastActive: demoUser.lastActive,
+          isAuthenticated: true,
+        };
+
+        // Generate a demo token
+        const demoToken = `demo_token_${demoUser.id}_${Date.now()}`;
+
+        console.log(
+          `✅ Demo login successful for "${email}", user type: ${user.userType}`,
+        );
+
+        this.saveUserToStorage(user, demoToken);
+
+        // Store demo data in localStorage for easy access
+        const demoData = getDemoDataForUser(demoUser);
+        if (demoData) {
+          localStorage.setItem("peptok_demo_data", JSON.stringify(demoData));
+        }
+
+        return {
+          success: true,
+          user,
+          token: demoToken,
+        };
+      }
+
+      // Fallback to backend API for non-demo users
       const response = await api.auth.login(email, password);
 
       const user: User = {
@@ -205,7 +262,22 @@ class AuthService {
 
   async logout(): Promise<void> {
     try {
-      // Call backend logout endpoint
+      // Check if this is a demo user
+      const isDemoUser = this.authToken?.startsWith("demo_token_");
+
+      if (isDemoUser) {
+        console.log("🎭 Demo user logout - skipping API call");
+        this.clearAuth();
+        toast.success("Successfully signed out");
+
+        // Redirect to home page
+        setTimeout(() => {
+          window.location.href = "/";
+        }, 500);
+        return;
+      }
+
+      // Call backend logout endpoint for real users
       await api.auth.logout();
 
       this.clearAuth();

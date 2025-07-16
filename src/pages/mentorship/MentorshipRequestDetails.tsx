@@ -23,6 +23,7 @@ import { useEffect, useState } from "react";
 import { apiEnhanced as api } from "@/services/apiEnhanced";
 import {
   matchingService,
+  getMatchingResult,
   type CoachMatch,
   type MatchingResult,
 } from "@/services/matchingService";
@@ -76,8 +77,7 @@ export default function MentorshipRequestDetails() {
       setLoadingMatches(true);
 
       // First try to get existing matching results
-      const existingResults =
-        await matchingService.getMatchingResult(requestId);
+      const existingResults = await getMatchingResult(requestId);
 
       if (existingResults) {
         console.log("✅ Found existing matching results:", existingResults);
