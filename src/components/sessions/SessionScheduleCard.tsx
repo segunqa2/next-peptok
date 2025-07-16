@@ -68,7 +68,7 @@ export function SessionScheduleCard({
     // Default sessions for Sales and Marketing Development program
     // Check if user is Daniel (coach) for different last session date
     const isDaniel =
-      user?.name === "Daniel Martinez" || user?.email?.includes("daniel");
+      user?.name === "Daniel Hayes" || user?.email?.includes("daniel");
 
     const defaultSessions: SessionSchedule[] = [
       {
