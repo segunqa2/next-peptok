@@ -141,6 +141,20 @@ export default function MentorshipRequestDetails() {
     try {
       localStorage.removeItem("mentorship_requests");
       localStorage.removeItem("peptok_demo_data");
+      localStorage.removeItem("coaching_requests");
+      localStorage.removeItem("apiCache");
+      localStorage.removeItem("matching_results_req_001");
+      // Clear all localStorage items that might contain old timeline data
+      Object.keys(localStorage).forEach((key) => {
+        if (
+          key.includes("request") ||
+          key.includes("mentorship") ||
+          key.includes("coaching")
+        ) {
+          localStorage.removeItem(key);
+        }
+      });
+      console.log("✅ Cleared all cached request data");
     } catch (error) {
       console.warn("Could not clear cache:", error);
     }
