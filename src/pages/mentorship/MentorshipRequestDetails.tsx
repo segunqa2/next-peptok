@@ -99,9 +99,12 @@ export default function MentorshipRequestDetails() {
           id: requestId,
           title: request?.title || "Mentorship Request",
           description: request?.description || "",
-          requiredSkills: request?.expertise || ["Leadership", "Coaching"],
+          requiredSkills: request?.preferredExpertise || [
+            "Leadership",
+            "Coaching",
+          ],
           preferredExperience: "senior",
-          budget: 150,
+          budget: request?.budget?.max || 150,
           timeline: {
             startDate: new Date().toISOString(),
             endDate: new Date(
@@ -263,6 +266,7 @@ export default function MentorshipRequestDetails() {
             ],
             budget: { min: 15000, max: 30000 },
             timeline: "16 weeks",
+            participantGoal: 5,
             status: "active" as const,
             createdAt: new Date(
               Date.now() - 7 * 24 * 60 * 60 * 1000,
