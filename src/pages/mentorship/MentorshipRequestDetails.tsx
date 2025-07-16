@@ -1003,30 +1003,45 @@ export default function MentorshipRequestDetails() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div>
-                  <label className="text-sm font-medium text-gray-600">
-                    Start Date
-                  </label>
-                  <p className="font-semibold">
-                    {new Date(request.timeline.startDate).toLocaleDateString()}
-                  </p>
-                </div>
-                <div>
-                  <label className="text-sm font-medium text-gray-600">
-                    End Date
-                  </label>
-                  <p className="font-semibold">
-                    {new Date(request.timeline.endDate).toLocaleDateString()}
-                  </p>
-                </div>
-                <div>
-                  <label className="text-sm font-medium text-gray-600">
-                    Session Frequency
-                  </label>
-                  <p className="font-semibold capitalize">
-                    {request.timeline.sessionFrequency}
-                  </p>
-                </div>
+                {typeof request.timeline === "string" ? (
+                  <div>
+                    <label className="text-sm font-medium text-gray-600">
+                      Duration
+                    </label>
+                    <p className="font-semibold">{request.timeline}</p>
+                  </div>
+                ) : (
+                  <>
+                    <div>
+                      <label className="text-sm font-medium text-gray-600">
+                        Start Date
+                      </label>
+                      <p className="font-semibold">
+                        {new Date(
+                          request.timeline.startDate,
+                        ).toLocaleDateString()}
+                      </p>
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium text-gray-600">
+                        End Date
+                      </label>
+                      <p className="font-semibold">
+                        {new Date(
+                          request.timeline.endDate,
+                        ).toLocaleDateString()}
+                      </p>
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium text-gray-600">
+                        Session Frequency
+                      </label>
+                      <p className="font-semibold capitalize">
+                        {request.timeline.sessionFrequency}
+                      </p>
+                    </div>
+                  </>
+                )}
               </CardContent>
             </Card>
 
