@@ -89,20 +89,23 @@ window.fetch = async (...args) => {
   }
 };
 
-// Also suppress uncaught promise rejections for ResizeObserver and HMR fetch errors
+// Also suppress uncaught promise rejections for ResizeObserver and backend fetch errors
 window.addEventListener("unhandledrejection", (e) => {
+  const reason = e.reason;
+  const reasonStr = typeof reason === "string" ? reason : reason?.message || "";
+
   if (
-    e.reason &&
-    typeof e.reason === "string" &&
-    (e.reason.includes(
+    reasonStr.includes(
       "ResizeObserver loop completed with undelivered notifications",
     ) ||
-      e.reason.includes("Failed to fetch") ||
-      e.reason.includes("fetch"))
+    (reasonStr.includes("Failed to fetch") &&
+      (reasonStr.includes("localhost:3001") ||
+        reasonStr.includes("/health") ||
+        reasonStr.includes("/api/v1")))
   ) {
     e.preventDefault();
     console.debug(
-      "Harmless error suppressed (ResizeObserver or HMR fetch):",
+      "Harmless error suppressed (ResizeObserver or backend fetch):",
       e.reason,
     );
   }
