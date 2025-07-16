@@ -211,59 +211,58 @@ export default function MentorshipRequestDetails() {
           const mockRequest: MentorshipRequest = {
             id,
             companyId: user?.companyId || "default-company-id",
-            title: "React Development Training",
+            title: "Sales and Marketing Development",
             description:
-              "Help our team improve their React skills and best practices.",
+              "Department-wide coaching program designed to build up soft and hard sales and marketing skills to improve sales pipeline conversion.",
             goals: [
               {
                 id: "goal_1",
-                title: "Master React Hooks",
+                title: "Sales",
                 description:
-                  "Learn advanced React hooks and custom hook patterns",
-                category: "technical" as const,
+                  "Identify customer needs, craft tailored solutions, and guide prospects through a decision-making process to close deals",
+                category: "business" as const,
+                priority: "high" as const,
+              },
+              {
+                id: "goal_2",
+                title: "Marketing",
+                description:
+                  "Understand customer behavior, create compelling messages, and deliver them through the right channels to attract, engage, and retain target audiences",
+                category: "business" as const,
+                priority: "medium" as const,
+              },
+              {
+                id: "goal_3",
+                title: "Negotiation",
+                description:
+                  "Balance persuasion, active listening, and problem-solving to align value with client priorities, and secure win-win agreements that advance deals",
+                category: "leadership" as const,
                 priority: "high" as const,
               },
             ],
-            metricsToTrack: ["Code quality scores", "Development velocity"],
+            metricsToTrack: [
+              "Sales conversion rate",
+              "Lead generation quality",
+              "Customer retention",
+            ],
             teamMembers: [
               {
                 id: "member_1",
-                email: "john.doe@company.com",
-                name: "John Doe",
+                email: "Rioe@teams.com",
+                name: "Rio E",
                 role: "participant" as const,
                 status: "accepted" as const,
                 invitedAt: new Date().toISOString(),
               },
-              {
-                id: "member_2",
-                email: "jane.smith@company.com",
-                name: "Jane Smith",
-                role: "participant" as const,
-                status: "invited" as const,
-                invitedAt: new Date(
-                  Date.now() - 2 * 24 * 60 * 60 * 1000,
-                ).toISOString(),
-              },
-              {
-                id: "member_3",
-                email: "bob.wilson@company.com",
-                name: "Bob Wilson",
-                role: "observer" as const,
-                status: "invited" as const,
-                invitedAt: new Date(
-                  Date.now() - 5 * 24 * 60 * 60 * 1000,
-                ).toISOString(),
-              },
             ],
-            preferredExpertise: ["React", "JavaScript", "Frontend Development"],
-            budget: { min: 100, max: 200 },
-            timeline: {
-              startDate: new Date().toISOString(),
-              endDate: new Date(
-                Date.now() + 90 * 24 * 60 * 60 * 1000,
-              ).toISOString(),
-              sessionFrequency: "weekly" as const,
-            },
+            preferredExpertise: [
+              "Marketing",
+              "Sales Funnel Optimization",
+              "Persuasion and Negotiation",
+              "Customer Segmentation",
+            ],
+            budget: { min: 15000, max: 30000 },
+            timeline: "16 weeks",
             status: "active" as const,
             createdAt: new Date(
               Date.now() - 7 * 24 * 60 * 60 * 1000,
