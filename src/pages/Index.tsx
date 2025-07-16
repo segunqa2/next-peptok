@@ -50,21 +50,31 @@ export default function Index() {
   const [platformStats, setPlatformStats] = useState<any>(null);
   const [backendAvailable, setBackendAvailable] = useState(true);
 
-    useEffect(() => {
+  useEffect(() => {
     // Load platform statistics from backend API
     const loadStats = async () => {
       try {
         // Skip backend request in development - use default stats
-        console.log("🟡 Using default platform statistics (backend not required for demo)");
+        console.log(
+          "🟡 Using default platform statistics (backend not required for demo)",
+        );
         setBackendAvailable(false);
         setPlatformStats({
           totalCoaches: 250,
           totalSessions: 1850,
           totalCompanies: 45,
           successRate: 94,
-          totalSessions: 0,
-          averageRating: 0,
-          totalCompanies: 0,
+          averageRating: 4.8,
+        });
+      } catch (error) {
+        console.warn("Failed to load platform statistics:", error);
+        setBackendAvailable(false);
+        setPlatformStats({
+          totalCoaches: 250,
+          totalSessions: 1850,
+          totalCompanies: 45,
+          successRate: 94,
+          averageRating: 4.8,
         });
       }
     };
