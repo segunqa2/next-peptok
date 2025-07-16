@@ -30,6 +30,7 @@ import {
 import { MentorshipRequest } from "@/types";
 import { toast } from "sonner";
 import { TeamMemberManagementCard } from "@/components/mentorship/TeamMemberManagementCard";
+import { SessionScheduleCard } from "@/components/sessions/SessionScheduleCard";
 
 interface MatchedCoach extends CoachMatch {
   isSelected?: boolean;
@@ -981,6 +982,12 @@ export default function MentorshipRequestDetails() {
                 </div>
               </CardContent>
             </Card>
+
+            {/* Session Schedule */}
+            <SessionScheduleCard
+              requestId={request.id}
+              programTitle={request.title}
+            />
 
             {/* Team Member Management */}
             <TeamMemberManagementCard
