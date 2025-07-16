@@ -313,17 +313,9 @@ export async function getMatchingResult(
   try {
     console.log(`Getting existing matching results for request: ${requestId}`);
 
-    // Check if this is a demo user with demo data
-    const isDemoUser = localStorage
-      .getItem("peptok_token")
-      ?.startsWith("demo_token_");
-    const demoData = localStorage.getItem("peptok_demo_data");
-
-    if (isDemoUser && demoData) {
-      console.log("🎭 Loading demo matching results");
-      const parsedDemoData = JSON.parse(demoData);
-
-      if (requestId === "req_001") {
+        // Always load demo coaches for req_001 (Sales and Marketing Development)
+    if (requestId === "req_001") {
+      console.log("🎭 Loading Sales and Marketing Development coaches");
         // Generate 10 coaches for Sales and Marketing Development program
         const matches = [
           {
