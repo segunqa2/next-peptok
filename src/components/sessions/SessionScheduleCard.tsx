@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/select";
 import { Calendar, Clock, Save, Edit, CheckCircle } from "lucide-react";
 import { toast } from "sonner";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface SessionSchedule {
   id: string;
@@ -37,6 +38,7 @@ export function SessionScheduleCard({
   requestId,
   programTitle,
 }: SessionScheduleCardProps) {
+  const { user } = useAuth();
   const [sessions, setSessions] = useState<SessionSchedule[]>([]);
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -63,27 +65,31 @@ export function SessionScheduleCard({
       return;
     }
 
-    // Default sessions for non-demo users
+    // Default sessions for Sales and Marketing Development program
+    // Check if user is Daniel (coach) for different last session date
+    const isDaniel =
+      user?.name === "Daniel Hayes" || user?.email?.includes("daniel");
+
     const defaultSessions: SessionSchedule[] = [
       {
         id: "session_001",
-        date: "2024-07-17",
+        date: "2024-07-16", // July 16 (Wednesday)
         time: "10:00",
         day: "Wed",
         title: "Session 1: Sales Fundamentals",
       },
       {
         id: "session_002",
-        date: "2024-07-24",
+        date: "2024-07-23", // July 23 (Wednesday)
         time: "10:00",
         day: "Wed",
         title: "Session 2: Marketing Strategies",
       },
       {
         id: "session_003",
-        date: "2024-07-31",
+        date: isDaniel ? "2024-07-28" : "2024-07-30", // July 28 (Monday) for Daniel, July 30 (Wednesday) for others
         time: "10:00",
-        day: "Wed",
+        day: isDaniel ? "Mon" : "Wed",
         title: "Session 3: Negotiation Mastery",
       },
     ];

@@ -30,6 +30,7 @@ import {
 import { MentorshipRequest } from "@/types";
 import { toast } from "sonner";
 import { TeamMemberManagementCard } from "@/components/mentorship/TeamMemberManagementCard";
+import { SessionScheduleCard } from "@/components/sessions/SessionScheduleCard";
 
 interface MatchedCoach extends CoachMatch {
   isSelected?: boolean;
@@ -99,9 +100,12 @@ export default function MentorshipRequestDetails() {
           id: requestId,
           title: request?.title || "Mentorship Request",
           description: request?.description || "",
-          requiredSkills: request?.expertise || ["Leadership", "Coaching"],
+          requiredSkills: request?.preferredExpertise || [
+            "Leadership",
+            "Coaching",
+          ],
           preferredExperience: "senior",
-          budget: 150,
+          budget: request?.budget?.max || 150,
           timeline: {
             startDate: new Date().toISOString(),
             endDate: new Date(
@@ -133,6 +137,28 @@ export default function MentorshipRequestDetails() {
   };
 
   useEffect(() => {
+    // Clear any cached mentorship request data that might have old timeline
+    try {
+      localStorage.removeItem("mentorship_requests");
+      localStorage.removeItem("peptok_demo_data");
+      localStorage.removeItem("coaching_requests");
+      localStorage.removeItem("apiCache");
+      localStorage.removeItem("matching_results_req_001");
+      // Clear all localStorage items that might contain old timeline data
+      Object.keys(localStorage).forEach((key) => {
+        if (
+          key.includes("request") ||
+          key.includes("mentorship") ||
+          key.includes("coaching")
+        ) {
+          localStorage.removeItem(key);
+        }
+      });
+      console.log("✅ Cleared all cached request data");
+    } catch (error) {
+      console.warn("Could not clear cache:", error);
+    }
+
     const fetchRequest = async () => {
       if (!id) {
         setError("Invalid request ID");
@@ -211,59 +237,59 @@ export default function MentorshipRequestDetails() {
           const mockRequest: MentorshipRequest = {
             id,
             companyId: user?.companyId || "default-company-id",
-            title: "React Development Training",
+            title: "Sales and Marketing Development",
             description:
-              "Help our team improve their React skills and best practices.",
+              "Department-wide coaching program designed to build up soft and hard sales and marketing skills to improve sales pipeline conversion.",
             goals: [
               {
                 id: "goal_1",
-                title: "Master React Hooks",
+                title: "Sales",
                 description:
-                  "Learn advanced React hooks and custom hook patterns",
-                category: "technical" as const,
+                  "Identify customer needs, craft tailored solutions, and guide prospects through a decision-making process to close deals",
+                category: "business" as const,
+                priority: "high" as const,
+              },
+              {
+                id: "goal_2",
+                title: "Marketing",
+                description:
+                  "Understand customer behavior, create compelling messages, and deliver them through the right channels to attract, engage, and retain target audiences",
+                category: "business" as const,
+                priority: "medium" as const,
+              },
+              {
+                id: "goal_3",
+                title: "Negotiation",
+                description:
+                  "Balance persuasion, active listening, and problem-solving to align value with client priorities, and secure win-win agreements that advance deals",
+                category: "leadership" as const,
                 priority: "high" as const,
               },
             ],
-            metricsToTrack: ["Code quality scores", "Development velocity"],
+            metricsToTrack: [
+              "Sales conversion rate",
+              "Lead generation quality",
+              "Customer retention",
+            ],
             teamMembers: [
               {
                 id: "member_1",
-                email: "john.doe@company.com",
-                name: "John Doe",
+                email: "Rioe@teams.com",
+                name: "Rio E",
                 role: "participant" as const,
                 status: "accepted" as const,
                 invitedAt: new Date().toISOString(),
               },
-              {
-                id: "member_2",
-                email: "jane.smith@company.com",
-                name: "Jane Smith",
-                role: "participant" as const,
-                status: "invited" as const,
-                invitedAt: new Date(
-                  Date.now() - 2 * 24 * 60 * 60 * 1000,
-                ).toISOString(),
-              },
-              {
-                id: "member_3",
-                email: "bob.wilson@company.com",
-                name: "Bob Wilson",
-                role: "observer" as const,
-                status: "invited" as const,
-                invitedAt: new Date(
-                  Date.now() - 5 * 24 * 60 * 60 * 1000,
-                ).toISOString(),
-              },
             ],
-            preferredExpertise: ["React", "JavaScript", "Frontend Development"],
-            budget: { min: 100, max: 200 },
-            timeline: {
-              startDate: new Date().toISOString(),
-              endDate: new Date(
-                Date.now() + 90 * 24 * 60 * 60 * 1000,
-              ).toISOString(),
-              sessionFrequency: "weekly" as const,
-            },
+            preferredExpertise: [
+              "Marketing",
+              "Sales Funnel Optimization",
+              "Persuasion and Negotiation",
+              "Customer Segmentation",
+            ],
+            budget: { min: 15000, max: 30000 },
+            timeline: "weekly for 3 weeks",
+            participantGoal: 5,
             status: "active" as const,
             createdAt: new Date(
               Date.now() - 7 * 24 * 60 * 60 * 1000,
@@ -347,20 +373,9 @@ export default function MentorshipRequestDetails() {
     let hoursPerSession: number;
 
     if (typeof request.timeline === "string") {
-      // Old format - estimate based on timeline string
-      const timelineStr = request.timeline.toLowerCase();
-      if (timelineStr.includes("week")) {
-        const weeks = parseInt(timelineStr.match(/(\d+)/)?.[0] || "4");
-        totalSessions = weeks;
-        hoursPerSession = 2; // Default assumption
-      } else if (timelineStr.includes("month")) {
-        const months = parseInt(timelineStr.match(/(\d+)/)?.[0] || "3");
-        totalSessions = months * 4; // Weekly sessions
-        hoursPerSession = 2;
-      } else {
-        totalSessions = 8; // Default fallback
-        hoursPerSession = 2;
-      }
+      // Hardcoded to 3 weeks for Sales and Marketing Development program
+      totalSessions = 3;
+      hoursPerSession = 2;
     } else {
       // New detailed timeline format
       totalSessions = request.timeline.totalSessions;
@@ -979,6 +994,12 @@ export default function MentorshipRequestDetails() {
               </CardContent>
             </Card>
 
+            {/* Session Schedule */}
+            <SessionScheduleCard
+              requestId={request.id}
+              programTitle={request.title}
+            />
+
             {/* Team Member Management */}
             <TeamMemberManagementCard
               teamMembers={teamMembers}
@@ -1000,30 +1021,45 @@ export default function MentorshipRequestDetails() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div>
-                  <label className="text-sm font-medium text-gray-600">
-                    Start Date
-                  </label>
-                  <p className="font-semibold">
-                    {new Date(request.timeline.startDate).toLocaleDateString()}
-                  </p>
-                </div>
-                <div>
-                  <label className="text-sm font-medium text-gray-600">
-                    End Date
-                  </label>
-                  <p className="font-semibold">
-                    {new Date(request.timeline.endDate).toLocaleDateString()}
-                  </p>
-                </div>
-                <div>
-                  <label className="text-sm font-medium text-gray-600">
-                    Session Frequency
-                  </label>
-                  <p className="font-semibold capitalize">
-                    {request.timeline.sessionFrequency}
-                  </p>
-                </div>
+                {typeof request.timeline === "string" ? (
+                  <div>
+                    <label className="text-sm font-medium text-gray-600">
+                      Duration
+                    </label>
+                    <p className="font-semibold">weekly for 3 weeks</p>
+                  </div>
+                ) : (
+                  <>
+                    <div>
+                      <label className="text-sm font-medium text-gray-600">
+                        Start Date
+                      </label>
+                      <p className="font-semibold">
+                        {new Date(
+                          request.timeline.startDate,
+                        ).toLocaleDateString()}
+                      </p>
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium text-gray-600">
+                        End Date
+                      </label>
+                      <p className="font-semibold">
+                        {new Date(
+                          request.timeline.endDate,
+                        ).toLocaleDateString()}
+                      </p>
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium text-gray-600">
+                        Session Frequency
+                      </label>
+                      <p className="font-semibold capitalize">
+                        {request.timeline.sessionFrequency}
+                      </p>
+                    </div>
+                  </>
+                )}
               </CardContent>
             </Card>
 

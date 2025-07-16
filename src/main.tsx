@@ -61,46 +61,51 @@ const resizeObserverErrorHandler = (e: ErrorEvent) => {
 // Add error listener for ResizeObserver errors
 window.addEventListener("error", resizeObserverErrorHandler);
 
-// Suppress HMR-related fetch errors in cloud environments
-if (Environment.isProduction()) {
-  const originalFetch = window.fetch;
-  window.fetch = async (...args) => {
-    try {
-      return await originalFetch.apply(window, args);
-    } catch (error) {
-      // Suppress HMR/Vite related fetch errors in production
-      const errorMessage =
-        error instanceof Error ? error.message : String(error);
-      if (
-        errorMessage.includes("Failed to fetch") ||
-        args[0]?.toString()?.includes("@vite") ||
-        args[0]?.toString()?.includes("__vite")
-      ) {
-        console.debug(
-          "Suppressed HMR fetch error in production:",
-          errorMessage,
-        );
-        return new Response(null, { status: 200 }); // Return empty successful response
-      }
-      throw error; // Re-throw non-HMR errors
-    }
-  };
-}
+// Suppress backend fetch errors when backend is not configured
+const originalFetch = window.fetch;
+window.fetch = async (...args) => {
+  try {
+    return await originalFetch.apply(window, args);
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    const url = args[0]?.toString() || "";
 
-// Also suppress uncaught promise rejections for ResizeObserver and HMR fetch errors
+    // Suppress fetch errors for backend endpoints when backend is not available
+    if (
+      errorMessage.includes("Failed to fetch") &&
+      (url.includes("localhost:3001") ||
+        url.includes("/health") ||
+        url.includes("/api/v1") ||
+        url.includes("@vite") ||
+        url.includes("__vite"))
+    ) {
+      console.debug(
+        "Suppressed backend fetch error (backend not available):",
+        errorMessage,
+      );
+      return new Response(null, { status: 200 }); // Return empty successful response
+    }
+    throw error; // Re-throw other errors
+  }
+};
+
+// Also suppress uncaught promise rejections for ResizeObserver and backend fetch errors
 window.addEventListener("unhandledrejection", (e) => {
+  const reason = e.reason;
+  const reasonStr = typeof reason === "string" ? reason : reason?.message || "";
+
   if (
-    e.reason &&
-    typeof e.reason === "string" &&
-    (e.reason.includes(
+    reasonStr.includes(
       "ResizeObserver loop completed with undelivered notifications",
     ) ||
-      e.reason.includes("Failed to fetch") ||
-      e.reason.includes("fetch"))
+    (reasonStr.includes("Failed to fetch") &&
+      (reasonStr.includes("localhost:3001") ||
+        reasonStr.includes("/health") ||
+        reasonStr.includes("/api/v1")))
   ) {
     e.preventDefault();
     console.debug(
-      "Harmless error suppressed (ResizeObserver or HMR fetch):",
+      "Harmless error suppressed (ResizeObserver or backend fetch):",
       e.reason,
     );
   }

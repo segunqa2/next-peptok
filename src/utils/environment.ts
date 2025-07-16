@@ -61,11 +61,9 @@ export const Environment = {
 
   // Check if backend should be attempted
   shouldTryBackend(): boolean {
-    // Always try backend in development, and in production if configured
-    return (
-      this.isLocalDevelopment() ||
-      (this.isProduction() && !!import.meta.env.VITE_API_URL)
-    );
+    // Only try backend if explicitly configured with VITE_API_URL
+    // This prevents unnecessary failed fetch attempts in development
+    return !!import.meta.env.VITE_API_URL;
   },
 
   // Get environment name for logging
