@@ -61,31 +61,33 @@ const resizeObserverErrorHandler = (e: ErrorEvent) => {
 // Add error listener for ResizeObserver errors
 window.addEventListener("error", resizeObserverErrorHandler);
 
-// Suppress HMR-related fetch errors in cloud environments
-if (Environment.isProduction()) {
-  const originalFetch = window.fetch;
-  window.fetch = async (...args) => {
-    try {
-      return await originalFetch.apply(window, args);
-    } catch (error) {
-      // Suppress HMR/Vite related fetch errors in production
-      const errorMessage =
-        error instanceof Error ? error.message : String(error);
-      if (
-        errorMessage.includes("Failed to fetch") ||
-        args[0]?.toString()?.includes("@vite") ||
-        args[0]?.toString()?.includes("__vite")
-      ) {
-        console.debug(
-          "Suppressed HMR fetch error in production:",
-          errorMessage,
-        );
-        return new Response(null, { status: 200 }); // Return empty successful response
-      }
-      throw error; // Re-throw non-HMR errors
+// Suppress backend fetch errors when backend is not configured
+const originalFetch = window.fetch;
+window.fetch = async (...args) => {
+  try {
+    return await originalFetch.apply(window, args);
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    const url = args[0]?.toString() || "";
+
+    // Suppress fetch errors for backend endpoints when backend is not available
+    if (
+      errorMessage.includes("Failed to fetch") &&
+      (url.includes("localhost:3001") ||
+        url.includes("/health") ||
+        url.includes("/api/v1") ||
+        url.includes("@vite") ||
+        url.includes("__vite"))
+    ) {
+      console.debug(
+        "Suppressed backend fetch error (backend not available):",
+        errorMessage,
+      );
+      return new Response(null, { status: 200 }); // Return empty successful response
     }
-  };
-}
+    throw error; // Re-throw other errors
+  }
+};
 
 // Also suppress uncaught promise rejections for ResizeObserver and HMR fetch errors
 window.addEventListener("unhandledrejection", (e) => {
