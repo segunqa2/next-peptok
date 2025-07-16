@@ -54,8 +54,11 @@ class DataSyncService {
   }
 
   private async initializeSync() {
-    // Check backend health on startup
-    await this.checkBackendHealth();
+    // Check backend health on startup (non-blocking)
+    this.checkBackendHealth().catch(() => {
+      // Silently handle health check failure
+      this.backendHealthStatus = false;
+    });
 
     // Process any queued sync operations periodically
     setInterval(() => {
@@ -67,6 +70,18 @@ class DataSyncService {
 
   private async checkBackendHealth(): Promise<boolean> {
     try {
+      // Skip health check in development if API_BASE_URL indicates localhost backend
+      if (
+        this.API_BASE_URL.includes("localhost") ||
+        this.API_BASE_URL.includes("3001")
+      ) {
+        console.log(
+          "🟡 Skipping backend health check (localhost backend not running) - using localStorage fallback",
+        );
+        this.backendHealthStatus = false;
+        return false;
+      }
+
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), this.SYNC_TIMEOUT);
 
@@ -89,10 +104,7 @@ class DataSyncService {
       return this.backendHealthStatus;
     } catch (error) {
       this.backendHealthStatus = false;
-      console.warn(
-        "🔴 Backend unavailable - using localStorage fallback:",
-        error,
-      );
+      console.log("🟡 Backend unavailable - using localStorage fallback");
       return false;
     }
   }
@@ -498,7 +510,7 @@ class DataSyncService {
    * Force sync all pending localStorage data to backend
    */
   async forceSyncAll(): Promise<{ synced: number; failed: number }> {
-    console.log("🔄 Force syncing all pending data to backend...");
+    console.log("���� Force syncing all pending data to backend...");
 
     if (!(await this.checkBackendHealth())) {
       console.warn("❌ Cannot force sync - backend unavailable");
