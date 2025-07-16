@@ -137,6 +137,14 @@ export default function MentorshipRequestDetails() {
   };
 
   useEffect(() => {
+    // Clear any cached mentorship request data that might have old timeline
+    try {
+      localStorage.removeItem("mentorship_requests");
+      localStorage.removeItem("peptok_demo_data");
+    } catch (error) {
+      console.warn("Could not clear cache:", error);
+    }
+
     const fetchRequest = async () => {
       if (!id) {
         setError("Invalid request ID");
